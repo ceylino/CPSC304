@@ -1,3 +1,5 @@
+(NB: '--' means the insert statements have been created in the accompanying inserts.sql file)
+
 -- customer (customer_id, email, name, creditcard_number)
 -- member (customer_id, fee, points, join_date)
 
