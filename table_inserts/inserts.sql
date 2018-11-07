@@ -29,6 +29,7 @@ VALUES (9, "ivan@gmail.com", "Ivan", 123456);
 INSERT INTO customer (customer_id, email, name, creditcard_number)
 VALUES (10, "jannet@gmail.com", "Jannet", 123456);
 
+/*---------------------------------------------------------------------------------*/
 /*MEMBER TABLE - 5 entries
 Changes: Datetime instead is string for Join Datetime.
 Notes: Should we change fee (float) to fee (boolean)??
@@ -48,6 +49,7 @@ VALUES (9, 12.50, 1001, "19931121");
 INSERT INTO member (customer_id, fee, points, join_date)
 VALUES (10, 12.50, 10, "20180809");
 
+/*---------------------------------------------------------------------------------*/
 /*ROOM TABLE - 15 entries*/
 INSERT INTO room (room_num, room_type, room_rate)
 VALUES (1, "double", 150.00);
@@ -94,6 +96,7 @@ VALUES (14, "honeymoon", 450.00);
 INSERT INTO room (room_num, room_type, room_rate)
 VALUES (15, "president", 500.00);
 
+/*---------------------------------------------------------------------------------*/
 /*ROOM RATE TABLE - 6 entries (1 for each of the 6 room types)*/
 INSERT INTO RoomRate (room_type, room_rate)
 VALUES ("double", 150.00);
@@ -113,6 +116,7 @@ VALUES ("honeymoon", 450.00);
 INSERT INTO RoomRate (room_type, room_rate)
 VALUES ("president", 500.00);
 
+/*---------------------------------------------------------------------------------*/
 /*HOTEL STAFF TABLE - 5 entries*/
 INSERT INTO hotelStaff (staff_id, name, phone)
 VALUES (1, "Zayn", "6041234567");
@@ -129,6 +133,7 @@ VALUES (4, "Walter", "6041298800");
 INSERT INTO hotelStaff (staff_id, name, phone)
 VALUES (5, "Violet", "6049019977");
 
+/*---------------------------------------------------------------------------------*/
 /*SKI STAFF TABLE - 5 entries*/
 INSERT INTO skiStaff (staff_id, name, phone)
 VALUES (6, "Ursula", "6042224567");
@@ -145,6 +150,7 @@ VALUES (9, "Ron", "6045558800");
 INSERT INTO skiStaff (staff_id, name, phone)
 VALUES (0, "Quin", "6049066677");
 
+/*---------------------------------------------------------------------------------*/
 /*RENTAL EQUIPMENT TABLE - 15 entries*/
 INSERT INTO rentalEquip (equip_id, type, rental_rate)
 VALUES (1, "skis", 15.00);
@@ -174,10 +180,10 @@ INSERT INTO rentalEquip (equip_id, type, rental_rate)
 VALUES (9, "boots", 10.00);
 
 INSERT INTO rentalEquip (equip_id, type, rental_rate)
-VALUES (10, "pole", 5.00);
+VALUES (10, "poles", 5.00);
 
 INSERT INTO rentalEquip (equip_id, type, rental_rate)
-VALUES (11, "pole", 5.00);
+VALUES (11, "poles", 5.00);
 
 INSERT INTO rentalEquip (equip_id, type, rental_rate)
 VALUES (12, "poles", 5.00);
@@ -191,6 +197,7 @@ VALUES (14, "helmet", 5.00);
 INSERT INTO rentalEquip (equip_id, type, rental_rate)
 VALUES (15, "helmet", 5.00);
 
+/*---------------------------------------------------------------------------------*/
 /*RENTAL EQUIPMENT RATE TABLE - 5 entries (1 for each of the 5 equip. types)*/
 INSERT INTO rentalEquipRate (type, rental_rate)
 VALUES ("skis", 15.00);
@@ -206,3 +213,5 @@ VALUES ("poles", 5.00);
 
 INSERT INTO rentalEquipRate (type, rental_rate)
 VALUES ("helmet", 5.00);
+
+/*---------------------------------------------------------------------------------*/
