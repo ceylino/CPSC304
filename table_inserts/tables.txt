@@ -1,0 +1,23 @@
+-- customer (customer_id, email, name, creditcard_number)
+-- member (customer_id, fee, points, join_date)
+
+-- room (room_num, room_type, room_rate)
+-- roomRate (room_type, room_rate)
+
+-- hotelStaff (staff_id, name, phone)
+-- skiStaff (staff_id, name, phone)
+
+-- rentalEquip (equip_id, type, rental_rate)
+-- rentalEquipRate (type, rental_rate)
+
+EquipReservation (confirmation_num, equip_id, customer_id)
+RoomReservation (confirmation_num, room_num, customer_id)
+
+RoomManagement (room_num, staff_id)
+EquipManagement (equip_id, staff_id)
+
+PurchasedLiftpass (customer_id, pass_id, purchase_date, pass_price)
+
+Lesson (type, staff_id, lesson_datetime)
+LessonTime (type, lesson_datetime)
+BookedLessons (customer_id, type, staff_id)
