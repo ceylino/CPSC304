@@ -12,14 +12,14 @@
 -- rentalEquip (equip_id, type, rental_rate)
 -- rentalEquipRate (type, rental_rate)
 
-EquipReservation (confirmation_num, equip_id, customer_id)
-RoomReservation (confirmation_num, room_num, customer_id)
+-- EquipReservation (confirmation_num, equip_id, customer_id)
+-- RoomReservation (confirmation_num, room_num, customer_id)
 
-RoomManagement (room_num, staff_id)
-EquipManagement (equip_id, staff_id)
+-- RoomManagement (room_num, staff_id)
+-- EquipManagement (equip_id, staff_id)
 
-PurchasedLiftpass (customer_id, pass_id, purchase_date, pass_price)
+-- PurchasedLiftpass (customer_id, pass_id, purchase_date, pass_price)
 
-Lesson (type, staff_id, lesson_datetime)
-LessonTime (type, lesson_datetime)
-BookedLessons (customer_id, type, staff_id)
+-- Lesson (type, staff_id, lesson_datetime)
+-- LessonTime (type, lesson_datetime)
+-- BookedLessons (customer_id, type, staff_id)
