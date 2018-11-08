@@ -20,6 +20,7 @@
 
 -- PurchasedLiftpass (customer_id, pass_id, purchase_date, pass_price)
 
--- Lesson (type, staff_id, lesson_datetime)
+-- Lesson (type, staff_id, lesson_datetime)  => should there be 2 types of lessons "ski" and "snowboard" or can I also add "crosscountry" ?
+
 -- LessonTime (type, lesson_datetime)
 -- BookedLessons (customer_id, type, staff_id)
