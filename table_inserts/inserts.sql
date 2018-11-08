@@ -254,6 +254,8 @@ VALUES (6, 5, 7)
 INSERT INTO EquipReservation (confirmation_num, equip_id, customer_id)
 VALUES (7, 12, 4)
 
+commit;
+
 /*---------------------------------------------------------------------------------*/
 /*ROOMRESERVATION TABLE - 7 entries*/
 INSERT INTO RoomReservation (confirmation_num, room_num, customer_id)
@@ -276,6 +278,8 @@ VALUES (6, 14, 6);
 
 INSERT INTO RoomReservation (confirmation_num, room_num, customer_id)
 VALUES (7, 15, 5);
+
+commit;
 
 /*---------------------------------------------------------------------------------*/
 /*ROOMMANAGEMENT TABLE - 7 entries (1 for each reserved room)*/
@@ -300,6 +304,7 @@ VALUES (6, 1);
 INSERT INTO RoomManagement (room_num, staff_id)
 VALUES (7, 3);
 
+commit;
 
 /*---------------------------------------------------------------------------------*/
 /*EQUIPMANAGEMENT TABLE - 5 entries*/
@@ -324,6 +329,8 @@ VALUES (6, 7);
 INSERT INTO EquipManagement (equip_id, staff_id)
 VALUES (7, 0);
 
+commit;
+
 /*---------------------------------------------------------------------------------*/
 /*PURCHASEDLIFTPASS TABLE - 6 entries*/
 INSERT INTO PurchasedLiftpass (customer_id, pass_id, purchase_date, pass_price)
@@ -343,6 +350,8 @@ VALUES (10, 5, 20171019, 50.00);
 
 INSERT INTO PurchasedLiftpass (customer_id, pass_id, purchase_date, pass_price)
 VALUES (12, 6, 20050105, 50.00);
+
+commit;
 
 /*---------------------------------------------------------------------------------*/
 /*LESSON TABLE - 9 entries 
@@ -374,6 +383,8 @@ VALUES ("snowboard", 7, 20171019 15:45:00);
 INSERT INTO Lesson (type, staff_id, lesson_datetime)
 VALUES ("crosscountry", 9, 20151030 9:00:00);
 
+commit;
+
 /*---------------------------------------------------------------------------------*/
 /*LESSONTIME TABLE - 9 entries*/
 INSERT INTO LessonTime (type, lesson_datetime)
@@ -403,6 +414,8 @@ VALUES ("snowboard", 20171019 15:45:00);
 INSERT INTO LessonTime (type, lesson_datetime)
 VALUES ("crosscountry", 20151030 9:00:00);
 
+commit;
+
 /*---------------------------------------------------------------------------------*/
 /*BOOKEDLESSONS TABLE - 5 entries*/
 INSERT INTO BookedLessons (customer_id, type, staff_id)
@@ -419,5 +432,7 @@ VALUES (10, "ski", 8);
 
 INSERT INTO BookedLessons (customer_id, type, staff_id)
 VALUES (14, "crosscountry", 9);
+
+commit;
 
 /*---------------------------------------------------------------------------------*/
