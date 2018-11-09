@@ -21,3 +21,8 @@
 -- lesson (staff_id, lesson_datetime, lesson_type)
 -- lessonTime (type, lesson_datetime)
 -- bookedLessons (c_id, lesson_type, staff_id)
+
+
+Notes:
+all datetime are strings of the form "yyyymmddhhmm"
+all date are strings of the form "yyyymmdd"
