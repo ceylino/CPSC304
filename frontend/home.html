@@ -1,0 +1,89 @@
+<!-- Home page: This is where the application starts!
+Staff and customers can log in from here and then get redirected to the appropriate internal page.
+If their logins are incorrect then they remain on this page and get an error.
+-->
+
+<!-- Page title-->
+<title>Hotel Ski Resort</title>
+<center>
+  <h1>Hotel Ski Resort</h1>
+
+<p>Insert your id below:</p>
+
+<!-- Form Checking and Submissions-->
+<?php
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  $staffId = $_POST["staffIdLogin"];
+  $customerId = $_POST["customerIdLogin"];
+
+  $newCId = $_POST["NewC_id"];
+  $newCname = $_POST["NewC_name"];
+  $newCemail = $_POST["NewC_email"];
+  $newCcredit = $_POST["NewC_CCnum"];
+
+  if($staffId){
+    $sql="SELECT s_id
+          FROM hotelStaff,skiStaff
+          WHERE staff_id = '".$staffId."'
+          ";
+  }else if(customerID){
+    $sql="SELECT c_id
+          FROM customers
+          WHERE c_id = '".$customerId."'
+          ";
+  }else if($newCId & $newCname & $newCemail & $newCcredit){
+    $sql="INSERT INTO customer (c_id, c_name, e_mail, creditcard_num)
+          VALUES (".$newCId.", '".$newCname."', '".$newCemail."', ".$newCcredit.")
+          ";
+  }
+}?>
+
+<!-- Staff Login-->
+<div style="background-color:lightGrey;
+            width: 25%;
+            padding-top: 10px;
+            padding-bottom: 10px">
+  <h3>Staff Login</h3>
+  <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+  <!--if not a existing account, stay in same page and get error message-->
+
+    Id: <input type="number" name="staff_id" size="6">
+    <input type="submit" value="Log in" name="staffIdLogin">
+  </form>
+</div>
+
+<div style="height: 10px;"></div>
+
+<!-- Customer Login-->
+<div style="background-color:lightGrey;
+            width: 25%;
+            padding-top: 10px;
+            padding-bottom: 10px">
+  <h3>Customer Login</h3>
+  <form method="POST" action="???">
+    Id: <input type="number" name="c_id" size="6">
+    <input type="submit" value="Log in" name="customerIdLogin">
+  </form>
+</div>
+
+<div style="height: 10px;"></div>
+
+<!-- New Customers: Create new account-->
+<div style="background-color:lightGrey;
+            width: 25%;
+            padding-top: 10px;
+            padding-bottom: 10px">
+  <h3>New Customers</h3>
+  <p>Don't have an account? Create one below:</p>
+  <form method="POST" action="???">
+    <div style="padding-left: 50px;">
+      <p align="left">Id: <br> <input type="number" name="NewC_id" size="6"> </p>
+      <p align="left">Name: <br> <input type="text" name="NewC_name" size="20"> </p>
+      <p align="left">E-mail: <br> <input type="text" name="NewC_email" size="40"> </p>
+      <p align="left">Credit Card Number: <br> <input type="number" name="NewC_CCnum" size="16"> </p>
+    </div>
+    <input type="submit" value="Create New Account" name="newCustomer">
+  </form>
+</div>
+
+</center>
