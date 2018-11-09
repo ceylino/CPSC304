@@ -16,6 +16,8 @@ Create the branch on your local machine and switch in this branch : ```$ git che
 
 Change working branch: ```$ git checkout [branch_name]```
 
+Push the branch on github (first time): ```$ git push --set-upstream origin [branch_name]```
+
 Push the branch on github: ```$ git push origin [branch_name]```
 
 You can see all branches created by using: ```$ git branch```
