@@ -282,12 +282,12 @@ VALUES (7, 15, 5);
 commit;
 
 /*---------------------------------------------------------------------------------*/
-/*ROOMMANAGEMENT TABLE - 7 entries (1 for each reserved room)*/
+/*ROOMMANAGEMENT TABLE - 15 entries (a hotel staff member is assigned to a room at all times)*/
 INSERT INTO RoomManagement (room_num, staff_id)
 VALUES (1, 4);
 
 INSERT INTO RoomManagement (room_num, staff_id)
-VALUES (2, 3);
+VALUES (2, 1);
 
 INSERT INTO RoomManagement (room_num, staff_id)
 VALUES (3, 5);
@@ -304,10 +304,34 @@ VALUES (6, 1);
 INSERT INTO RoomManagement (room_num, staff_id)
 VALUES (7, 3);
 
+INSERT INTO RoomManagement (room_num, staff_id)
+VALUES (8, 2);
+
+INSERT INTO RoomManagement (room_num, staff_id)
+VALUES (9, 2);
+
+INSERT INTO RoomManagement (room_num, staff_id)
+VALUES (10, 4);
+
+INSERT INTO RoomManagement (room_num, staff_id)
+VALUES (11, 3);
+
+INSERT INTO RoomManagement (room_num, staff_id)
+VALUES (12, 3);
+
+INSERT INTO RoomManagement (room_num, staff_id)
+VALUES (13, 3);
+
+INSERT INTO RoomManagement (room_num, staff_id)
+VALUES (14, 3);
+
+INSERT INTO RoomManagement (room_num, staff_id)
+VALUES (15, 3);
+
 commit;
 
 /*---------------------------------------------------------------------------------*/
-/*EQUIPMANAGEMENT TABLE - 5 entries*/
+/*EQUIPMANAGEMENT TABLE - 15 entries (each equipment is assigned a ski staff member)*/
 INSERT INTO EquipManagement (equip_id, staff_id)
 VALUES (1, 6);
 
@@ -321,13 +345,37 @@ INSERT INTO EquipManagement (equip_id, staff_id)
 VALUES (4, 6);
 
 INSERT INTO EquipManagement (equip_id, staff_id)
-VALUES (5, 8);
+VALUES (5, 7);
 
 INSERT INTO EquipManagement (equip_id, staff_id)
 VALUES (6, 7);
 
 INSERT INTO EquipManagement (equip_id, staff_id)
-VALUES (7, 0);
+VALUES (7, 7);
+
+INSERT INTO EquipManagement (equip_id, staff_id)
+VALUES (8, 8);
+
+INSERT INTO EquipManagement (equip_id, staff_id)
+VALUES (9, 8);
+
+INSERT INTO EquipManagement (equip_id, staff_id)
+VALUES (10, 9);
+
+INSERT INTO EquipManagement (equip_id, staff_id)
+VALUES (11, 9);
+
+INSERT INTO EquipManagement (equip_id, staff_id)
+VALUES (12, 0);
+
+INSERT INTO EquipManagement (equip_id, staff_id)
+VALUES (13, 0);
+
+INSERT INTO EquipManagement (equip_id, staff_id)
+VALUES (14, 0);
+
+INSERT INTO EquipManagement (equip_id, staff_id)
+VALUES (15, 0);
 
 commit;
 
@@ -349,7 +397,7 @@ INSERT INTO PurchasedLiftpass (customer_id, pass_id, purchase_date, pass_price)
 VALUES (10, 5, 20171019, 50.00);
 
 INSERT INTO PurchasedLiftpass (customer_id, pass_id, purchase_date, pass_price)
-VALUES (12, 6, 20050105, 50.00);
+VALUES (8, 6, 20050105, 50.00);
 
 commit;
 
@@ -431,7 +479,7 @@ INSERT INTO BookedLessons (customer_id, type, staff_id)
 VALUES (10, "ski", 8);
 
 INSERT INTO BookedLessons (customer_id, type, staff_id)
-VALUES (14, "crosscountry", 9);
+VALUES (7, "crosscountry", 9);
 
 commit;
 
