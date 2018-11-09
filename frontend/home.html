@@ -3,87 +3,263 @@ Staff and customers can log in from here and then get redirected to the appropri
 If their logins are incorrect then they remain on this page and get an error.
 -->
 
-<!-- Page title-->
+<!-- Page title -->
 <title>Hotel Ski Resort</title>
 <center>
   <h1>Hotel Ski Resort</h1>
 
-<p>Insert your id below:</p>
+  <p>Insert your id below:</p>
 
-<!-- Form Checking and Submissions-->
-<?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $staffId = $_POST["staffIdLogin"];
-  $customerId = $_POST["customerIdLogin"];
+  <!-- Form Checking and Submissions -->
+  <?php
+  if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $staffId = $_POST["staffIdLogin"];
+    $customerId = $_POST["customerIdLogin"];
 
-  $newCId = $_POST["NewC_id"];
-  $newCname = $_POST["NewC_name"];
-  $newCemail = $_POST["NewC_email"];
-  $newCcredit = $_POST["NewC_CCnum"];
+    $newCId = $_POST["NewC_id"];
+    $newCname = $_POST["NewC_name"];
+    $newCemail = $_POST["NewC_email"];
+    $newCcredit = $_POST["NewC_CCnum"];
 
-  if($staffId){
-    $sql="SELECT s_id
-          FROM hotelStaff,skiStaff
-          WHERE staff_id = '".$staffId."'
-          ";
-  }else if(customerID){
-    $sql="SELECT c_id
-          FROM customers
-          WHERE c_id = '".$customerId."'
-          ";
-  }else if($newCId & $newCname & $newCemail & $newCcredit){
-    $sql="INSERT INTO customer (c_id, c_name, e_mail, creditcard_num)
-          VALUES (".$newCId.", '".$newCname."', '".$newCemail."', ".$newCcredit.")
-          ";
-  }
-}?>
+    if($staffId){
+      $sql="SELECT s_id
+            FROM hotelStaff,skiStaff
+            WHERE staff_id = '".$staffId."'
+            ";
+    }else if(customerID){
+      $sql="SELECT c_id
+            FROM customers
+            WHERE c_id = '".$customerId."'
+            ";
+    }else if($newCId & $newCname & $newCemail & $newCcredit){
+      $sql="INSERT INTO customer (c_id, c_name, e_mail, creditcard_num)
+            VALUES (".$newCId.", '".$newCname."', '".$newCemail."', ".$newCcredit.")
+            ";
+    }
+  }?>
 
-<!-- Staff Login-->
-<div style="background-color:lightGrey;
-            width: 25%;
-            padding-top: 10px;
-            padding-bottom: 10px">
-  <h3>Staff Login</h3>
-  <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-  <!--if not a existing account, stay in same page and get error message-->
+  <!-- Staff Login -->
+  <div style="background-color:lightGrey;
+              width: 25%;
+              padding-top: 10px;
+              padding-bottom: 10px">
+    <h3>Staff Login</h3>
+    <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+    <!-- if not a existing account, stay in same page and get error message -->
 
-    Id: <input type="number" name="staff_id" size="6">
-    <input type="submit" value="Log in" name="staffIdLogin">
-  </form>
-</div>
+      Id: <input type="number" name="staff_id" size="6">
+      <input type="submit" value="Log in" name="staffIdLogin">
+    </form>
+  </div>
 
-<div style="height: 10px;"></div>
+  <div style="height: 10px;"></div>
 
-<!-- Customer Login-->
-<div style="background-color:lightGrey;
-            width: 25%;
-            padding-top: 10px;
-            padding-bottom: 10px">
-  <h3>Customer Login</h3>
-  <form method="POST" action="???">
-    Id: <input type="number" name="c_id" size="6">
-    <input type="submit" value="Log in" name="customerIdLogin">
-  </form>
-</div>
+  <!-- Customer Login -->
+  <div style="background-color:lightGrey;
+              width: 25%;
+              padding-top: 10px;
+              padding-bottom: 10px">
+    <h3>Customer Login</h3>
+    <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+      Id: <input type="number" name="c_id" size="6">
+      <input type="submit" value="Log in" name="customerIdLogin">
+    </form>
+  </div>
 
-<div style="height: 10px;"></div>
+  <div style="height: 10px;"></div>
 
-<!-- New Customers: Create new account-->
-<div style="background-color:lightGrey;
-            width: 25%;
-            padding-top: 10px;
-            padding-bottom: 10px">
-  <h3>New Customers</h3>
-  <p>Don't have an account? Create one below:</p>
-  <form method="POST" action="???">
-    <div style="padding-left: 50px;">
-      <p align="left">Id: <br> <input type="number" name="NewC_id" size="6"> </p>
-      <p align="left">Name: <br> <input type="text" name="NewC_name" size="20"> </p>
-      <p align="left">E-mail: <br> <input type="text" name="NewC_email" size="40"> </p>
-      <p align="left">Credit Card Number: <br> <input type="number" name="NewC_CCnum" size="16"> </p>
-    </div>
-    <input type="submit" value="Create New Account" name="newCustomer">
-  </form>
-</div>
+  <!-- New Customers: Create new account -->
+  <div style="background-color:lightGrey;
+              width: 25%;
+              padding-top: 10px;
+              padding-bottom: 10px">
+    <h3>New Customers</h3>
+    <p>Don't have an account? Create one below:</p>
+    <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+      <div style="padding-left: 50px;">
+        <p align="left">Id: <br> <input type="number" name="NewC_id" size="6"> </p>
+        <p align="left">Name: <br> <input type="text" name="NewC_name" size="20"> </p>
+        <p align="left">E-mail: <br> <input type="text" name="NewC_email" size="40"> </p>
+        <p align="left">Credit Card Number: <br> <input type="number" name="NewC_CCnum" size="16"> </p>
+      </div>
+      <input type="submit" value="Create New Account" name="newCustomer">
+    </form>
+  </div>
 
 </center>
+
+
+<!--  Setup connection and connect to DB -->
+<?php
+//Setup
+$success = True; //keep track of errors so it redirects the page only if there are no errors
+$db_conn = OCILogon("ora_u3i0b", "a_14691142", "dbhost.ugrad.cs.ubc.ca:1522/ug");
+
+function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
+	//echo "<br>running ".$cmdstr."<br>";
+	global $db_conn, $success;
+	$statement = OCIParse($db_conn, $cmdstr); //There is a set of comments at the end of the file that describe some of the OCI specific functions and how they work
+
+	if (!$statement) {
+		echo "<br>Cannot parse the following command: " . $cmdstr . "<br>";
+		$e = OCI_Error($db_conn); // For OCIParse errors pass the
+		// connection handle
+		echo htmlentities($e['message']);
+		$success = False;
+	}
+
+	$r = OCIExecute($statement, OCI_DEFAULT);
+	if (!$r) {
+		echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
+		$e = oci_error($statement); // For OCIExecute errors pass the statementhandle
+		echo htmlentities($e['message']);
+		$success = False;
+	} else {
+
+	}
+	return $statement;
+
+}
+
+function executeBoundSQL($cmdstr, $list) {
+	/* Sometimes the same statement will be executed for several times ... only
+	 the value of variables need to be changed.
+	 In this case, you don't need to create the statement several times;
+	 using bind variables can make the statement be shared and just parsed once.
+	 This is also very useful in protecting against SQL injection.
+      See the sample code below for how this functions is used */
+
+	global $db_conn, $success;
+	$statement = OCIParse($db_conn, $cmdstr);
+
+	if (!$statement) {
+		echo "<br>Cannot parse the following command: " . $cmdstr . "<br>";
+		$e = OCI_Error($db_conn);
+		echo htmlentities($e['message']);
+		$success = False;
+	}
+
+	foreach ($list as $tuple) {
+		foreach ($tuple as $bind => $val) {
+			//echo $val;
+			//echo "<br>".$bind."<br>";
+			OCIBindByName($statement, $bind, $val);
+			unset ($val); //make sure you do not remove this. Otherwise $val will remain in an array object wrapper which will not be recognized by Oracle as a proper datatype
+
+		}
+		$r = OCIExecute($statement, OCI_DEFAULT);
+		if (!$r) {
+			echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
+			$e = OCI_Error($statement); // For OCIExecute errors pass the statement handle
+			echo htmlentities($e['message']);
+			echo "<br>";
+			$success = False;
+		}
+	}
+
+}
+
+function printResult($result) { //prints results from a select statement
+	echo "<br>Got data from table tab1:<br>";
+	echo "<table>";
+	echo "<tr><th>ID</th><th>Name</th></tr>";
+
+	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+		echo "<tr><td>" . $row["NID"] . "</td><td>" . $row["NAME"] . "</td></tr>"; //or just use "echo $row[0]"
+	}
+	echo "</table>";
+
+}
+
+// Connect to Oracle DB
+if ($db_conn) {
+  //Start up the tables // TODO
+		// executePlainSQL("Drop table customer", "Drop table hotelStaff", "Drop table skiStaff");
+		// executePlainSQL("create table customer
+    //                 (c_id int not null,
+    // 	              c_name varchar(20) not null,
+    //                 e_mail varchar(40) not null,
+    //                 creditcard_num char(16) null,
+    //                 primary key (c_id))",
+    //
+    //                 "create table hotelStaff
+    //                 (staff_id int not null,
+    //                 s_name varchar(20) not null,
+    //                 phone char(10) null,
+    //                 primary key (staff_id))",
+    //
+    //                 "create table skiStaff
+    //                 (staff_id int not null,
+    //                 s_name varchar(20) null,
+    //                 phone char(10) null,
+    //                 primary key (staff_id))");
+		// OCICommit($db_conn);
+
+		if (array_key_exists('insertsubmit', $_POST)) { //TODO
+			//Getting the values from user and insert data into the table
+			$tuple = array (
+				":bind1" => $_POST['insNo'],
+				":bind2" => $_POST['insName']
+			);
+			$alltuples = array (
+				$tuple
+			);
+			executeBoundSQL("insert into tab1 values (:bind1, :bind2)", $alltuples);
+			OCICommit($db_conn);
+
+		} else
+			if (array_key_exists('updatesubmit', $_POST)) {
+				// Update tuple using data from user
+				$tuple = array (
+					":bind1" => $_POST['oldName'],
+					":bind2" => $_POST['newName']
+				);
+				$alltuples = array (
+					$tuple
+				);
+				executeBoundSQL("update tab1 set name=:bind2 where name=:bind1", $alltuples); // TODO
+				OCICommit($db_conn);
+
+			} else
+				if (array_key_exists('dostuff', $_POST)) {
+					// Insert data into table...
+					executePlainSQL("insert into tab1 values (10, 'Frank')"); //TODO
+					// Inserting data into table using bound variables
+					$list1 = array (
+						":bind1" => 6,
+						":bind2" => "All"
+					);
+					$list2 = array (
+						":bind1" => 7,
+						":bind2" => "John"
+					);
+					$allrows = array (
+						$list1,
+						$list2
+					);
+					executeBoundSQL("insert into tab1 values (:bind1, :bind2)", $allrows); //the function takes a list of lists TODO
+					// Update data...
+					//executePlainSQL("update tab1 set nid=10 where nid=2");
+					// Delete data...
+					//executePlainSQL("delete from tab1 where nid=1");
+					OCICommit($db_conn);
+				}
+
+	if ($_POST && $success) {
+		//POST-REDIRECT-GET -- See http://en.wikipedia.org/wiki/Post/Redirect/Get
+		header("location: oracle-test.php");
+	} else {
+		// Select data...
+		$result = executePlainSQL("select * from tab1"); // TODO
+		printResult($result);
+	}
+
+	//Commit to save changes...
+	OCILogoff($db_conn);
+} else {
+	echo "cannot connect";
+	$e = OCI_Error(); // For OCILogon errors pass no handle
+	echo htmlentities($e['message']);
+}
+
+?>
