@@ -10,41 +10,13 @@ If their logins are incorrect then they remain on this page and get an error.
 
   <p>Insert your id below:</p>
 
-  <!-- Form Checking and Submissions -->
-  <?php
-  if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $staffId = $_POST["staffIdLogin"];
-    $customerId = $_POST["customerIdLogin"];
-
-    $newCId = $_POST["NewC_id"];
-    $newCname = $_POST["NewC_name"];
-    $newCemail = $_POST["NewC_email"];
-    $newCcredit = $_POST["NewC_CCnum"];
-
-    if($staffId){
-      $sql="SELECT s_id
-            FROM hotelStaff,skiStaff
-            WHERE staff_id = '".$staffId."'
-            ";
-    }else if(customerID){
-      $sql="SELECT c_id
-            FROM customers
-            WHERE c_id = '".$customerId."'
-            ";
-    }else if($newCId & $newCname & $newCemail & $newCcredit){
-      $sql="INSERT INTO customer (c_id, c_name, e_mail, creditcard_num)
-            VALUES (".$newCId.", '".$newCname."', '".$newCemail."', ".$newCcredit.")
-            ";
-    }
-  }?>
-
   <!-- Staff Login -->
   <div style="background-color:lightGrey;
               width: 25%;
               padding-top: 10px;
               padding-bottom: 10px">
     <h3>Staff Login</h3>
-    <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+    <form method="POST" action="$_SERVER["PHP_SELF"]">
     <!-- if not a existing account, stay in same page and get error message -->
 
       Id: <input type="number" name="staff_id" size="6">
@@ -75,7 +47,7 @@ If their logins are incorrect then they remain on this page and get an error.
               padding-bottom: 10px">
     <h3>New Customers</h3>
     <p>Don't have an account? Create one below:</p>
-    <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+    <form method="POST" action="$_SERVER["PHP_SELF"]">
       <div style="padding-left: 50px;">
         <p align="left">Id: <br> <input type="number" name="NewC_id" size="6"> </p>
         <p align="left">Name: <br> <input type="text" name="NewC_name" size="20"> </p>
@@ -173,86 +145,57 @@ function printResult($result) { //prints results from a select statement
 
 // Connect to Oracle DB
 if ($db_conn) {
-  //Start up the tables // TODO
-		// executePlainSQL("Drop table customer", "Drop table hotelStaff", "Drop table skiStaff");
-		// executePlainSQL("create table customer
-    //                 (c_id int not null,
-    // 	              c_name varchar(20) not null,
-    //                 e_mail varchar(40) not null,
-    //                 creditcard_num char(16) null,
-    //                 primary key (c_id))",
-    //
-    //                 "create table hotelStaff
-    //                 (staff_id int not null,
-    //                 s_name varchar(20) not null,
-    //                 phone char(10) null,
-    //                 primary key (staff_id))",
-    //
-    //                 "create table skiStaff
-    //                 (staff_id int not null,
-    //                 s_name varchar(20) null,
-    //                 phone char(10) null,
-    //                 primary key (staff_id))");
-		// OCICommit($db_conn);
 
-		if (array_key_exists('insertsubmit', $_POST)) { //TODO
+		if (array_key_exists('staffIdLogin', $_POST)) {
 			//Getting the values from user and insert data into the table
 			$tuple = array (
-				":bind1" => $_POST['insNo'],
-				":bind2" => $_POST['insName']
+				":bind1" => $_POST['staffIdLogin']
 			);
 			$alltuples = array (
 				$tuple
 			);
-			executeBoundSQL("insert into tab1 values (:bind1, :bind2)", $alltuples);
+			executeBoundSQL("select staff_id from hotelStaff,skiStaff where staff_id = (:bind1)", $alltuples);
 			OCICommit($db_conn);
 
+      if ($_POST && $success) {
+        header("location: staff.php");
+      }
+
 		} else
-			if (array_key_exists('updatesubmit', $_POST)) {
+			if (array_key_exists('customerIdLogin', $_POST)) {
 				// Update tuple using data from user
 				$tuple = array (
-					":bind1" => $_POST['oldName'],
-					":bind2" => $_POST['newName']
+					":bind1" => $_POST['customerIdLogin']
 				);
 				$alltuples = array (
 					$tuple
 				);
-				executeBoundSQL("update tab1 set name=:bind2 where name=:bind1", $alltuples); // TODO
+				executeBoundSQL("select c_id from customers where c_id = (:bind1)", $alltuples);
 				OCICommit($db_conn);
 
-			} else
-				if (array_key_exists('dostuff', $_POST)) {
-					// Insert data into table...
-					executePlainSQL("insert into tab1 values (10, 'Frank')"); //TODO
-					// Inserting data into table using bound variables
-					$list1 = array (
-						":bind1" => 6,
-						":bind2" => "All"
-					);
-					$list2 = array (
-						":bind1" => 7,
-						":bind2" => "John"
-					);
-					$allrows = array (
-						$list1,
-						$list2
-					);
-					executeBoundSQL("insert into tab1 values (:bind1, :bind2)", $allrows); //the function takes a list of lists TODO
-					// Update data...
-					//executePlainSQL("update tab1 set nid=10 where nid=2");
-					// Delete data...
-					//executePlainSQL("delete from tab1 where nid=1");
-					OCICommit($db_conn);
-				}
+        if ($_POST && $success) {
+          header("location: customer.php");
+        }
 
-	if ($_POST && $success) {
-		//POST-REDIRECT-GET -- See http://en.wikipedia.org/wiki/Post/Redirect/Get
-		header("location: oracle-test.php");
-	} else {
-		// Select data...
-		$result = executePlainSQL("select * from tab1"); // TODO
-		printResult($result);
-	}
+			} else
+				if (array_key_exists('newCustomer', $_POST)) {
+					// Inserting data into table using bound variables
+					$tuple = array (
+						":bind1" => $_POST['NewC_id'],
+						":bind2" => $_POST['NewC_name'],
+            ":bind3" => $_POST['NewC_email'],
+            ":bind4" => $_POST['NewC_CCnum'],
+					);
+          $alltuples = array (
+  					$tuple
+  				);
+					executeBoundSQL("insert into customers values (:bind1, :bind2, :bind3, :bind4)", $allrows);
+					OCICommit($db_conn);
+
+          if ($_POST && $success) {
+        		header("location: customer.php");
+          }
+        }
 
 	//Commit to save changes...
 	OCILogoff($db_conn);
