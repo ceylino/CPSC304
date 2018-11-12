@@ -1,0 +1,59 @@
+
+-Home Page
+
+--------------- Staff Pages:---------------
+- Directory
+-- Profile
+-- Management
+-- Staff
+-- Rooms
+-- Equipment
+-- Lessons
+-- Customers
+
+--------------- Customer Pages: ---------------
+- Main
+-- Profile
+
+--------------- Forms: ---------------
+- New room
+- Edit room
+- Delete room
+
+- New equip
+- Edit equip
+- Delete equip
+
+- New room reservation
+- Edit room reservation
+- Delete room reservation
+
+- New equip reservation
+- Edit equip reservation
+- Delete equip reservation
+
+- New room management
+- Edit room management
+- Delete room management
+
+- New equip management
+- Edit equip management
+- Delete equip management
+
+- New lesson
+- Edit lesson
+- Delete lesson
+
+- New lesson booking
+- Edit lesson booking
+- Delete lesson booking
+
+- New pass
+
+- New hotel staff
+- Edit hotel staff
+- Delete hotel staff
+
+- New ski staff
+- Edit ski staff
+- Delete ski staff
