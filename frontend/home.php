@@ -131,7 +131,7 @@ function executeBoundSQL($cmdstr, $list) {
 
 }
 
-function printResult($result) { //prints results from a select statement
+function printResult($result) { //prints results from a select statement //TODO
 	echo "<br>Got data from table tab1:<br>";
 	echo "<table>";
 	echo "<tr><th>ID</th><th>Name</th></tr>";
