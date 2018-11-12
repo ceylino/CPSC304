@@ -1,9 +1,13 @@
+Key:
+- todo;
+* done;
+-------------------------------------------
 
--Home Page
+* Home Page
 
 --------------- Staff Pages:---------------
-- Directory
--- Profile
+* Directory
+** Profile
 -- Management
 -- Staff
 -- Rooms
@@ -12,10 +16,11 @@
 -- Customers
 
 --------------- Customer Pages: ---------------
-- Main
--- Profile
+* Main
+** Profile
 
 --------------- Forms: ---------------
+NB: These should either be included in their own pages, or within another page (preferable -- see profile for example)
 - New room
 - Edit room
 - Delete room
