@@ -20,7 +20,7 @@ grant select on member to public;
 
 create table room
     (room_num int not null,
-	room_type char(10) not null,
+	room_type char(10) not null unique,
 	room_rate float      null,
 	primary key (room_num));
 
@@ -64,7 +64,7 @@ grant select on skiStaff to public;
 
 create table rentalEquip
     (equip_id int not null,
-	 equip_type varchar(20) not null,
+	 equip_type varchar(20) not null unique,
 	rental_rate float not null,
 	primary key (equip_id));
 
@@ -118,8 +118,8 @@ grant select on purchasedLiftPass to public;
 
 create table lesson
     (staff_id int not null,
-	lesson_datetime char(12) not null,
-	lesson_type varchar(20) not null,
+	lesson_datetime char(12) not null unique,
+	lesson_type varchar(20) not null unique,
 	primary key (lesson_type, staff_id),
 	foreign key (staff_id) references skiStaff(staff_id) ON DELETE CASCADE);
 
