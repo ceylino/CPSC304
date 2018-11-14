@@ -236,13 +236,13 @@ INSERT INTO equipReservation (confirm_num, equip_id, c_id)
 VALUES (1, 1, 1);
 
 INSERT INTO equipReservation (confirm_num, equip_id, c_id)
-VALUES (2, 9, 1);
+VALUES (2, 9, 2);
 
 INSERT INTO equipReservation (confirm_num, equip_id, c_id)
 VALUES (3, 10, 3);
 
 INSERT INTO equipReservation (confirm_num, equip_id, c_id)
-VALUES (4, 14, 1);
+VALUES (4, 14, 4);
 
 INSERT INTO equipReservation (confirm_num, equip_id, c_id)
 VALUES (5, 3, 10)
@@ -251,7 +251,7 @@ INSERT INTO equipReservation (confirm_num, equip_id, c_id)
 VALUES (6, 5, 7)
 
 INSERT INTO equipReservation (confirm_num, equip_id, c_id)
-VALUES (7, 12, 4)
+VALUES (7, 12, 8)
 
 commit;
 
@@ -384,7 +384,7 @@ INSERT INTO purchasedLiftPass (c_id, pass_id, purchase_date, pass_price)
 VALUES (1, 1, '20180809', 50.00);
 
 INSERT INTO purchasedLiftPass (c_id, pass_id, purchase_date, pass_price)
-VALUES (4, 2, 2'01801205', 50.00);
+VALUES (4, 2, '201801205', 50.00);
 
 INSERT INTO purchasedLiftPass (c_id, pass_id, purchase_date, pass_price)
 VALUES (9, 3, '20181012', 50.00);
@@ -401,8 +401,7 @@ VALUES (8, 6, '20150105', 50.00);
 commit;
 
 /*---------------------------------------------------------------------------------*/
-/*LESSON TABLE - 9 entries
-Not quite sure how we should represent date and time together*/
+/*LESSON TABLE - 9 entries*/
 INSERT INTO lesson (staff_id, lesson_datetime, lesson_type)
 VALUES (6, '201808091130', 'ski');
 

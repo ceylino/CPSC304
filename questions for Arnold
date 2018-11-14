@@ -1,0 +1,23 @@
+QUESTIONS
+-----------------------------------
+INSERT INTO equipReservation (confirm_num, equip_id, c_id)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (ORA_U3I0B.SYS_C001744885) violated - parent
+key not found
+
+Does this mean that a customer is not allowed to rent more than one thing at a time?? Because that shouldn't be the case.
+
+Same with room reservation!
+Equip and room management too!
+
+INSERT INTO lesson (staff_id, lesson_datetime, lesson_type)
+*
+ERROR at line 1:
+ORA-00001: unique constraint (ORA_U3I0B.SYS_C001744906) violated
+-----------------------------------
+
+Foreign Key "rates" are an issue because they have to be unique to be a foreign key, but they don't have to be unique in our original plan.
+
+We have a table we created for BCNF. should we delete this table??
+-----------------------------------
