@@ -1,24 +1,3 @@
-drop table bookedLessons;
-drop table lessonTime;
-drop table lesson;
-drop table purchasedLiftPass;
-drop table bookedLessons;
-drop table equipManagement;
-drop table roomManagement;
-drop table equipReservation;
-drop table rentalEquipRate;
-drop table rentalEquip;
-drop table skiStaff;
-drop table hotelStaff;
-drop table roomReservation;
-drop table roomRate;
-drop table room;
-drop table member;
-drop table customer;
-
-commit;
-
-
 create table customer
     (c_id int not null,
 	c_name varchar(20) not null,
@@ -148,7 +127,7 @@ grant select on lesson to public;
 
 create table lessonTime
     (lesson_type varchar(20) not null,
-	lesson_datetime char(12) not nul,
+	lesson_datetime char(12) not null,
 	primary key (lesson_type),
 	foreign key (lesson_type) references lesson ON DELETE CASCADE,
 	foreign key (lesson_datetime) references lesson ON DELETE CASCADE);
@@ -165,7 +144,5 @@ create table bookedLessons
 	foreign key (lesson_type) references lesson ON DELETE CASCADE);
 
 grant select on bookedLessons to public;
-
-
 
 commit;
