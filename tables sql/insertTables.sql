@@ -32,10 +32,9 @@ VALUES (10, "jannet@gmail.com", "Jannet", 123456);
 commit;
 
 /*---------------------------------------------------------------------------------*/
-/*MEMBER TABLE - 5 entries
-Changes: Datetime instead is string for Join Datetime.
-Notes: Should we change fee (float) to fee (boolean)??
-*/
+/*MEMBER TABLE - 5 entries */
+/* Changes: Datetime instead is string for Join Datetime. */
+
 INSERT INTO member (c_id, fee, points, join_date)
 VALUES (6, 12.50, 120, "20121103");
 
