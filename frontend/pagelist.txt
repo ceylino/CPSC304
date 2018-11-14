@@ -1,3 +1,4 @@
+-------------------------------------------
 Key:
 - todo;
 * done;
@@ -15,12 +16,12 @@ Key:
 -- Lessons
 -- Customers
 
---------------- Customer Pages: ---------------
+--------------- Customer Pages: ------------
 * Main
 ** Profile
 
---------------- Forms: ---------------
-NB: These should either be included in their own pages, or within another page (preferable -- see profile for example)
+--------------- Forms: ---------------------
+NB: These should either be included in their own pages, or within another relevant page (preferable -- see custProfile)
 - New room
 - Edit room
 - Delete room
