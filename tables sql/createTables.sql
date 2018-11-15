@@ -26,7 +26,7 @@ create table roomRate
 
 create table room
     (room_num int not null,
-	room_type char(10) not null unique,
+	room_type char(10) not null,
 	room_rate float null,
 	primary key (room_num),
   foreign key (room_type) references roomRate(room_type) ON DELETE CASCADE);
@@ -42,6 +42,23 @@ create table roomReservation
 	foreign key (c_id) references customer(c_id) ON DELETE CASCADE);
 
 grant select on roomReservation to public;
+
+create table lessonTime
+      (lesson_type varchar(20) not null,
+	lesson_datetime char(12) not null unique,
+	primary key (lesson_type));
+
+grant select on lessonTime to public;
+
+create table lesson
+    (staff_id int not null,
+	lesson_datetime char(12) not null,
+	lesson_type varchar(20) not null,
+	primary key (lesson_type, staff_id),
+  foreign key (lesson_type) references lessonTime(lesson_type) ON DELETE CASCADE,
+  foreign key (lesson_datetime) references lessonTime(lesson_datetime) ON DELETE CASCADE);
+
+grant select on lesson to public;
 
 create table hotelStaff
     (staff_id int not null,
@@ -69,7 +86,7 @@ grant select on rentalEquipRate to public;
 
   create table rentalEquip
       (equip_id int not null,
-  	equip_type varchar(20) not null unique,
+  	equip_type varchar(20) not null,
   	rental_rate float not null,
   	primary key (equip_id),
     foreign key (equip_type) references rentalEquipRate(equip_type)  ON DELETE CASCADE);
@@ -114,22 +131,6 @@ create table purchasedLiftPass
 
 grant select on purchasedLiftPass to public;
 
-create table lessonTime
-    (lesson_type varchar(20) not null,
-	lesson_datetime char(12) not null,
-	primary key (lesson_type));
-
-grant select on lessonTime to public;
-
-create table lesson
-    (staff_id int not null,
-	lesson_datetime char(12) not null unique,
-	lesson_type varchar(20) not null unique,
-	primary key (lesson_type, staff_id),
-  foreign key (lesson_type) references lessonTime(lesson_type) ON DELETE CASCADE,
-  foreign key (lesson_datetime) references lessonTime(lesson_datetime) ON DELETE CASCADE);
-
-grant select on lesson to public;
 
 create table bookedLessons
     (c_id int not null,
