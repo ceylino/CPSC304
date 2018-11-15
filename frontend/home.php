@@ -5,7 +5,7 @@ If their logins are incorrect then they remain on this page and get an error.
 
 <!-- Page title -->
 <title>Hotel Ski Resort</title>
-<center> //sjsjsj
+<center>
   <h1>Hotel Ski Resort</h1>
 
   <p>Insert your id below:</p>
@@ -49,10 +49,10 @@ If their logins are incorrect then they remain on this page and get an error.
     <p>Don't have an account? Create one below:</p>
     <form method="POST" action="home.php">
       <div style="padding-left: 50px;">
-        <p align="left">Id: <br> <input type="number" name="NewC_id" size="6"> </p>
-        <p align="left">Name: <br> <input type="text" name="NewC_name" size="20"> </p>
-        <p align="left">E-mail: <br> <input type="text" name="NewC_email" size="40"> </p>
-        <p align="left">Credit Card Number: <br> <input type="number" name="NewC_CCnum" size="16"> </p>
+        <p align="left">Id: <br> <input type="number" name="newC_id" size="6"> </p>
+        <p align="left">Name: <br> <input type="text" name="newC_name" size="20"> </p>
+        <p align="left">E-mail: <br> <input type="text" name="newC_email" size="40"> </p>
+        <p align="left">Credit Card Number: (max: 16 digits) <br> <input type="number" name="newC_CCnum" size="16"> </p>
       </div>
       <input type="submit" value="Create New Account" name="newCustomer">
     </form>
@@ -128,8 +128,24 @@ function executeBoundSQL($cmdstr, $list) {
 			$success = False;
 		}
 	}
+  return $statement;
 
 }
+
+//Ignore this code for now -- needs to be cleaned up
+// function printResult($result) { //prints results from a select statement
+// 	echo "result from SQL:";
+//   echo "<table>";
+// 	echo "<tr><th>ID</th><th>Name</th><th>email</th><th>ccnum</th></tr>";
+// 	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+// 		// echo "<tr><td>" . $row["c_id"] . "</td>
+//     //       <td>" . $row["c_name"] . "</td>
+//     //       <td>" . $row["e_mail"] . "</td>
+//     //       <td>" . $row["creditcard_num"] . "</td></tr>";
+//     echo "$row[1]";
+// 	}
+//   echo "</table>";
+//}
 
 // Connect to Oracle DB
 if ($db_conn) {
@@ -137,14 +153,15 @@ if ($db_conn) {
 		if (array_key_exists('staffIdLogin', $_POST)) {
 			//Getting the values from user and insert data into the table
 			$tuple = array (
-				":bind1" => $_POST['staffIdLogin']
+				":bind1" => $_POST['staff_id']
 			);
 			$alltuples = array (
 				$tuple
 			);
-			$result = executeBoundSQL("select staff_id from hotelStaff, skiStaff where staff_id = (:bind1)", $alltuples);
-      if ($_POST && $success && $result) { // TODO: does this work?
-        header("location: staff.php");
+			$result = executeBoundSQL("select * from hotelStaff h, skiStaff s where h.staff_id =:bind1 or s.staff_id =:bind1", $alltuples);
+
+      if ($_POST && $success && $result) {
+        header("location: staffDir.php");
         //TODO: how do we send JSON web token with it so we can get the id's?
       }
 
@@ -152,35 +169,35 @@ if ($db_conn) {
 			if (array_key_exists('customerIdLogin', $_POST)) {
 				// Update tuple using data from user
 				$tuple = array (
-					":bind1" => $_POST['customerIdLogin']
+					":bind1" => $_POST['c_id']
 				);
 				$alltuples = array (
 					$tuple
 				);
-				$result = executeBoundSQL("select c_id from customers where c_id = (:bind1)", $alltuples);
+
+        $result = executeBoundSQL("select c_id from customer where c_id =:bind1", $alltuples);
 
         if ($_POST && $success && $result) {
-          header("location: customer.php");
-          //TODO: how do we send JSON web token with it so we can get the id's?
+          header("location: custHome.php");
         }
 
 			} else
 				if (array_key_exists('newCustomer', $_POST)) {
 					// Inserting data into table using bound variables
 					$tuple = array (
-						":bind1" => $_POST['NewC_id'],
-						":bind2" => $_POST['NewC_name'],
-            ":bind3" => $_POST['NewC_email'],
-            ":bind4" => $_POST['NewC_CCnum'],
+						":bind1" => $_POST['newC_id'],
+						":bind2" => $_POST['newC_name'],
+            ":bind3" => $_POST['newC_email'],
+            ":bind4" => $_POST['newC_CCnum']
 					);
           $alltuples = array (
   					$tuple
   				);
-					$result = executeBoundSQL("insert into customers values (:bind1, :bind2, :bind3, :bind4)", $allrows);
+					$result = executeBoundSQL("insert into customer values (:bind1, :bind2, :bind3, :bind4)", $allrows);
 					OCICommit($db_conn);
 
           if ($_POST && $success && $result) {
-        		header("location: customer.php");
+        		header("location: custHome.php");
             //TODO: how do we send JSON web token with it so we can get the id's?
           }
         }
