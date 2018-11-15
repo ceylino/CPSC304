@@ -149,6 +149,38 @@ VALUES (7, 15, 5);
 commit;
 
 /*---------------------------------------------------------------------------------*/
+/*LESSONTIME TABLE - 9 entries*/
+INSERT INTO lessonTime (lesson_type, lesson_datetime)
+VALUES ('ski', '201808091130');
+
+INSERT INTO lessonTime (lesson_type, lesson_datetime)
+VALUES ('ski', '201808091430');
+
+INSERT INTO lessonTime (lesson_type, lesson_datetime)
+VALUES ('ski', '201812051300');
+
+INSERT INTO lessonTime (lesson_type, lesson_datetime)
+VALUES ('ski', '201812061330');
+
+INSERT INTO lessonTime (lesson_type, lesson_datetime)
+VALUES ('snowboard', '201809031415');
+
+INSERT INTO lessonTime (lesson_type, lesson_datetime)
+VALUES ('snowboard', '201809041515');
+
+INSERT INTO lessonTime (lesson_type, lesson_datetime)
+VALUES ('snowboard', '201710191245');
+
+INSERT INTO lessonTime (lesson_type, lesson_datetime)
+VALUES ('snowboard', '201710191545');
+
+INSERT INTO lessonTime (lesson_type, lesson_datetime)
+VALUES ('crosscountry', '201510030900');
+
+commit;
+
+
+/*---------------------------------------------------------------------------------*/
 /*LESSON TABLE - 9 entries*/
 INSERT INTO lesson (staff_id, lesson_datetime, lesson_type)
 VALUES (6, '201808091130', 'ski');
@@ -176,37 +208,6 @@ VALUES (7, '201710191545', 'snowboard');
 
 INSERT INTO lesson (staff_id, lesson_datetime, lesson_type)
 VALUES (9, '201510030900', 'crosscountry');
-
-commit;
-
-/*---------------------------------------------------------------------------------*/
-/*LESSONTIME TABLE - 9 entries*/
-INSERT INTO lessonTime (lesson_type, lesson_datetime)
-VALUES ('ski', '201808091130');
-
-INSERT INTO lessonTime (lesson_type, lesson_datetime)
-VALUES ('ski', '201808091430');
-
-INSERT INTO lessonTime (lesson_type, lesson_datetime)
-VALUES ('ski', '201812051300');
-
-INSERT INTO lessonTime (lesson_type, lesson_datetime)
-VALUES ('ski', '201812061300');
-
-INSERT INTO lessonTime (lesson_type, lesson_datetime)
-VALUES ('snowboard', '201809031515');
-
-INSERT INTO lessonTime (lesson_type, lesson_datetime)
-VALUES ('snowboard', '201809041515');
-
-INSERT INTO lessonTime (lesson_type, lesson_datetime)
-VALUES ('snowboard', '201710191245');
-
-INSERT INTO lessonTime (lesson_type, lesson_datetime)
-VALUES ('snowboard', '201710191545');
-
-INSERT INTO lessonTime (lesson_type, lesson_datetime)
-VALUES ('crosscountry', '201510030900');
 
 commit;
 
