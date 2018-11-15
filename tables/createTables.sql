@@ -38,7 +38,7 @@ create table roomResDate
   start_date char(8) not null,
   end_date char(8) not null,
   primary key (room_num, start_date, end_date),
-  foreign key (room_num) references room(room_num) ON DELETE CASCADE,);
+  foreign key (room_num) references room(room_num) ON DELETE CASCADE);
 
 grant select on roomResDate to public;
 
@@ -91,7 +91,7 @@ create table equipResDate
   start_date char(8) not null,
   end_date char(8) not null,
   primary key (equip_id, start_date, end_date),
-  foreign key (equip_id) references equipment(equip_id) ON DELETE CASCADE,);
+  foreign key (equip_id) references equipment(equip_id) ON DELETE CASCADE);
 
 grant select on equipResDate to public;
 
