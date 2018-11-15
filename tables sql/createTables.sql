@@ -43,23 +43,6 @@ create table roomReservation
 
 grant select on roomReservation to public;
 
-create table lessonTime
-      (lesson_type varchar(30) not null,
-	lesson_datetime char(12) not null unique,
-	primary key (lesson_type));
-
-grant select on lessonTime to public;
-
-create table lesson
-    (staff_id int not null unique,
-	lesson_datetime char(12) not null,
-	lesson_type varchar(30) not null,
-	primary key (lesson_type, staff_id),
-  foreign key (lesson_type) references lessonTime(lesson_type) ON DELETE CASCADE,
-  foreign key (lesson_datetime) references lessonTime(lesson_datetime) ON DELETE CASCADE);
-
-grant select on lesson to public;
-
 create table hotelStaff
     (staff_id int not null,
 	s_name varchar(20) not null,
@@ -72,8 +55,7 @@ create table skiStaff
     (staff_id int not null,
 	s_name varchar(20) null,
 	phone char(10) null,
-	primary key (staff_id),
-	foreign key (staff_id) references lesson(staff_id) ON DELETE CASCADE);
+	primary key (staff_id));
 
 grant select on skiStaff to public;
 
@@ -131,6 +113,23 @@ create table purchasedLiftPass
 
 grant select on purchasedLiftPass to public;
 
+  create table lessonTime
+        (lesson_type varchar(30) not null,
+  	lesson_datetime char(12) not null unique,
+  	primary key (lesson_type));
+
+  grant select on lessonTime to public;
+
+  create table lesson
+      (staff_id int not null unique,
+  	lesson_datetime char(12) not null,
+  	lesson_type varchar(30) not null,
+  	primary key (lesson_type, staff_id),
+    foreign key (lesson_type) references lessonTime(lesson_type) ON DELETE CASCADE,
+    foreign key (lesson_datetime) references lessonTime(lesson_datetime) ON DELETE CASCADE,
+  	foreign key (staff_id) references skiStaff(staff_id) ON DELETE CASCADE);
+
+  grant select on lesson to public;
 
 create table bookedLessons
     (c_id int not null,
