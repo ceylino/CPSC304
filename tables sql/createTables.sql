@@ -27,8 +27,8 @@ create table roomRate
 create table room
     (room_num int not null,
 	room_type char(10) not null unique,
-	room_rate float      null,
-	primary key (room_num)
+	room_rate float null,
+	primary key (room_num),
   foreign key (room_type) references roomRate(room_type) ON DELETE CASCADE);
 
  grant select on room to public;
