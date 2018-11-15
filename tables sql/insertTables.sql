@@ -144,7 +144,7 @@ INSERT INTO roomReservation (confirm_num, room_num, c_id, start_date, end_date)
 VALUES (6, 14, 6, '20180210', '20180220');
 
 INSERT INTO roomReservation (confirm_num, room_num, c_id, start_date, end_date)
-VALUES (7, 15, 5, '201801015', '20180217');
+VALUES (7, 15, 5, '20181015', '20180217');
 
 commit;
 
