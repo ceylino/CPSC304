@@ -6,13 +6,13 @@ drop table bookedLessons;
 drop table equipManagement;
 drop table roomManagement;
 drop table equipReservation;
-drop table rentalEquipRate;
 drop table rentalEquip;
+drop table rentalEquipRate;
 drop table skiStaff;
 drop table hotelStaff;
 drop table roomReservation;
-drop table roomRate;
 drop table room;
+drop table roomRate;
 drop table member;
 drop table customer;
 
