@@ -11,6 +11,8 @@ Does this mean that a customer is not allowed to rent more than one thing at a t
 Same with room reservation!
 Equip and room management too!
 
+--- Flip the foreign key relation
+
 INSERT INTO lesson (staff_id, lesson_datetime, lesson_type)
 *
 ERROR at line 1:
@@ -21,3 +23,5 @@ Foreign Key "rates" are an issue because they have to be unique to be a foreign 
 
 We have a table we created for BCNF. should we delete this table??
 -----------------------------------
+
+Having a hard time decoding the PHP and figuring out what it is I need to do!
