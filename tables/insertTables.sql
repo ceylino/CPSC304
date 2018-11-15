@@ -282,25 +282,25 @@ commit;
 
 /*---------------------------------------------------------------------------------*/
 /*EQUIPMENT RESERVATION DATE TABLE - 7 entries, one for each reservation*/
-INSERT INTO equipResDate (room_num, start_date, end_date)
+INSERT INTO equipResDate (equip_id, start_date, end_date)
 VALUES (1, '20180101', '20180115');
 
-INSERT INTO equipResDate (room_num, start_date, end_date)
+INSERT INTO equipResDate (equip_id, start_date, end_date)
 VALUES (9, '20180202', '20180204');
 
-INSERT INTO equipResDate (room_num, start_date, end_date)
+INSERT INTO equipResDate (equip_id, start_date, end_date)
 VALUES (10, '20180111', '20180115');
 
-INSERT INTO equipResDate (room_num, start_date, end_date)
+INSERT INTO equipResDate (equip_id, start_date, end_date)
 VALUES (14, '20180201', '20180215');
 
-INSERT INTO equipResDate (room_num, start_date, end_date)
+INSERT INTO equipResDate (equip_id, start_date, end_date)
 VALUES (3, '20180210', '20180215');
 
-INSERT INTO equipResDate (room_num, start_date, end_date)
+INSERT INTO equipResDate (equip_id, start_date, end_date)
 VALUES (5, '20180211', '20180216');
 
-INSERT INTO equipResDate (room_num, start_date, end_date)
+INSERT INTO equipResDate (equip_id, start_date, end_date)
 VALUES (12, '20180209', '20180216');
 
 commit;
