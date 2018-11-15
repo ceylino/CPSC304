@@ -25,7 +25,6 @@
 
 
 Notes:
-all datetime are strings of the form "yyyymmddhhmm"
-all date are strings of the form "yyyymmdd"
-
-roomResDate and equipResDate were added to ensure unique reservations
+- all datetime are strings of the form "yyyymmddhhmm"
+- all date are strings of the form "yyyymmdd"
+- roomResDate and equipResDate were added to ensure unique reservations
