@@ -148,56 +148,6 @@ VALUES (7, 15, 5);
 
 commit;
 
-/*---------------------------------------------------------------------------------*/
-/*LESSONTIME TABLE - 9 entries: The type of lesson must be unique*/
-INSERT INTO lessonTime (lesson_type, lesson_datetime)
-VALUES ('beginnersSki', '201808091130');
-
-INSERT INTO lessonTime (lesson_type, lesson_datetime)
-VALUES ('intermediateSki', '201808091430');
-
-INSERT INTO lessonTime (lesson_type, lesson_datetime)
-VALUES ('advancedSki', '201812051300');
-
-INSERT INTO lessonTime (lesson_type, lesson_datetime)
-VALUES ('beginnersSnowboard', '201809031415');
-
-INSERT INTO lessonTime (lesson_type, lesson_datetime)
-VALUES ('intermediateSnowboard', '201809041515');
-
-INSERT INTO lessonTime (lesson_type, lesson_datetime)
-VALUES ('advancedSnowboard', '201710191245');
-
-INSERT INTO lessonTime (lesson_type, lesson_datetime)
-VALUES ('crosscountrySki', '201510030900');
-
-commit;
-
-
-/*---------------------------------------------------------------------------------*/
-/*LESSON TABLE - 9 entries*/
-INSERT INTO lesson (staff_id, lesson_datetime, lesson_type)
-VALUES (8, '201808091130', 'beginnersSki');
-
-INSERT INTO lesson (staff_id, lesson_datetime, lesson_type)
-VALUES (8, '201808091430', 'intermediateSki');
-
-INSERT INTO lesson (staff_id, lesson_datetime, lesson_type)
-VALUES (8, '201812051300', 'advancedSki');
-
-INSERT INTO lesson (staff_id, lesson_datetime, lesson_type)
-VALUES (9, '201510030900', 'crosscountrySki');
-
-INSERT INTO lesson (staff_id, lesson_datetime, lesson_type)
-VALUES (6, '201809031415', 'beginnersSnowboard');
-
-INSERT INTO lesson (staff_id, lesson_datetime, lesson_type)
-VALUES (0, '201809041515', 'intermediateSnowboard');
-
-INSERT INTO lesson (staff_id, lesson_datetime, lesson_type)
-VALUES (6, '201710191245', 'advancedSnowboard');
-
-commit;
 
 /*---------------------------------------------------------------------------------*/
 /*HOTEL STAFF TABLE - 5 entries*/
@@ -448,6 +398,56 @@ VALUES (10, 5, '20171019', 50.00);
 
 INSERT INTO purchasedLiftPass (c_id, pass_id, purchase_date, pass_price)
 VALUES (8, 6, '20150105', 50.00);
+
+commit;
+
+/*---------------------------------------------------------------------------------*/
+/*LESSONTIME TABLE - 9 entries: The type of lesson must be unique*/
+INSERT INTO lessonTime (lesson_type, lesson_datetime)
+VALUES ('beginnersSki', '201808091130');
+
+INSERT INTO lessonTime (lesson_type, lesson_datetime)
+VALUES ('intermediateSki', '201808091430');
+
+INSERT INTO lessonTime (lesson_type, lesson_datetime)
+VALUES ('advancedSki', '201812051300');
+
+INSERT INTO lessonTime (lesson_type, lesson_datetime)
+VALUES ('beginnersSnowboard', '201809031415');
+
+INSERT INTO lessonTime (lesson_type, lesson_datetime)
+VALUES ('intermediateSnowboard', '201809041515');
+
+INSERT INTO lessonTime (lesson_type, lesson_datetime)
+VALUES ('advancedSnowboard', '201710191245');
+
+INSERT INTO lessonTime (lesson_type, lesson_datetime)
+VALUES ('crosscountrySki', '201510030900');
+
+commit;
+
+/*---------------------------------------------------------------------------------*/
+/*LESSON TABLE - 9 entries*/
+INSERT INTO lesson (staff_id, lesson_datetime, lesson_type)
+VALUES (8, '201808091130', 'beginnersSki');
+
+INSERT INTO lesson (staff_id, lesson_datetime, lesson_type)
+VALUES (8, '201808091430', 'intermediateSki');
+
+INSERT INTO lesson (staff_id, lesson_datetime, lesson_type)
+VALUES (8, '201812051300', 'advancedSki');
+
+INSERT INTO lesson (staff_id, lesson_datetime, lesson_type)
+VALUES (9, '201510030900', 'crosscountrySki');
+
+INSERT INTO lesson (staff_id, lesson_datetime, lesson_type)
+VALUES (6, '201809031415', 'beginnersSnowboard');
+
+INSERT INTO lesson (staff_id, lesson_datetime, lesson_type)
+VALUES (0, '201809041515', 'intermediateSnowboard');
+
+INSERT INTO lesson (staff_id, lesson_datetime, lesson_type)
+VALUES (6, '201710191245', 'advancedSnowboard');
 
 commit;
 
