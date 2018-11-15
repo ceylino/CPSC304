@@ -44,7 +44,7 @@ create table roomReservation
 grant select on roomReservation to public;
 
 create table lessonTime
-      (lesson_type varchar(20) not null,
+      (lesson_type varchar(30) not null,
 	lesson_datetime char(12) not null unique,
 	primary key (lesson_type));
 
@@ -134,7 +134,7 @@ grant select on purchasedLiftPass to public;
 
 create table bookedLessons
     (c_id int not null,
-	lesson_type varchar(20) not null,
+	lesson_type varchar(30) not null,
 	staff_id int not null,
 	primary key (c_id, lesson_type, staff_id),
 	foreign key (c_id) references customer(c_id) ON DELETE CASCADE,
