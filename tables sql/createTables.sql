@@ -17,6 +17,12 @@ create table member
 
 grant select on member to public;
 
+create table roomRate
+  (room_type char(10) not null,
+ room_rate float null,
+ primary key (room_type));
+
+ grant select on roomRate to public;
 
 create table room
     (room_num int not null,
@@ -26,15 +32,6 @@ create table room
   foreign key (room_type) references roomRate(room_type) ON DELETE CASCADE);
 
  grant select on room to public;
-
-
- create table roomRate
-	(room_type char(10) not null,
-	room_rate float null,
-	primary key (room_type));
-
-grant select on roomRate to public;
-
 
 create table roomReservation
     (confirm_num int not null,
@@ -62,21 +59,21 @@ create table skiStaff
 
 grant select on skiStaff to public;
 
-create table rentalEquip
-    (equip_id int not null,
-	equip_type varchar(20) not null unique,
-	rental_rate float not null,
-	primary key (equip_id)
-  foreign key (equip_type) references rentalEquipRate(equip_type)  ON DELETE CASCADE);
-
-grant select on rentalEquip to public;
-
 create table rentalEquipRate
     (equip_type varchar(20) not null,
 	rental_rate	float not null,
 	primary key (equip_type));
 
 grant select on rentalEquipRate to public;
+
+  create table rentalEquip
+      (equip_id int not null,
+  	equip_type varchar(20) not null unique,
+  	rental_rate float not null,
+  	primary key (equip_id)
+    foreign key (equip_type) references rentalEquipRate(equip_type)  ON DELETE CASCADE);
+
+  grant select on rentalEquip to public;
 
 create table equipReservation
     (confirm_num int not null,
