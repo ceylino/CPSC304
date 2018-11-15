@@ -139,7 +139,7 @@ create table bookedLessons
 	primary key (c_id, lesson_type, staff_id),
 	foreign key (c_id) references customer(c_id) ON DELETE CASCADE,
 	foreign key (staff_id) references skiStaff(staff_id) ON DELETE CASCADE,
-	foreign key (lesson_type) references lessonTinme(lesson_type) ON DELETE CASCADE);
+	foreign key (lesson_type) references lessonTime(lesson_type) ON DELETE CASCADE);
 
 grant select on bookedLessons to public;
 
