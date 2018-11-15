@@ -124,6 +124,93 @@ VALUES (15, 'president', 500.00);
 commit;
 
 /*---------------------------------------------------------------------------------*/
+/*ROOMRESERVATION TABLE - 7 entries*/
+INSERT INTO roomReservation (confirm_num, room_num, c_id)
+VALUES (1, 1, 4);
+
+INSERT INTO roomReservation (confirm_num, room_num, c_id)
+VALUES (2, 8, 4);
+
+INSERT INTO roomReservation (confirm_num, room_num, c_id)
+VALUES (3, 10, 2);
+
+INSERT INTO roomReservation (confirm_num, room_num, c_id)
+VALUES (4, 11, 10);
+
+INSERT INTO roomReservation (confirm_num, room_num, c_id)
+VALUES (5, 13, 8);
+
+INSERT INTO roomReservation (confirm_num, room_num, c_id)
+VALUES (6, 14, 6);
+
+INSERT INTO roomReservation (confirm_num, room_num, c_id)
+VALUES (7, 15, 5);
+
+commit;
+
+/*---------------------------------------------------------------------------------*/
+/*LESSON TABLE - 9 entries*/
+INSERT INTO lesson (staff_id, lesson_datetime, lesson_type)
+VALUES (6, '201808091130', 'ski');
+
+INSERT INTO lesson (staff_id, lesson_datetime, lesson_type)
+VALUES (6, '201808091430', 'ski');
+
+INSERT INTO lesson (staff_id, lesson_datetime, lesson_type)
+VALUES (8, '201812051300', 'ski');
+
+INSERT INTO lesson (staff_id, lesson_datetime, lesson_type)
+VALUES (8, '201812061300', 'ski');
+
+INSERT INTO lesson (staff_id, lesson_datetime, lesson_type)
+VALUES (0, '201809031515', 'snowboard');
+
+INSERT INTO lesson (staff_id, lesson_datetime, lesson_type)
+VALUES (0, '201809041515', 'snowboard');
+
+INSERT INTO lesson (staff_id, lesson_datetime, lesson_type)
+VALUES (7, '201710191245', 'snowboard');
+
+INSERT INTO lesson (staff_id, lesson_datetime, lesson_type)
+VALUES (7, '201710191545', 'snowboard');
+
+INSERT INTO lesson (staff_id, lesson_datetime, lesson_type)
+VALUES (9, '201510030900', 'crosscountry');
+
+commit;
+
+/*---------------------------------------------------------------------------------*/
+/*LESSONTIME TABLE - 9 entries*/
+INSERT INTO lessonTime (lesson_type, lesson_datetime)
+VALUES ('ski', '201808091130');
+
+INSERT INTO lessonTime (lesson_type, lesson_datetime)
+VALUES ('ski', '201808091430');
+
+INSERT INTO lessonTime (lesson_type, lesson_datetime)
+VALUES ('ski', '201812051300');
+
+INSERT INTO lessonTime (lesson_type, lesson_datetime)
+VALUES ('ski', '201812061300');
+
+INSERT INTO lessonTime (lesson_type, lesson_datetime)
+VALUES ('snowboard', '201809031515');
+
+INSERT INTO lessonTime (lesson_type, lesson_datetime)
+VALUES ('snowboard', '201809041515');
+
+INSERT INTO lessonTime (lesson_type, lesson_datetime)
+VALUES ('snowboard', '201710191245');
+
+INSERT INTO lessonTime (lesson_type, lesson_datetime)
+VALUES ('snowboard', '201710191545');
+
+INSERT INTO lessonTime (lesson_type, lesson_datetime)
+VALUES ('crosscountry', '201510030900');
+
+commit;
+
+/*---------------------------------------------------------------------------------*/
 /*HOTEL STAFF TABLE - 5 entries*/
 INSERT INTO hotelStaff (staff_id, s_name, phone)
 VALUES (1, 'Zayn', '6041234567');
@@ -256,31 +343,6 @@ VALUES (7, 12, 8)
 commit;
 
 /*---------------------------------------------------------------------------------*/
-/*ROOMRESERVATION TABLE - 7 entries*/
-INSERT INTO roomReservation (confirm_num, room_num, c_id)
-VALUES (1, 1, 4);
-
-INSERT INTO roomReservation (confirm_num, room_num, c_id)
-VALUES (2, 8, 4);
-
-INSERT INTO roomReservation (confirm_num, room_num, c_id)
-VALUES (3, 10, 2);
-
-INSERT INTO roomReservation (confirm_num, room_num, c_id)
-VALUES (4, 11, 10);
-
-INSERT INTO roomReservation (confirm_num, room_num, c_id)
-VALUES (5, 13, 8);
-
-INSERT INTO roomReservation (confirm_num, room_num, c_id)
-VALUES (6, 14, 6);
-
-INSERT INTO roomReservation (confirm_num, room_num, c_id)
-VALUES (7, 15, 5);
-
-commit;
-
-/*---------------------------------------------------------------------------------*/
 /*ROOMMANAGEMENT TABLE - 15 entries (a hotel staff member is assigned to a room at all times)*/
 INSERT INTO roomManagement (room_num, staff_id)
 VALUES (1, 4);
@@ -397,68 +459,6 @@ VALUES (10, 5, '20171019', 50.00);
 
 INSERT INTO purchasedLiftPass (c_id, pass_id, purchase_date, pass_price)
 VALUES (8, 6, '20150105', 50.00);
-
-commit;
-
-/*---------------------------------------------------------------------------------*/
-/*LESSON TABLE - 9 entries*/
-INSERT INTO lesson (staff_id, lesson_datetime, lesson_type)
-VALUES (6, '201808091130', 'ski');
-
-INSERT INTO lesson (staff_id, lesson_datetime, lesson_type)
-VALUES (6, '201808091430', 'ski');
-
-INSERT INTO lesson (staff_id, lesson_datetime, lesson_type)
-VALUES (8, '201812051300', 'ski');
-
-INSERT INTO lesson (staff_id, lesson_datetime, lesson_type)
-VALUES (8, '201812061300', 'ski');
-
-INSERT INTO lesson (staff_id, lesson_datetime, lesson_type)
-VALUES (0, '201809031515', 'snowboard');
-
-INSERT INTO lesson (staff_id, lesson_datetime, lesson_type)
-VALUES (0, '201809041515', 'snowboard');
-
-INSERT INTO lesson (staff_id, lesson_datetime, lesson_type)
-VALUES (7, '201710191245', 'snowboard');
-
-INSERT INTO lesson (staff_id, lesson_datetime, lesson_type)
-VALUES (7, '201710191545', 'snowboard');
-
-INSERT INTO lesson (staff_id, lesson_datetime, lesson_type)
-VALUES (9, '201510030900', 'crosscountry');
-
-commit;
-
-/*---------------------------------------------------------------------------------*/
-/*LESSONTIME TABLE - 9 entries*/
-INSERT INTO lessonTime (lesson_type, lesson_datetime)
-VALUES ('ski', '201808091130');
-
-INSERT INTO lessonTime (lesson_type, lesson_datetime)
-VALUES ('ski', '201808091430');
-
-INSERT INTO lessonTime (lesson_type, lesson_datetime)
-VALUES ('ski', '201812051300');
-
-INSERT INTO lessonTime (lesson_type, lesson_datetime)
-VALUES ('ski', '201812061300');
-
-INSERT INTO lessonTime (lesson_type, lesson_datetime)
-VALUES ('snowboard', '201809031515');
-
-INSERT INTO lessonTime (lesson_type, lesson_datetime)
-VALUES ('snowboard', '201809041515');
-
-INSERT INTO lessonTime (lesson_type, lesson_datetime)
-VALUES ('snowboard', '201710191245');
-
-INSERT INTO lessonTime (lesson_type, lesson_datetime)
-VALUES ('snowboard', '201710191545');
-
-INSERT INTO lessonTime (lesson_type, lesson_datetime)
-VALUES ('crosscountry', '201510030900');
 
 commit;
 

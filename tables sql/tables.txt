@@ -1,25 +1,25 @@
 -- customer (c_id, c_name, e_mail, creditcard_num)
 -- member (c_id, fee, points, join_date)
 
--- room (room_num, room_type, room_rate)
 -- roomRate (room_type, room_rate)
+-- room (room_num, room_type, room_rate)
+-- roomReservation (confirm_num, room_num, c_id)
+
+-- lessonTime (type, lesson_datetime)
+-- lesson (staff_id, lesson_datetime, lesson_type)
 
 -- hotelStaff (staff_id, s_name, phone)
 -- skiStaff (staff_id, s_name, phone)
 
--- rentalEquip (equip_id, equip_type, rental_rate)
 -- rentalEquipRate (equip_type, rental_rate)
-
+-- rentalEquip (equip_id, equip_type, rental_rate)
 -- equipReservation (confirm_num, equip_id, c_id)
--- roomReservation (confirm_num, room_num, c_id)
 
 -- roomManagement (room_num, staff_id)
 -- equipManagement (equip_id, staff_id)
 
 -- purchasedLiftPass (c_id, pass_id, purchase_date, pass_price)
 
--- lesson (staff_id, lesson_datetime, lesson_type)
--- lessonTime (type, lesson_datetime)
 -- bookedLessons (c_id, lesson_type, staff_id)
 
 
