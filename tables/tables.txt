@@ -3,6 +3,7 @@
 
 -- roomRate (room_type, room_rate)
 -- room (room_num, room_type, room_rate)
+-- roomResDate(room_num, start_date, end_date)
 -- roomReservation (confirm_num, room_num, c_id, start_date, end_date)
 
 -- hotelStaff (staff_id, s_name, phone)
@@ -10,6 +11,7 @@
 
 -- rentalEquipRate (equip_type, rental_rate)
 -- rentalEquip (equip_id, equip_type, rental_rate)
+-- equipResDate (equip_id, start_date, end_date)
 -- equipReservation (confirm_num, equip_id, c_id, start_date, end_date)
 
 -- roomManagement (room_num, staff_id)
@@ -25,3 +27,5 @@
 Notes:
 all datetime are strings of the form "yyyymmddhhmm"
 all date are strings of the form "yyyymmdd"
+
+roomResDate and equipResDate were added to ensure unique reservations

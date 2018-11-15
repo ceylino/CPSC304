@@ -33,6 +33,15 @@ create table room
 
  grant select on room to public;
 
+create table roomResDate
+    (room_num int not null,
+  start_date char(8) not null,
+  end_date char(8) not null,
+  primary key (room_num, start_date, end_date),
+  foreign key (room_num) references room(room_num) ON DELETE CASCADE,);
+
+grant select on roomResDate to public;
+
 create table roomReservation
     (confirm_num int not null,
 	room_num int not null,
@@ -40,8 +49,8 @@ create table roomReservation
   start_date char(8) not null,
   end_date char(8) not null,
 	primary key (confirm_num),
-	foreign key (room_num) references room(room_num) ON DELETE CASCADE,
-	foreign key (c_id) references customer(c_id) ON DELETE CASCADE);
+	foreign key (c_id) references customer(c_id) ON DELETE CASCADE,
+  foreign key (room_num, start_date, end_date) references roomResDate(room_num, start_date, end_date));
 
 grant select on roomReservation to public;
 
@@ -68,14 +77,23 @@ create table rentalEquipRate
 
 grant select on rentalEquipRate to public;
 
-  create table rentalEquip
-      (equip_id int not null,
-  	equip_type varchar(20) not null,
-  	rental_rate float not null,
-  	primary key (equip_id),
-    foreign key (equip_type) references rentalEquipRate(equip_type)  ON DELETE CASCADE);
+create table rentalEquip
+    (equip_id int not null,
+	equip_type varchar(20) not null,
+	rental_rate float not null,
+	primary key (equip_id),
+  foreign key (equip_type) references rentalEquipRate(equip_type)  ON DELETE CASCADE);
 
   grant select on rentalEquip to public;
+
+create table equipResDate
+    (equip_id int not null,
+  start_date char(8) not null,
+  end_date char(8) not null,
+  primary key (equip_id, start_date, end_date),
+  foreign key (equip_id) references equipment(equip_id) ON DELETE CASCADE,);
+
+grant select on equipResDate to public;
 
 create table equipReservation
     (confirm_num int not null,
@@ -84,8 +102,8 @@ create table equipReservation
   start_date char(8) not null,
   end_date char(8) not null,
 	primary key (confirm_num),
-	foreign key (equip_id) references rentalEquip(equip_id) ON DELETE CASCADE,
-	foreign key (c_id) references customer(c_id) ON DELETE CASCADE);
+	foreign key (c_id) references customer(c_id) ON DELETE CASCADE,
+  foreign key (equip_id, start_date, end_date) references equipResDate(equip_id, start_date, end_date));
 
 grant select on equipReservation to public;
 

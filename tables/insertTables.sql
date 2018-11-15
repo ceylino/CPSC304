@@ -124,6 +124,31 @@ VALUES (15, 'president', 500.00);
 commit;
 
 /*---------------------------------------------------------------------------------*/
+/*ROOM RESERVATION DATE TABLE - 7 entries, one for each reservation*/
+INSERT INTO roomResDate (room_num, start_date, end_date)
+VALUES (1, '20180101', '20180103');
+
+INSERT INTO roomResDate (room_num, start_date, end_date)
+VALUES (8, '20180202', '20180207');
+
+INSERT INTO roomResDate (room_num, start_date, end_date)
+VALUES (10, '20180202', '20180204');
+
+INSERT INTO roomResDate (room_num, start_date, end_date)
+VALUES (11, '20180102', '20180107');
+
+INSERT INTO roomResDate (room_num, start_date, end_date)
+VALUES (13, '20180101', '20180115');
+
+INSERT INTO roomResDate (room_num, start_date, end_date)
+VALUES (14, '20180210', '20180220');
+
+INSERT INTO roomResDate (room_num, start_date, end_date)
+VALUES (15, '20181015', '20180217');
+
+commit;
+
+/*---------------------------------------------------------------------------------*/
 /*ROOMRESERVATION TABLE - 7 entries*/
 INSERT INTO roomReservation (confirm_num, room_num, c_id, start_date, end_date)
 VALUES (1, 1, 4, '20180101', '20180103');
@@ -252,6 +277,31 @@ VALUES (14, 'helmet', 5.00);
 
 INSERT INTO rentalEquip (equip_id, equip_type, rental_rate)
 VALUES (15, 'helmet', 5.00);
+
+commit;
+
+/*---------------------------------------------------------------------------------*/
+/*EQUIPMENT RESERVATION DATE TABLE - 7 entries, one for each reservation*/
+INSERT INTO roomResDate (room_num, start_date, end_date)
+VALUES (1, '20180101', '20180115');
+
+INSERT INTO roomResDate (room_num, start_date, end_date)
+VALUES (9, '20180202', '20180204');
+
+INSERT INTO roomResDate (room_num, start_date, end_date)
+VALUES (10, '20180111', '20180115');
+
+INSERT INTO roomResDate (room_num, start_date, end_date)
+VALUES (14, '20180201', '20180215');
+
+INSERT INTO roomResDate (room_num, start_date, end_date)
+VALUES (3, '20180210', '20180215');
+
+INSERT INTO roomResDate (room_num, start_date, end_date)
+VALUES (5, '20180211', '20180216');
+
+INSERT INTO roomResDate (room_num, start_date, end_date)
+VALUES (12, '20180209', '20180216');
 
 commit;
 
