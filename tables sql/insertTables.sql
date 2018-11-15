@@ -1,33 +1,33 @@
 /*CUSTOMER TABLE - 10 entries*/
 INSERT INTO customer (c_id, c_name, e_mail, creditcard_num)
-VALUES (1, 'abby@gmail.com', 'Abby', 123456);
+VALUES (1, 'Abby', 'abby@gmail.com', 123456);
 
 INSERT INTO customer (c_id, c_name, e_mail, creditcard_num)
-VALUES (2, 'bill@gmail.com', 'Bill', 123456);
+VALUES (2, 'Bill', 'bill@gmail.com', 123456);
 
 INSERT INTO customer (c_id, c_name, e_mail, creditcard_num)
-VALUES (3, 'carl@gmail.com', 'Carl', 123456);
+VALUES (3, 'Carl', 'carl@gmail.com', 123456);
 
 INSERT INTO customer (c_id, c_name, e_mail, creditcard_num)
-VALUES (4, 'dave@gmail.com', 'Dave', 123456);
+VALUES (4, 'Dave', 'dave@gmail.com', 123456);
 
 INSERT INTO customer (c_id, c_name, e_mail, creditcard_num)
-VALUES (5, 'ed@gmail.com', 'Edward', 123456);
+VALUES (5, 'Edward', 'ed@gmail.com', 123456);
 
 INSERT INTO customer (c_id, c_name, e_mail, creditcard_num)
-VALUES (6, 'Fran@gmail.com', 'Francis', 123456);
+VALUES (6, 'Francis', 'fran@gmail.com', 123456);
 
 INSERT INTO customer (c_id, c_name, e_mail, creditcard_num)
-VALUES (7, 'gaby@gmail.com', 'Gabriela', 123456);
+VALUES (7, 'Gabriela', 'gaby@gmail.com', 123456);
 
 INSERT INTO customer (c_id, c_name, e_mail, creditcard_num)
-VALUES (8, 'harriet@gmail.com', 'Harriet', 123456);
+VALUES (8, 'Harriet', 'harriet@gmail.com', 123456);
 
 INSERT INTO customer (c_id, c_name, e_mail, creditcard_num)
-VALUES (9, 'ivan@gmail.com', 'Ivan', 123456);
+VALUES (9, 'Ivan', 'ivan@gmail.com', 123456);
 
 INSERT INTO customer (c_id, c_name, e_mail, creditcard_num)
-VALUES (10, 'jannet@gmail.com', 'Jannet', 123456);
+VALUES (10, 'Jannet', 'jannet@gmail.com', 123456);
 
 commit;
 
@@ -39,7 +39,7 @@ INSERT INTO member (c_id, fee, points, join_date)
 VALUES (6, 12.50, 120, '20121103');
 
 INSERT INTO member (c_id, fee, points, join_date)
-VALUES (7, 12.50, 56, '2017930');
+VALUES (7, 12.50, 56, '20170930');
 
 INSERT INTO member (c_id, fee, points, join_date)
 VALUES (8, 12.50, 778, '20021031');
@@ -58,13 +58,13 @@ INSERT INTO roomRate (room_type, room_rate)
 VALUES ('double', 150.00);
 
 INSERT INTO roomRate (room_type, room_rate)
-VALUES ('triple', 150.00);
+VALUES ('triple', 200.00);
 
 INSERT INTO roomRate (room_type, room_rate)
-VALUES ('quad', 150.00);
+VALUES ('quad', 250.00);
 
 INSERT INTO roomRate (room_type, room_rate)
-VALUES ('king', 150.00);
+VALUES ('king', 350.00);
 
 INSERT INTO roomRate (room_type, room_rate)
 VALUES ('honeymoon', 450.00);
@@ -92,28 +92,28 @@ INSERT INTO room (room_num, room_type, room_rate)
 VALUES (5, 'double', 150.00);
 
 INSERT INTO room (room_num, room_type, room_rate)
-VALUES (6, 'triple', 250.00);
+VALUES (6, 'triple', 200.00);
 
 INSERT INTO room (room_num, room_type, room_rate)
-VALUES (7, 'triple', 250.00);
+VALUES (7, 'triple', 200.00);
 
 INSERT INTO room (room_num, room_type, room_rate)
-VALUES (8, 'triple', 250.00);
+VALUES (8, 'triple', 200.00);
 
 INSERT INTO room (room_num, room_type, room_rate)
-VALUES (9, 'triple', 250.00);
+VALUES (9, 'triple', 200.00);
 
 INSERT INTO room (room_num, room_type, room_rate)
-VALUES (10, 'quad', 150.00);
+VALUES (10, 'quad', 250.00);
 
 INSERT INTO room (room_num, room_type, room_rate)
-VALUES (11, 'quad', 150.00);
+VALUES (11, 'quad', 250.00);
 
 INSERT INTO room (room_num, room_type, room_rate)
-VALUES (12, 'king', 150.00);
+VALUES (12, 'king', 350.00);
 
 INSERT INTO room (room_num, room_type, room_rate)
-VALUES (13, 'king', 150.00);
+VALUES (13, 'king', 350.00);
 
 INSERT INTO room (room_num, room_type, room_rate)
 VALUES (14, 'honeymoon', 450.00);
@@ -125,26 +125,26 @@ commit;
 
 /*---------------------------------------------------------------------------------*/
 /*ROOMRESERVATION TABLE - 7 entries*/
-INSERT INTO roomReservation (confirm_num, room_num, c_id)
-VALUES (1, 1, 4);
+INSERT INTO roomReservation (confirm_num, room_num, c_id, start_date, end_date)
+VALUES (1, 1, 4, '20180101', '20180103');
 
-INSERT INTO roomReservation (confirm_num, room_num, c_id)
-VALUES (2, 8, 4);
+INSERT INTO roomReservation (confirm_num, room_num, c_id, start_date, end_date)
+VALUES (2, 8, 4, '20180202', '20180207');
 
-INSERT INTO roomReservation (confirm_num, room_num, c_id)
-VALUES (3, 10, 2);
+INSERT INTO roomReservation (confirm_num, room_num, c_id, start_date, end_date)
+VALUES (3, 10, 2, '20180202', '20180204');
 
-INSERT INTO roomReservation (confirm_num, room_num, c_id)
-VALUES (4, 11, 10);
+INSERT INTO roomReservation (confirm_num, room_num, c_id, start_date, end_date)
+VALUES (4, 11, 10, '20180102', '20180107');
 
-INSERT INTO roomReservation (confirm_num, room_num, c_id)
-VALUES (5, 13, 8);
+INSERT INTO roomReservation (confirm_num, room_num, c_id, start_date, end_date)
+VALUES (5, 13, 8, '20180101', '20180115');
 
-INSERT INTO roomReservation (confirm_num, room_num, c_id)
-VALUES (6, 14, 6);
+INSERT INTO roomReservation (confirm_num, room_num, c_id, start_date, end_date)
+VALUES (6, 14, 6, '20180210', '20180220');
 
-INSERT INTO roomReservation (confirm_num, room_num, c_id)
-VALUES (7, 15, 5);
+INSERT INTO roomReservation (confirm_num, room_num, c_id, start_date, end_date)
+VALUES (7, 15, 5, '201801015', '20180217');
 
 commit;
 
@@ -258,26 +258,26 @@ commit;
 /*---------------------------------------------------------------------------------*/
 
 /*EQUIPRESERVATION TABLE - 7 entries*/
-INSERT INTO equipReservation (confirm_num, equip_id, c_id)
-VALUES (1, 1, 1);
+INSERT INTO equipReservation (confirm_num, equip_id, c_id, start_date, end_date)
+VALUES (1, 1, 1, '20180101', '20180115');
 
-INSERT INTO equipReservation (confirm_num, equip_id, c_id)
-VALUES (2, 9, 2);
+INSERT INTO equipReservation (confirm_num, equip_id, c_id, start_date, end_date)
+VALUES (2, 9, 2, '20180202', '20180204');
 
-INSERT INTO equipReservation (confirm_num, equip_id, c_id)
-VALUES (3, 10, 3);
+INSERT INTO equipReservation (confirm_num, equip_id, c_id, start_date, end_date)
+VALUES (3, 10, 3, '20180111', '20180115');
 
-INSERT INTO equipReservation (confirm_num, equip_id, c_id)
-VALUES (4, 14, 4);
+INSERT INTO equipReservation (confirm_num, equip_id, c_id, start_date, end_date)
+VALUES (4, 14, 4, '20180201', '20180215');
 
-INSERT INTO equipReservation (confirm_num, equip_id, c_id)
-VALUES (5, 3, 10)
+INSERT INTO equipReservation (confirm_num, equip_id, c_id, start_date, end_date)
+VALUES (5, 3, 10, '20180210', '20180215')
 
-INSERT INTO equipReservation (confirm_num, equip_id, c_id)
-VALUES (6, 5, 7)
+INSERT INTO equipReservation (confirm_num, equip_id, c_id, start_date, end_date)
+VALUES (6, 5, 7, '20180211', '20180216')
 
-INSERT INTO equipReservation (confirm_num, equip_id, c_id)
-VALUES (7, 12, 8)
+INSERT INTO equipReservation (confirm_num, equip_id, c_id, start_date, end_date)
+VALUES (7, 12, 8, '20180209', '20180216')
 
 commit;
 

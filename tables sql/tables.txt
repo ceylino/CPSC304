@@ -3,14 +3,14 @@
 
 -- roomRate (room_type, room_rate)
 -- room (room_num, room_type, room_rate)
--- roomReservation (confirm_num, room_num, c_id)
+-- roomReservation (confirm_num, room_num, c_id, start_date, end_date)
 
 -- hotelStaff (staff_id, s_name, phone)
 -- skiStaff (staff_id, s_name, phone)
 
 -- rentalEquipRate (equip_type, rental_rate)
 -- rentalEquip (equip_id, equip_type, rental_rate)
--- equipReservation (confirm_num, equip_id, c_id)
+-- equipReservation (confirm_num, equip_id, c_id, start_date, end_date)
 
 -- roomManagement (room_num, staff_id)
 -- equipManagement (equip_id, staff_id)

@@ -37,6 +37,8 @@ create table roomReservation
     (confirm_num int not null,
 	room_num int not null,
 	c_id int not null,
+  start_date char(8) not null,
+  end_date char(8) not null,
 	primary key (confirm_num),
 	foreign key (room_num) references room(room_num) ON DELETE CASCADE,
 	foreign key (c_id) references customer(c_id) ON DELETE CASCADE);
@@ -79,6 +81,8 @@ create table equipReservation
     (confirm_num int not null,
 	equip_id int not null,
 	c_id int not null,
+  start_date char(8) not null,
+  end_date char(8) not null,
 	primary key (confirm_num),
 	foreign key (equip_id) references rentalEquip(equip_id) ON DELETE CASCADE,
 	foreign key (c_id) references customer(c_id) ON DELETE CASCADE);
