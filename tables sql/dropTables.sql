@@ -1,6 +1,6 @@
 drop table bookedLessons;
-drop table lessonTime;
 drop table lesson;
+drop table lessonTime;
 drop table purchasedLiftPass;
 drop table bookedLessons;
 drop table equipManagement;

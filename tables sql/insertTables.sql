@@ -53,6 +53,28 @@ VALUES (10, 12.50, 10, '20180809');
 commit;
 
 /*---------------------------------------------------------------------------------*/
+/*ROOM RATE TABLE - 6 entries (1 for each of the 6 room types)*/
+INSERT INTO roomRate (room_type, room_rate)
+VALUES ('double', 150.00);
+
+INSERT INTO roomRate (room_type, room_rate)
+VALUES ('triple', 150.00);
+
+INSERT INTO roomRate (room_type, room_rate)
+VALUES ('quad', 150.00);
+
+INSERT INTO roomRate (room_type, room_rate)
+VALUES ('king', 150.00);
+
+INSERT INTO roomRate (room_type, room_rate)
+VALUES ('honeymoon', 450.00);
+
+INSERT INTO roomRate (room_type, room_rate)
+VALUES ('president', 500.00);
+
+commit;
+
+/*---------------------------------------------------------------------------------*/
 /*ROOM TABLE - 15 entries*/
 INSERT INTO room (room_num, room_type, room_rate)
 VALUES (1, 'double', 150.00);
@@ -102,28 +124,6 @@ VALUES (15, 'president', 500.00);
 commit;
 
 /*---------------------------------------------------------------------------------*/
-/*ROOM RATE TABLE - 6 entries (1 for each of the 6 room types)*/
-INSERT INTO roomRate (room_type, room_rate)
-VALUES ('double', 150.00);
-
-INSERT INTO roomRate (room_type, room_rate)
-VALUES ('triple', 150.00);
-
-INSERT INTO roomRate (room_type, room_rate)
-VALUES ('quad', 150.00);
-
-INSERT INTO roomRate (room_type, room_rate)
-VALUES ('king', 150.00);
-
-INSERT INTO roomRate (room_type, room_rate)
-VALUES ('honeymoon', 450.00);
-
-INSERT INTO roomRate (room_type, room_rate)
-VALUES ('president', 500.00);
-
-commit;
-
-/*---------------------------------------------------------------------------------*/
 /*HOTEL STAFF TABLE - 5 entries*/
 INSERT INTO hotelStaff (staff_id, s_name, phone)
 VALUES (1, 'Zayn', '6041234567');
@@ -158,6 +158,25 @@ VALUES (9, 'Ron', '6045558800');
 
 INSERT INTO skiStaff (staff_id, s_name, phone)
 VALUES (0, 'Quin', '6049066677');
+
+commit;
+
+/*---------------------------------------------------------------------------------*/
+/*RENTAL EQUIPMENT RATE TABLE - 5 entries (1 for each of the 5 equip. types)*/
+INSERT INTO rentalEquipRate (equip_type, rental_rate)
+VALUES ('skis', 15.00);
+
+INSERT INTO rentalEquipRate (equip_type, rental_rate)
+VALUES ('snowboard', 10.00);
+
+INSERT INTO rentalEquipRate (equip_type, rental_rate)
+VALUES ('boots', 10.00);
+
+INSERT INTO rentalEquipRate (equip_type, rental_rate)
+VALUES ('poles', 5.00);
+
+INSERT INTO rentalEquipRate (equip_type, rental_rate)
+VALUES ('helmet', 5.00);
 
 commit;
 
@@ -207,25 +226,6 @@ VALUES (14, 'helmet', 5.00);
 
 INSERT INTO rentalEquip (equip_id, equip_type, rental_rate)
 VALUES (15, 'helmet', 5.00);
-
-commit;
-
-/*---------------------------------------------------------------------------------*/
-/*RENTAL EQUIPMENT RATE TABLE - 5 entries (1 for each of the 5 equip. types)*/
-INSERT INTO rentalEquipRate (equip_type, rental_rate)
-VALUES ('skis', 15.00);
-
-INSERT INTO rentalEquipRate (equip_type, rental_rate)
-VALUES ('snowboard', 10.00);
-
-INSERT INTO rentalEquipRate (equip_type, rental_rate)
-VALUES ('boots', 10.00);
-
-INSERT INTO rentalEquipRate (equip_type, rental_rate)
-VALUES ('poles', 5.00);
-
-INSERT INTO rentalEquipRate (equip_type, rental_rate)
-VALUES ('helmet', 5.00);
 
 commit;
 
@@ -384,7 +384,7 @@ INSERT INTO purchasedLiftPass (c_id, pass_id, purchase_date, pass_price)
 VALUES (1, 1, '20180809', 50.00);
 
 INSERT INTO purchasedLiftPass (c_id, pass_id, purchase_date, pass_price)
-VALUES (4, 2, '201801205', 50.00);
+VALUES (4, 2, '20181205', 50.00);
 
 INSERT INTO purchasedLiftPass (c_id, pass_id, purchase_date, pass_price)
 VALUES (9, 3, '20181012', 50.00);
@@ -412,7 +412,7 @@ INSERT INTO lesson (staff_id, lesson_datetime, lesson_type)
 VALUES (8, '201812051300', 'ski');
 
 INSERT INTO lesson (staff_id, lesson_datetime, lesson_type)
-VALUES (8, '2018012061300', 'ski');
+VALUES (8, '201812061300', 'ski');
 
 INSERT INTO lesson (staff_id, lesson_datetime, lesson_type)
 VALUES (0, '201809031515', 'snowboard');
@@ -440,7 +440,7 @@ INSERT INTO lessonTime (lesson_type, lesson_datetime)
 VALUES ('ski', '201808091430');
 
 INSERT INTO lessonTime (lesson_type, lesson_datetime)
-VALUES ('ski', '2018012051300');
+VALUES ('ski', '201812051300');
 
 INSERT INTO lessonTime (lesson_type, lesson_datetime)
 VALUES ('ski', '201812061300');
