@@ -91,7 +91,7 @@ create table equipResDate
   start_date char(8) not null,
   end_date char(8) not null,
   primary key (equip_id, start_date, end_date),
-  foreign key (equip_id) references equipment(equip_id) ON DELETE CASCADE);
+  foreign key (equip_id) references rentalEquip(equip_id) ON DELETE CASCADE);
 
 grant select on equipResDate to public;
 
