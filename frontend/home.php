@@ -16,7 +16,7 @@ If their logins are incorrect then they remain on this page and get an error.
               padding-top: 10px;
               padding-bottom: 10px">
     <h3>Staff Login</h3>
-    <form method="POST" action="$_SERVER["PHP_SELF"]">
+    <form method="POST" action="home.php">
     <!-- if not a existing account, stay in same page and get error message -->
 
       Id: <input type="number" name="staff_id" size="6">
@@ -32,7 +32,7 @@ If their logins are incorrect then they remain on this page and get an error.
               padding-top: 10px;
               padding-bottom: 10px">
     <h3>Customer Login</h3>
-    <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+    <form method="POST" action="home.php">
       Id: <input type="number" name="c_id" size="6">
       <input type="submit" value="Log in" name="customerIdLogin">
     </form>
@@ -47,7 +47,7 @@ If their logins are incorrect then they remain on this page and get an error.
               padding-bottom: 10px">
     <h3>New Customers</h3>
     <p>Don't have an account? Create one below:</p>
-    <form method="POST" action="$_SERVER["PHP_SELF"]">
+    <form method="POST" action="home.php">
       <div style="padding-left: 50px;">
         <p align="left">Id: <br> <input type="number" name="NewC_id" size="6"> </p>
         <p align="left">Name: <br> <input type="text" name="NewC_name" size="20"> </p>
@@ -65,7 +65,7 @@ If their logins are incorrect then they remain on this page and get an error.
 <?php
 //Setup
 $success = True; //keep track of errors so it redirects the page only if there are no errors
-$db_conn = OCILogon("ora_u3i0b", "a_14691142", "dbhost.ugrad.cs.ubc.ca:1522/ug");
+$db_conn = OCILogon("ora_u3i0b", "a_14691142", "dbhost.ugrad.cs.ubc.ca:1522/ug"); // TODO: make this git ignored
 
 function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
 	//echo "<br>running ".$cmdstr."<br>";
@@ -131,18 +131,6 @@ function executeBoundSQL($cmdstr, $list) {
 
 }
 
-function printResult($result) { //prints results from a select statement //TODO
-	echo "<br>Got data from table tab1:<br>";
-	echo "<table>";
-	echo "<tr><th>ID</th><th>Name</th></tr>";
-
-	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-		echo "<tr><td>" . $row["NID"] . "</td><td>" . $row["NAME"] . "</td></tr>"; //or just use "echo $row[0]"
-	}
-	echo "</table>";
-
-}
-
 // Connect to Oracle DB
 if ($db_conn) {
 
@@ -154,11 +142,10 @@ if ($db_conn) {
 			$alltuples = array (
 				$tuple
 			);
-			executeBoundSQL("select staff_id from hotelStaff,skiStaff where staff_id = (:bind1)", $alltuples);
-			OCICommit($db_conn);
-
-      if ($_POST && $success) {
+			$result = executeBoundSQL("select staff_id from hotelStaff, skiStaff where staff_id = (:bind1)", $alltuples);
+      if ($_POST && $success && $result) { // TODO: does this work?
         header("location: staff.php");
+        //TODO: how do we send JSON web token with it so we can get the id's?
       }
 
 		} else
@@ -170,11 +157,11 @@ if ($db_conn) {
 				$alltuples = array (
 					$tuple
 				);
-				executeBoundSQL("select c_id from customers where c_id = (:bind1)", $alltuples);
-				OCICommit($db_conn);
+				$result = executeBoundSQL("select c_id from customers where c_id = (:bind1)", $alltuples);
 
-        if ($_POST && $success) {
+        if ($_POST && $success && $result) {
           header("location: customer.php");
+          //TODO: how do we send JSON web token with it so we can get the id's?
         }
 
 			} else
@@ -189,11 +176,12 @@ if ($db_conn) {
           $alltuples = array (
   					$tuple
   				);
-					executeBoundSQL("insert into customers values (:bind1, :bind2, :bind3, :bind4)", $allrows);
+					$result = executeBoundSQL("insert into customers values (:bind1, :bind2, :bind3, :bind4)", $allrows);
 					OCICommit($db_conn);
 
-          if ($_POST && $success) {
+          if ($_POST && $success && $result) {
         		header("location: customer.php");
+            //TODO: how do we send JSON web token with it so we can get the id's?
           }
         }
 
