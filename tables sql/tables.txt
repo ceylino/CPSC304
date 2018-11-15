@@ -5,9 +5,6 @@
 -- room (room_num, room_type, room_rate)
 -- roomReservation (confirm_num, room_num, c_id)
 
--- lessonTime (type, lesson_datetime)
--- lesson (staff_id, lesson_datetime, lesson_type)
-
 -- hotelStaff (staff_id, s_name, phone)
 -- skiStaff (staff_id, s_name, phone)
 
@@ -20,6 +17,8 @@
 
 -- purchasedLiftPass (c_id, pass_id, purchase_date, pass_price)
 
+-- lessonTime (type, lesson_datetime)
+-- lesson (staff_id, lesson_datetime, lesson_type)
 -- bookedLessons (c_id, lesson_type, staff_id)
 
 
