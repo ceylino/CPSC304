@@ -5,7 +5,7 @@ If their logins are incorrect then they remain on this page and get an error.
 
 <!-- Page title -->
 <title>Hotel Ski Resort</title>
-<center>
+<center> //sjsjsj
   <h1>Hotel Ski Resort</h1>
 
   <p>Insert your id below:</p>
