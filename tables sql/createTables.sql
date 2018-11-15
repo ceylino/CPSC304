@@ -70,7 +70,7 @@ grant select on rentalEquipRate to public;
       (equip_id int not null,
   	equip_type varchar(20) not null unique,
   	rental_rate float not null,
-  	primary key (equip_id)
+  	primary key (equip_id),
     foreign key (equip_type) references rentalEquipRate(equip_type)  ON DELETE CASCADE);
 
   grant select on rentalEquip to public;
