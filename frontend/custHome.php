@@ -11,7 +11,9 @@
 
   <!-- View table entries -->
   <div style="justify-content: flex-start;">
-    <h3> Rooms Reservations: </h3> <!-- TODO: this table printing set up needs to be completed and added for the other tables as well -->
+    <h3> Rooms Reservations: </h3>
+    <!-- make this a view: These views allow customers to view room and rental equipment information, while not allowing them to make any changes, since changes to these can only be made by staff members.-->
+    <!-- TODO: this table printing set up needs to be completed and added for the other tables as well -->
       <?php
         $result = executePlainSQL("select * roomReservation where c_id=3"); //TODO: set up the cid & use views
         echo "<table>";
@@ -23,11 +25,15 @@
       ?>
 
     <h3> Equipment Reservations: </h3>
+    <!-- make this a view: These views allow customers to view room and rental equipment information, while not allowing them to make any changes, since changes to these can only be made by staff members.-->
+
 
     <h3> Available Lessons: </h3>
     <!--make sure to allow customers to see available lessons or else we cant book new ones-->
+    <!-- Make this a view: This view will allow them to see the instructor and the details of the lesson without exposing the instructor’s staff_id.-->
 
     <h3> Booked Lessons: </h3>
+    <!-- Make this a view: This view allows the customers to see which lessons they are booked in but doesn’t allow them to see the full classlist.-->
 
     <h3> Purchased Passes: </h3>
   </div>
