@@ -46,20 +46,6 @@
       </center>
     </div>
 
-    <div style="height: 10px;"></div>
-
-    <!-- Pass options -->
-    <div style="background-color:lightGrey;
-                  width: 200px;
-                  padding-top: 20px;
-                  padding-bottom: 1px">
-      <center>
-        <form action=""> <!-- TODO: Add rerouting to necessary forms -->
-          <input type="submit" value="Purchase new passs" name="newPass">
-        </form>
-      </center>
-    </div>
-
   </div>
 </div>
 
