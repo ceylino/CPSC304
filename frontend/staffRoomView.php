@@ -107,7 +107,7 @@
             <p align="left">Room number: <br> <input type="number" name="editRoomNum" size="6"> </p>
             <p align="left">Customer Id: <br> <input type="number" name="editCid" size="6"> </p>
             <p align="left">Start Date: (numbers only - yyyymmdd) <br> <input type="text" name="editSDate" size="8"> </p>
-            <p align="left">Start Date: (numbers only - yyyymmdd) <br> <input type="text" name="editEDate" size="8"> </p>
+            <p align="left">End Date: (numbers only - yyyymmdd) <br> <input type="text" name="editEDate" size="8"> </p>
             <!-- Note: remember to update the roomResDate table if needed -BEFORE- making any changes to the roomReservation table or it will not work!! Once this is done, refresh the page (redirect to itself)-->
           <center>
             <input type="submit" value="Add/Update" name="editReservation">
