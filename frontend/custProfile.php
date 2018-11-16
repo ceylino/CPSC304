@@ -40,7 +40,7 @@
 
   <div style="height: 30px;"></div>
 
-<!---------------- Forms to add & update data ---------------->
+<!--- Forms to add & update data --->
 <center>
 <!-- Update personal info -->
   <div>
