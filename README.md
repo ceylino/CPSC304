@@ -54,7 +54,7 @@ You can see all branches created by using: ```$ git branch```
 
 ## Running:
 #### 1. Make sure you have the updated versions of the code:
-  - run git pull and make sure to copy the updated code into the public_html folder and resetting permissions if need be! see instructions below.
+  - run git pull and make sure to copy the updated code into the public_html folder and resetting permissions if need be! see instructions above.
 #### 2. Make sure the DB has values:
   - run sqlplus to check. Again if you need to do this see instructions below.
 #### 3. Go to the webpage:
