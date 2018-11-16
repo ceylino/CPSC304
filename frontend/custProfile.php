@@ -27,7 +27,7 @@
     <h4> Membership Information </h4>
     <!-- TODO: this table printing set up needs to be completed -->
       <?php
-        $result = executePlainSQL("select * customers where c_id=3"); //TODO: set up the cid & use views
+        $result = executePlainSQL("select * customers where c_id=3");
         echo "<table>";
         echo "<tr><th>Id:</th><th>Name:</th><th>E-mail:</th><th>Credit Card Number:</th></tr>";
         while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
@@ -68,6 +68,7 @@
       <form> <!-- TODO: Add any SQL processing necessary-->
         <center>
           <input type="submit" value="Become a member" name="newMember">
+          <!-- Check if person is a member already, if so: do nothing?. If not then add them to the membership table and then refresh this page so the membership info can appear in the table above-->
         </center>
       </form>
     </div>
