@@ -112,7 +112,6 @@
       <div style="height: 10px;"></div>
 
       <!-- Delete a lesson booking -->
-      <!-- TODO: make sure that the necessary information is cascading properly from reservations etc. -->
       <div>
         <div style="width: 300px;  padding: 30px 20px 10px 20px; background-color: lightGrey; ">
           <form> <!-- TODO: Add any SQL processing necessary & add form tag details-->
