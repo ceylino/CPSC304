@@ -16,7 +16,7 @@
               width: 10%;
               padding-top: 20px;
               padding-bottom: 1px">
-    <form action=""> <!-- TODO: Add rerouting to other staff pages -->
+    <form action="staffDir.php"> <!-- TODO: Add rerouting to other staff pages -->
       <input type="submit" value="Edit Profile" name="staffProfile">
     </form>
   </div>
@@ -27,29 +27,78 @@
               width: 10%;
               padding-top: 20px;
               padding-bottom: 1px">
-    <form action=""> <!-- TODO: Add rerouting to other staff pages -->
+    <form method="POST" action="staffDir.php"> <!-- TODO: Add rerouting to other staff pages -->
       <input type="submit" value="Rooms" name="staffRooms">
     </form>
 
-    <form action=""> <!-- TODO: Add rerouting to other staff pages -->
+    <form method="POST" action="staffDir.php"> <!-- TODO: Add rerouting to other staff pages -->
       <input type="submit" value="Equipment" name="staffEquip">
     </form>
 
-    <form action=""> <!-- TODO: Add rerouting to other staff pages -->
+    <form method="POST" action="staffDir.php"> <!-- TODO: Add rerouting to other staff pages -->
       <input type="submit" value="Lessons" name="staffLessons">
     </form>
 
-    <form action=""> <!-- TODO: Add rerouting to other staff pages -->
+    <form method="POST" action="staffDir.php"> <!-- TODO: Add rerouting to other staff pages -->
       <input type="submit" value="Customers" name="staffCustomers">
     </form>
 
-    <form action=""> <!-- TODO: Add rerouting to other staff pages -->
+    <form method="POST" action="staffDir.php"> <!-- TODO: Add rerouting to other staff pages -->
       <input type="submit" value="Management" name="staffManage">
     </form>
 
-    <form action=""> <!-- TODO: Add rerouting to other staff pages -->
+    <form method="POST" action="staffDir.php"> <!-- TODO: Add rerouting to other staff pages -->
       <input type="submit" value="Staff" name="Staff">
     </form>
   </div>
 
 </center>
+
+<!--  Setup connection and connect to DB -->
+<?php
+//Setup
+$success = True; //keep track of errors so it redirects the page only if there are no errors
+$db_conn = OCILogon("ora_u3i0b", "a14691142", "dbhost.ugrad.cs.ubc.ca:1522/ug"); // TODO: make this git ignored
+
+// Connect to Oracle DB
+if ($db_conn) {
+
+		if (array_key_exists('staffProfile')) {
+      if ($success) {
+        header("location: staffProfile.php");
+      }
+
+		} else if (array_key_exists('staffRooms', $_POST)) {
+        if ($_POST && $success) {
+          header("location: staffRoomView.php");
+        }
+
+		} else if (array_key_exists('staffEquip', $_POST)) {
+        if ($_POST && $success) {
+      		header("location: staffEquipView.php");
+        }
+
+    } else if (array_key_exists('staffLessons', $_POST)) {
+        if ($_POST && $success) {
+      		header("location: staffLessonView.php");
+        }
+
+    } else if (array_key_exists('staffCustomers', $_POST)) {
+        if ($_POST && $success) {
+      		header("location: staffCustomerView.php");
+        }
+
+    } else if (array_key_exists('staffManage', $_POST)) {
+        if ($_POST && $success) {
+      		header("location: staffManageView.php");
+        }
+      }
+
+	OCILogoff($db_conn);
+} else {
+	echo "cannot connect";
+	$e = OCI_Error(); // For OCILogon errors pass no handle
+	echo htmlentities($e['message']);
+}
+
+?>
