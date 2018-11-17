@@ -12,42 +12,36 @@
     - Ensure data to profile is redirected to the correct profile, according tot he staff id given in login.
     -->
   <!-- Below are the directory options -->
-  <div style="background-color:lightGrey;
-              width: 10%;
-              padding-top: 20px;
-              padding-bottom: 1px">
-    <form action=""> <!-- TODO: Add rerouting to other staff pages -->
+  <div style="background-color:lightGrey; width: 10%; padding-top: 20px; padding-bottom: 1px">
+    <form action="staffProfile.php">
       <input type="submit" value="Edit Profile" name="staffProfile">
     </form>
   </div>
 
   <div style="height: 10px;"></div>
 
-  <div style="background-color:lightGrey;
-              width: 10%;
-              padding-top: 20px;
-              padding-bottom: 1px">
-    <form action=""> <!-- TODO: Add rerouting to other staff pages -->
+  <div style="background-color:lightGrey; width: 10%; padding-top: 20px; padding-bottom: 1px">
+    <form action="staffRoomView.php">
       <input type="submit" value="Rooms" name="staffRooms">
     </form>
 
-    <form action=""> <!-- TODO: Add rerouting to other staff pages -->
+    <form action="staffEquipView.php">
       <input type="submit" value="Equipment" name="staffEquip">
     </form>
 
-    <form action=""> <!-- TODO: Add rerouting to other staff pages -->
+    <form action="staffLessonView.php">
       <input type="submit" value="Lessons" name="staffLessons">
     </form>
 
-    <form action=""> <!-- TODO: Add rerouting to other staff pages -->
+    <form action="staffCustomerView.php">
       <input type="submit" value="Customers" name="staffCustomers">
     </form>
 
-    <form action=""> <!-- TODO: Add rerouting to other staff pages -->
+    <form action="staffManagementView.php">
       <input type="submit" value="Management" name="staffManage">
     </form>
 
-    <form action=""> <!-- TODO: Add rerouting to other staff pages -->
+    <form action="staffStaffView.php">
       <input type="submit" value="Staff" name="Staff">
     </form>
   </div>

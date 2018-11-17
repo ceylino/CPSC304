@@ -132,42 +132,39 @@ function executeBoundSQL($cmdstr, $list) {
 
 }
 
-//Ignore this code for now -- needs to be cleaned up
-// function printResult($result) { //prints results from a select statement
-// 	echo "result from SQL:";
-//   echo "<table>";
-// 	echo "<tr><th>ID</th><th>Name</th><th>email</th><th>ccnum</th></tr>";
-// 	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-// 		// echo "<tr><td>" . $row["c_id"] . "</td>
-//     //       <td>" . $row["c_name"] . "</td>
-//     //       <td>" . $row["e_mail"] . "</td>
-//     //       <td>" . $row["creditcard_num"] . "</td></tr>";
-//     echo "$row[1]";
-// 	}
-//   echo "</table>";
-//}
+function printResult($result) { //prints results from a select statement
+	echo "result from SQL:";
+  echo "<table>";
+	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+  echo "<tr>\n";
+    foreach ($row as $item) {
+        echo "    <td>" . ($item !== null ? htmlentities($item, ENT_QUOTES) : "&nbsp;") . "</td>\n";
+    }
+    echo "</tr>\n";
+  }
+  echo "</table>\n";
+}
 
 // Connect to Oracle DB
 if ($db_conn) {
 
 		if (array_key_exists('staffIdLogin', $_POST)) {
-			//Getting the values from user and insert data into the table
 			$tuple = array (
 				":bind1" => $_POST['staff_id']
 			);
 			$alltuples = array (
 				$tuple
 			);
-			$result = executeBoundSQL("select * from hotelStaff h, skiStaff s where h.staff_id =:bind1 or s.staff_id =:bind1", $alltuples);
+			$result = executeBoundSQL("select * from hotelStaff h where h.staff_id =:bind1 union select * from skiStaff s where s.staff_id =:bind1", $alltuples);
+      $row = OCI_Fetch_Array($result, OCI_BOTH);
 
-      if ($_POST && $success && $result) {
+      if ($_POST && $success && $row) {
         header("location: staffDir.php");
         //TODO: how do we send JSON web token with it so we can get the id's?
       }
 
 		} else
 			if (array_key_exists('customerIdLogin', $_POST)) {
-				// Update tuple using data from user
 				$tuple = array (
 					":bind1" => $_POST['c_id']
 				);
@@ -176,14 +173,14 @@ if ($db_conn) {
 				);
 
         $result = executeBoundSQL("select c_id from customer where c_id =:bind1", $alltuples);
+        $row = OCI_Fetch_Array($result, OCI_BOTH);
 
-        if ($_POST && $success && $result) {
+        if ($_POST && $success && $row) {
           header("location: custHome.php");
         }
 
 			} else
 				if (array_key_exists('newCustomer', $_POST)) {
-					// Inserting data into table using bound variables
 					$tuple = array (
 						":bind1" => $_POST['newC_id'],
 						":bind2" => $_POST['newC_name'],
@@ -193,12 +190,11 @@ if ($db_conn) {
           $alltuples = array (
   					$tuple
   				);
-					$result = executeBoundSQL("insert into customer values (:bind1, :bind2, :bind3, :bind4)", $allrows);
+					$result = executeBoundSQL("insert into customer values (:bind1, :bind2, :bind3, :bind4)", $alltuples);
 					OCICommit($db_conn);
 
-          if ($_POST && $success && $result) {
+          if ($_POST && $success) {
         		header("location: custHome.php");
-            //TODO: how do we send JSON web token with it so we can get the id's?
           }
         }
 
