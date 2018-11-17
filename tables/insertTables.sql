@@ -124,52 +124,27 @@ VALUES (15, 'president', 500.00);
 commit;
 
 /*---------------------------------------------------------------------------------*/
-/*ROOM RESERVATION DATE TABLE - 7 entries, one for each reservation*/
-INSERT INTO roomResDate (room_num, start_date, end_date)
-VALUES (1, '20180101', '20180103');
-
-INSERT INTO roomResDate (room_num, start_date, end_date)
-VALUES (8, '20180202', '20180207');
-
-INSERT INTO roomResDate (room_num, start_date, end_date)
-VALUES (10, '20180202', '20180204');
-
-INSERT INTO roomResDate (room_num, start_date, end_date)
-VALUES (11, '20180102', '20180107');
-
-INSERT INTO roomResDate (room_num, start_date, end_date)
-VALUES (13, '20180101', '20180115');
-
-INSERT INTO roomResDate (room_num, start_date, end_date)
-VALUES (14, '20180210', '20180220');
-
-INSERT INTO roomResDate (room_num, start_date, end_date)
-VALUES (15, '20181015', '20180217');
-
-commit;
-
-/*---------------------------------------------------------------------------------*/
 /*ROOMRESERVATION TABLE - 7 entries*/
-INSERT INTO roomReservation (confirm_num, room_num, c_id, start_date, end_date)
-VALUES (1, 1, 4, '20180101', '20180103');
+INSERT INTO roomReservation (room_num, c_id, start_date, end_date)
+VALUES (1, 4, '20180101', '20180103');
 
-INSERT INTO roomReservation (confirm_num, room_num, c_id, start_date, end_date)
-VALUES (2, 8, 4, '20180202', '20180207');
+INSERT INTO roomReservation (room_num, c_id, start_date, end_date)
+VALUES (8, 4, '20180202', '20180207');
 
-INSERT INTO roomReservation (confirm_num, room_num, c_id, start_date, end_date)
-VALUES (3, 10, 2, '20180202', '20180204');
+INSERT INTO roomReservation (room_num, c_id, start_date, end_date)
+VALUES (10, 2, '20180202', '20180204');
 
-INSERT INTO roomReservation (confirm_num, room_num, c_id, start_date, end_date)
-VALUES (4, 11, 10, '20180102', '20180107');
+INSERT INTO roomReservation (room_num, c_id, start_date, end_date)
+VALUES (11, 10, '20180102', '20180107');
 
-INSERT INTO roomReservation (confirm_num, room_num, c_id, start_date, end_date)
-VALUES (5, 13, 8, '20180101', '20180115');
+INSERT INTO roomReservation (room_num, c_id, start_date, end_date)
+VALUES (13, 8, '20180101', '20180115');
 
-INSERT INTO roomReservation (confirm_num, room_num, c_id, start_date, end_date)
-VALUES (6, 14, 6, '20180210', '20180220');
+INSERT INTO roomReservation (room_num, c_id, start_date, end_date)
+VALUES (14, 6, '20180210', '20180220');
 
-INSERT INTO roomReservation (confirm_num, room_num, c_id, start_date, end_date)
-VALUES (7, 15, 5, '20181015', '20180217');
+INSERT INTO roomReservation (room_num, c_id, start_date, end_date)
+VALUES (15, 5, '20181015', '20180217');
 
 commit;
 
@@ -281,53 +256,28 @@ VALUES (15, 'helmet', 5.00);
 commit;
 
 /*---------------------------------------------------------------------------------*/
-/*EQUIPMENT RESERVATION DATE TABLE - 7 entries, one for each reservation*/
-INSERT INTO equipResDate (equip_id, start_date, end_date)
-VALUES (1, '20180101', '20180115');
-
-INSERT INTO equipResDate (equip_id, start_date, end_date)
-VALUES (9, '20180202', '20180204');
-
-INSERT INTO equipResDate (equip_id, start_date, end_date)
-VALUES (10, '20180111', '20180115');
-
-INSERT INTO equipResDate (equip_id, start_date, end_date)
-VALUES (14, '20180201', '20180215');
-
-INSERT INTO equipResDate (equip_id, start_date, end_date)
-VALUES (3, '20180210', '20180215');
-
-INSERT INTO equipResDate (equip_id, start_date, end_date)
-VALUES (5, '20180211', '20180216');
-
-INSERT INTO equipResDate (equip_id, start_date, end_date)
-VALUES (12, '20180209', '20180216');
-
-commit;
-
-/*---------------------------------------------------------------------------------*/
 
 /*EQUIPRESERVATION TABLE - 7 entries*/
-INSERT INTO equipReservation (confirm_num, equip_id, c_id, start_date, end_date)
-VALUES (1, 1, 1, '20180101', '20180115');
+INSERT INTO equipReservation (equip_id, c_id, start_date, end_date)
+VALUES (1, 1, '20180101', '20180115');
 
-INSERT INTO equipReservation (confirm_num, equip_id, c_id, start_date, end_date)
-VALUES (2, 9, 2, '20180202', '20180204');
+INSERT INTO equipReservation (equip_id, c_id, start_date, end_date)
+VALUES (9, 2, '20180202', '20180204');
 
-INSERT INTO equipReservation (confirm_num, equip_id, c_id, start_date, end_date)
-VALUES (3, 10, 3, '20180111', '20180115');
+INSERT INTO equipReservation (equip_id, c_id, start_date, end_date)
+VALUES (10, 3, '20180111', '20180115');
 
-INSERT INTO equipReservation (confirm_num, equip_id, c_id, start_date, end_date)
-VALUES (4, 14, 4, '20180201', '20180215');
+INSERT INTO equipReservation (equip_id, c_id, start_date, end_date)
+VALUES (14, 4, '20180201', '20180215');
 
-INSERT INTO equipReservation (confirm_num, equip_id, c_id, start_date, end_date)
-VALUES (5, 3, 10, '20180210', '20180215')
+INSERT INTO equipReservation (equip_id, c_id, start_date, end_date)
+VALUES (3, 10, '20180210', '20180215')
 
-INSERT INTO equipReservation (confirm_num, equip_id, c_id, start_date, end_date)
-VALUES (6, 5, 7, '20180211', '20180216')
+INSERT INTO equipReservation (equip_id, c_id, start_date, end_date)
+VALUES (5, 7, '20180211', '20180216')
 
-INSERT INTO equipReservation (confirm_num, equip_id, c_id, start_date, end_date)
-VALUES (7, 12, 8, '20180209', '20180216')
+INSERT INTO equipReservation (equip_id, c_id, start_date, end_date)
+VALUES (12, 8, '20180209', '20180216')
 
 commit;
 
@@ -503,20 +453,20 @@ commit;
 
 /*---------------------------------------------------------------------------------*/
 /*BOOKEDLESSONS TABLE - 5 entries*/
-INSERT INTO bookedLessons (c_id, lesson_type, staff_id)
-VALUES (1, 'beginnersSki', 8);
+INSERT INTO bookedLessons (c_id, lesson_type)
+VALUES (1, 'beginnersSki');
 
-INSERT INTO bookedLessons (c_id, lesson_type, staff_id)
-VALUES (6, 'beginnersSnowboard', 6);
+INSERT INTO bookedLessons (c_id, lesson_type)
+VALUES (6, 'beginnersSnowboard');
 
-INSERT INTO bookedLessons (c_id, lesson_type, staff_id)
-VALUES (4, 'intermediateSnowboard', 0);
+INSERT INTO bookedLessons (c_id, lesson_type)
+VALUES (4, 'intermediateSnowboard');
 
-INSERT INTO bookedLessons (c_id, lesson_type, staff_id)
-VALUES (10, 'beginnersSki', 8);
+INSERT INTO bookedLessons (c_id, lesson_type)
+VALUES (10, 'beginnersSki');
 
-INSERT INTO bookedLessons (c_id, lesson_type, staff_id)
-VALUES (7, 'crosscountrySki', 9);
+INSERT INTO bookedLessons (c_id, lesson_type)
+VALUES (7, 'crosscountrySki');
 
 commit;
 
