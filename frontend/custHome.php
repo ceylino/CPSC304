@@ -46,7 +46,7 @@
 
 <div style="height: 30px;"></div>
 
-<!---------------- Forms to add & update data ---------------->
+<!-- Forms to add & update data -->
 <!-- IMPORTANT: before adding any SQL check to see what needs to be done by looking at the createTables file and checking for functional dependencies! Or else THINGS WILL BREAK!!-->
 <center>
   <div style="display: flex; width: 100%; justify-content: space-around;">
@@ -132,12 +132,12 @@
       <!-- Delete a lesson booking -->
       <div>
         <div style="width: 300px;  padding: 30px 20px 10px 20px; background-color: lightGrey; ">
-          <form> <!-- TODO: Add any SQL processing necessary & add form tag details-->
+          <form method="POST" action="custHome.php">
             <center>Delete a lesson booking: <br>
               Are you sure you want to delete this booking? This action cannot be undone.<br>
             </center>
-            <p align="left">Lesson Type: <br> <input type="text" name="deleteType" size="20"> </p>
-            <center><input type="submit" value="Delete Booking" name="deleteBooking"></center>
+            <p align="left">Lesson Type: <br> <input type="text" name="deleteLType" size="20"> </p>
+            <center><input type="submit" value="Delete Booking" name="deleteLBooking"></center>
           </form>
         </div>
       </div>
@@ -147,15 +147,9 @@
       <div style="width: 300px; padding: 20px 20px 10px 20px; background-color: lightGrey; ">
         <center>Buy a new pass: </center>
         <form method="POST" action="custHome.php">
-          <!-- TODO: Add any SQL processing: check if this room number exists. If so: update, if not insert-->
-            <p align="left">Customer Id: <br> <input type="number" name="passCid" size="6"> </p>
-            <p align="left">Pass Id: <br> <input type="number" name="PassPid" size="6"> </p>
-            <p align="left">Purchase Date: (numbers only - yyyymmdd) <br> <input type="text" name="passDate" size="8"> </p>
-            <p align="left">Price:<br> <input type="number" name="passPrice" size="6"> </p>
-            <!-- Note: remember to update the roomResDate table if needed -BEFORE- making any changes to the roomReservation table or it will not work!! Once this is done, refresh the page (redirect to itself)-->
-          <center>
-            <input type="submit" value="Buy Pass" name="newPass">
-          </center>
+          <p align="left">Pass Id: <br> <input type="number" name="passPid" size="6"> </p>
+          <p align="left">Purchase Date: (numbers only - yyyymmdd) <br> <input type="text" name="passDate" size="8"> </p>
+          <center><input type="submit" value="Buy Pass" name="addPass"></center>
         </form>
       </div>
     </div>
@@ -251,135 +245,150 @@ function printResult($result) { //prints results from a select statement
 // Connect to Oracle DB
 if ($db_conn) {
 
-		if (array_key_exists('addRoomReservation', $_POST)) {
-			$tuple = array (
-        ":bind2" => $_POST['addRoomNum'],
-        ":bind3" => 1, //TODO: get this from token - cid
-        ":bind4" => $_POST['addRoomSDate'],
-        ":bind5" => $_POST['addRoomEDate']
-			);
-			$alltuples = array (
-				$tuple
-			);
-      //add reservation
-      $result2 = executeBoundSQL("insert into roomReservation values (:bind2, :bind3, :bind4, :bind5)", $alltuples);
-      OCICommit($db_conn);
+	if (array_key_exists('addRoomReservation', $_POST)) {
+   $tuple = array (
+      ":bind2" => $_POST['addRoomNum'],
+      ":bind3" => 1, //TODO: get this from token - cid
+      ":bind4" => $_POST['addRoomSDate'],
+      ":bind5" => $_POST['addRoomEDate']
+		);
+		$alltuples = array (
+			$tuple
+		);
+    //add reservation
+    $result2 = executeBoundSQL("insert into roomReservation values (:bind2, :bind3, :bind4, :bind5)", $alltuples);
+    OCICommit($db_conn);
 
-      if ($_POST && $success) {
-        header("location: custHome.php");
-      }
-
-		} else
-    if (array_key_exists('updateRoomReservation', $_POST)){
-			$tuple = array (
-        ":bind1" => 1, //TODO: get this from token - cid
-        ":bind2" => $_POST['oldRoomNum'],
-        ":bind4" => $_POST['oldRoomSDate'],
-        ":bind5" => $_POST['oldRoomEDate'],
-
-        ":bind7" => $_POST['newRoomNum'],
-        ":bind9" => $_POST['newRoomSDate'],
-        ":bind0" => $_POST['newRoomEDate']
-			);
-			$alltuples = array (
-				$tuple
-			);
-      $result = executeBoundSQL("select * from roomReservation where room_num=:bind2 and start_date=:bind4 and end_date=:bind5", $alltuples);
-      if($row = OCI_Fetch_Array($result, OCI_BOTH)){
-        //update room reservation
-        executeBoundSQL("update roomReservation set room_num=:bind7, c_id=:bind1, start_date=:bind9, end_date=:bind0 where room_num=:bind2 and start_date=:bind4 and end_date=:bind5", $alltuples);
-        OCICommit($db_conn);
-      }
-      if ($_POST && $success) {
-        header("location: custHome.php");
-      }
-
-		} else
-     if (array_key_exists('addEquipReservation', $_POST)) {
-				$tuple = array (
-          ":bind0" => $_POST['editEquipId'],
-          ":bind1" => 1, //TODO: add token -cid
-          ":bind2" => $_POST['editEquipSDate'],
-          ":bind3" => $_POST['editEquipEDate']
-				);
-				$alltuples = array (
-					$tuple
-				);
-        //add reservation
-        $result2 = executeBoundSQL("insert into equipReservation values (:bind0, :bind1, :bind2, :bind3)", $alltuples);
-        OCICommit($db_conn);
-
-        if ($_POST && $success) {
-          header("location: custHome.php");
-        }
-
-		} else
-    if (array_key_exists('updateEquipReservation', $_POST)) {
-					$tuple = array (
-						":bind1" => $_POST['oldEquipNum'],
-						":bind2" => $_POST['oldEquipSDate'],
-            ":bind3" => $_POST['oldEquipEDate'],
-
-            ":bind4" => $_POST['newEquipNum'],
-            ":bind5" => $_POST['newEquipSDate'],
-            ":bind6" => $_POST['newEquipEDate'],
-
-            ":bind7" => 1, //TODO: get this from token - cid
-
-					);
-          $alltuples = array (
-  					$tuple
-  				);
-
-          $result = executeBoundSQL("select * from equipReservation where equip_id=:bind1 and start_date=:bind2 and end_date=:bind3 ", $alltuples);
-          if($row = OCI_Fetch_Array($result, OCI_BOTH)){
-            //update equip reservation
-            executeBoundSQL("update equipReservation set equip_id=:bind4, c_id=:bind7, start_date=:bind5, end_date=:bind6 where equip_id=:bind1 and start_date=:bind2 and end_date=:bind3 ", $alltuples);
-            OCICommit($db_conn);
-          }
-
-          if ($_POST && $success) {
-        		header("location: custHome.php");
-          }
-    } else
-    if (array_key_exists('addBooking', $_POST)) {
-				$tuple = array (
-          ":bind0" => $_POST['addType'],
-          ":bind1" => 1, //TODO: add token -cid
-				);
-				$alltuples = array (
-					$tuple
-				);
-        //add reservation
-        $result2 = executeBoundSQL("insert into bookedLessons values (:bind1, :bind0)", $alltuples);
-        OCICommit($db_conn);
-
-        if ($_POST && $success) {
-          header("location: custHome.php");
-        }
-
-		} else
-    if (array_key_exists('deleteBooking', $_POST)) {
-					$tuple = array (
-						":bind1" => 1, // TODO: token cid
-						":bind2" => $_POST['deleteType']
-					);
-          $alltuples = array (
-  					$tuple
-  				);
-
-          $result = executeBoundSQL("select * from bookedLessons where c_id=:bind1 and lesson_type=:bind2", $alltuples);
-          if($row = OCI_Fetch_Array($result, OCI_BOTH)){
-            //delete booking
-            executeBoundSQL("delete from bookedLessons where c_id=:bind1, lesson_type=:bind2", $alltuples);
-            OCICommit($db_conn);
-          }
-
-          if ($_POST && $success) {
-        		header("location: custHome.php");
-          }
+    if ($_POST && $success) {
+      header("location: custHome.php");
     }
 
+	} else
+  if (array_key_exists('updateRoomReservation', $_POST)){
+		$tuple = array (
+      ":bind1" => 1, //TODO: get this from token - cid
+      ":bind2" => $_POST['oldRoomNum'],
+      ":bind4" => $_POST['oldRoomSDate'],
+      ":bind5" => $_POST['oldRoomEDate'],
+
+      ":bind7" => $_POST['newRoomNum'],
+      ":bind9" => $_POST['newRoomSDate'],
+      ":bind0" => $_POST['newRoomEDate']
+		);
+		$alltuples = array (
+			$tuple
+		);
+    $result = executeBoundSQL("select * from roomReservation where room_num=:bind2 and start_date=:bind4 and end_date=:bind5", $alltuples);
+    if($row = OCI_Fetch_Array($result, OCI_BOTH)){
+      //update room reservation
+      executeBoundSQL("update roomReservation set room_num=:bind7, c_id=:bind1, start_date=:bind9, end_date=:bind0 where room_num=:bind2 and start_date=:bind4 and end_date=:bind5", $alltuples);
+      OCICommit($db_conn);
+    }
+    if ($_POST && $success) {
+      header("location: custHome.php");
+    }
+
+	} else
+  if (array_key_exists('addEquipReservation', $_POST)) {
+  	$tuple = array (
+      ":bind0" => $_POST['editEquipId'],
+      ":bind1" => 1, //TODO: add token -cid
+      ":bind2" => $_POST['editEquipSDate'],
+      ":bind3" => $_POST['editEquipEDate']
+  	);
+  	$alltuples = array (
+  		$tuple
+  	);
+    //add reservation
+    $result2 = executeBoundSQL("insert into equipReservation values (:bind0, :bind1, :bind2, :bind3)", $alltuples);
+    OCICommit($db_conn);
+
+    if ($_POST && $success) {
+      header("location: custHome.php");
+    }
+
+	} else
+  if (array_key_exists('updateEquipReservation', $_POST)) {
+    $tuple = array (
+    	":bind1" => $_POST['oldEquipNum'],
+    	":bind2" => $_POST['oldEquipSDate'],
+      ":bind3" => $_POST['oldEquipEDate'],
+
+      ":bind4" => $_POST['newEquipNum'],
+      ":bind5" => $_POST['newEquipSDate'],
+      ":bind6" => $_POST['newEquipEDate'],
+
+      ":bind7" => 1, //TODO: get this from token - cid
+
+    );
+    $alltuples = array (
+    	$tuple
+    );
+
+    $result = executeBoundSQL("select * from equipReservation where equip_id=:bind1 and start_date=:bind2 and end_date=:bind3 ", $alltuples);
+    if($row = OCI_Fetch_Array($result, OCI_BOTH)){
+      //update equip reservation
+      executeBoundSQL("update equipReservation set equip_id=:bind4, c_id=:bind7, start_date=:bind5, end_date=:bind6 where equip_id=:bind1 and start_date=:bind2 and end_date=:bind3 ", $alltuples);
+      OCICommit($db_conn);
+    }
+
+    if ($_POST && $success) {
+    	header("location: custHome.php");
+    }
+
+  } else
+  if (array_key_exists('addBooking', $_POST)) {
+  	$tuple = array (
+      ":bind0" => $_POST['addType'],
+      ":bind1" => 1 //TODO: add token -cid
+  	);
+  	$alltuples = array (
+  		$tuple
+  	);
+    //add reservation
+    $result2 = executeBoundSQL("insert into bookedLessons values (:bind1, :bind0)", $alltuples);
+    OCICommit($db_conn);
+
+    if ($_POST && $success) {
+      header("location: custHome.php");
+    }
+
+	} else
+  if(array_key_exists('deleteLBooking', $_POST)){
+    $tuple = array (
+      ":bind1" => $_POST['deleteLType'],
+      ":bind2" => 1 //TODO: add token -cid
+  	);
+    $alltuples = array (
+      $tuple
+    );
+    $result3 = executeBoundSQL("select * from bookedLessons where c_id=:bind2 and lesson_type=:bind1", $alltuples);
+    if($row3 = OCI_Fetch_Array($result3, OCI_BOTH)){
+      //delete booking
+      $resultTemp = executeBoundSQL("delete from bookedLessons where c_id=:bind2 and lesson_type=:bind1", $alltuples);
+      OCICommit($db_conn);
+    }
+    if ($_POST && $success) {
+    	//header("location: custHome.php");
+    }
+  }else
+  if(array_key_exists('addPass', $_POST)){
+    $tuple = array (
+      ":bind0" => 1, //TODO: add token -cid
+      ":bind1" => $_POST['passPid'],
+      ":bind2" => $_POST['passDate'],
+      ":bind3" => 50 // pass price is fixed.
+  	);
+    $alltuples = array (
+      $tuple
+    );
+    //add reservation
+    executeBoundSQL("insert into purchasedLiftPass values (:bind0, :bind1, :bind2, :bind3)", $alltuples);
+    OCICommit($db_conn);
+    if ($_POST && $success) {
+    	header("location: custHome.php");
+    }
+  }
 
 	//Commit to save changes...
 	OCILogoff($db_conn);
