@@ -3,16 +3,14 @@
 
 -- roomRate (room_type, room_rate)
 -- room (room_num, room_type, room_rate)
--- roomResDate(room_num, start_date, end_date)
--- roomReservation (confirm_num, room_num, c_id, start_date, end_date)
+-- roomReservation (room_num, c_id, start_date, end_date)
 
 -- hotelStaff (staff_id, s_name, phone)
 -- skiStaff (staff_id, s_name, phone)
 
 -- rentalEquipRate (equip_type, rental_rate)
 -- rentalEquip (equip_id, equip_type, rental_rate)
--- equipResDate (equip_id, start_date, end_date)
--- equipReservation (confirm_num, equip_id, c_id, start_date, end_date)
+-- equipReservation (equip_id, c_id, start_date, end_date)
 
 -- roomManagement (room_num, staff_id)
 -- equipManagement (equip_id, staff_id)
@@ -21,7 +19,7 @@
 
 -- lessonTime (type, lesson_datetime)
 -- lesson (staff_id, lesson_datetime, lesson_type)
--- bookedLessons (c_id, lesson_type, staff_id)
+-- bookedLessons (c_id, lesson_type)
 
 
 Notes:
