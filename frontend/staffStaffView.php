@@ -3,6 +3,7 @@
 
 <!-- Page title -->
 <title>Hotel Ski Resort</title>
+
 <p> Welcome staff id:<?php echo $_POST[""];?> </p> <!-- TODO: echo the staff id. -->
 
 <div style="display: flex;
