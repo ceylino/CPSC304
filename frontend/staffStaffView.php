@@ -3,6 +3,7 @@
 
 <!-- Page title -->
 <title>Hotel Ski Resort</title>
+
 <p> Welcome staff id:<?php echo $_POST[""];?> </p> <!-- TODO: echo the staff id. -->
 
 <div style="display: flex;
@@ -39,41 +40,54 @@
         </form>
       </center>
     </div>
-
-    <div style="height: 10px;"></div>
-
-    <div style="background-color:lightGrey;
-                  width: 200px;
-                  padding-top: 20px;
-                  padding-bottom: 1px">
-      <!-- Options -->
-      <center>
-        <form action=""> <!-- TODO: Add rerouting to necessary forms -->
-          <input type="submit" value="Add hotel staff" name="newHotelStaff">
-        </form>
-
-        <form action=""> <!-- TODO: Add rerouting to necessary forms -->
-          <input type="submit" value="Delete hotel staff" name="deleteHotelStaff">
-        </form>
-
-        <form action=""> <!-- TODO: Add rerouting to necessary forms -->
-          <input type="submit" value="Update hotel staff" name="updateHotelStaff">
-        </form>
-
-        <form action=""> <!-- TODO: Add rerouting to necessary forms -->
-          <input type="submit" value="Add ski staff" name="newSkiStaff">
-        </form>
-
-        <form action=""> <!-- TODO: Add rerouting to necessary forms -->
-          <input type="submit" value="Delete ski staff" name="deleteSkiStaff">
-        </form>
-
-        <form action=""> <!-- TODO: Add rerouting to necessary forms -->
-          <input type="submit" value="Update ski staff" name="updateSkiStaff">
-        </form>
-
-      </center>
-    </div>
-    <div style="height: 10px;"></div>
-
+  </div>
 </div>
+
+<div style="height: 10px;"></div>
+
+<!---------------- Forms to add & update data ---------------->
+<!-- IMPORTANT: before adding any SQL check to see what needs to be done by looking at the createTables file and checking for functional dependencies! Or else THINGS WILL BREAK!!-->
+<center>
+  <div style="display: flex;
+              width: 100%;
+              justify-content: space-around;">
+    <div> <!-- Hotel Staff -->
+      <div style="width: 300px; padding: 20px 20px 10px 20px; background-color: lightGrey; ">
+        <center>Add new or update a hotel staff: </center>
+        <form method="POST" action="staffStaffView.php">
+          <!-- TODO: Add any SQL processing: check if this room number exists. If so: update, if not insert-->
+            <p align="left">Staff id: <br> <input type="number" name="editHSid" size="6"> </p>
+            <p align="left">Staff name: <br> <input type="text" name="editHSname" size="20"> </p>
+            <p align="left">Phone: <br> <input type="text" name="editHSphone" size="20"> </p>
+            <!-- Note: remember to update the roomRate table if needed -BEFORE- making any changes to the room table or it will not work!! Once this is done, refresh the page (redirect to itself)-->
+          <center>
+            <input type="submit" value="Add/Update" name="editHStaff">
+          </center>
+        </form>
+      </div>
+
+      <div style="height: 10px;"></div>
+
+
+      <div> <!-- Ski Staff -->
+      <div style="width: 300px; padding: 20px 20px 10px 20px; background-color: lightGrey; ">
+        <center>Add new or update a ski staff: </center>
+        <form method="POST" action="staffStaffView.php">
+          <!-- TODO: Add any SQL processing: check if this room number exists. If so: update, if not insert-->
+            <p align="left">Staff id: <br> <input type="number" name="editSSid" size="6"> </p>
+            <p align="left">Staff name: <br> <input type="text" name="editSSname" size="20"> </p>
+            <p align="left">Phone: <br> <input type="text" name="editSSphone" size="20"> </p>
+            <!-- Note: remember to update the roomRate table if needed -BEFORE- making any changes to the room table or it will not work!! Once this is done, refresh the page (redirect to itself)-->
+          <center>
+            <input type="submit" value="Add/Update" name="editSStaff">
+          </center>
+        </form>
+      </div>
+
+      <div style="height: 10px;"></div>
+      </div>
+    </div>
+  </div>
+</center>
+
+    
