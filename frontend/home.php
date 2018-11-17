@@ -3,69 +3,14 @@ Staff and customers can log in from here and then get redirected to the appropri
 If their logins are incorrect then they remain on this page and get an error.
 -->
 
-<!-- Page title -->
-<title>Hotel Ski Resort</title>
-<center>
-  <h1>Hotel Ski Resort</h1>
-
-  <p>Insert your id below:</p>
-
-  <!-- Staff Login -->
-  <div style="background-color:lightGrey;
-              width: 25%;
-              padding-top: 10px;
-              padding-bottom: 10px">
-    <h3>Staff Login</h3>
-    <form method="POST" action="home.php">
-    <!-- if not a existing account, stay in same page and get error message -->
-
-      Id: <input type="number" name="staff_id" size="6">
-      <input type="submit" value="Log in" name="staffIdLogin">
-    </form>
-  </div>
-
-  <div style="height: 10px;"></div>
-
-  <!-- Customer Login -->
-  <div style="background-color:lightGrey;
-              width: 25%;
-              padding-top: 10px;
-              padding-bottom: 10px">
-    <h3>Customer Login</h3>
-    <form method="POST" action="home.php">
-      Id: <input type="number" name="c_id" size="6">
-      <input type="submit" value="Log in" name="customerIdLogin">
-    </form>
-  </div>
-
-  <div style="height: 10px;"></div>
-
-  <!-- New Customers: Create new account -->
-  <div style="background-color:lightGrey;
-              width: 25%;
-              padding-top: 10px;
-              padding-bottom: 10px">
-    <h3>New Customers</h3>
-    <p>Don't have an account? Create one below:</p>
-    <form method="POST" action="home.php">
-      <div style="padding-left: 50px;">
-        <p align="left">Id: <br> <input type="number" name="newC_id" size="6"> </p>
-        <p align="left">Name: <br> <input type="text" name="newC_name" size="20"> </p>
-        <p align="left">E-mail: <br> <input type="text" name="newC_email" size="40"> </p>
-        <p align="left">Credit Card Number: (max: 16 digits) <br> <input type="number" name="newC_CCnum" size="16"> </p>
-      </div>
-      <input type="submit" value="Create New Account" name="newCustomer">
-    </form>
-  </div>
-
-</center>
-
-
+<!-- Starting session and setting session variables -->
 <!--  Setup connection and connect to DB -->
 <?php
 //Setup
+session_start();
+
 $success = True; //keep track of errors so it redirects the page only if there are no errors
-$db_conn = OCILogon("ora_u3i0b", "a14691142", "dbhost.ugrad.cs.ubc.ca:1522/ug"); // TODO: make this git ignored
+$db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug"); // TODO: make this git ignored
 
 function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
 	//echo "<br>running ".$cmdstr."<br>";
@@ -161,12 +106,13 @@ if ($db_conn) {
       if ($_POST && $success && $row) {
         header("location: staffDir.php");
         //TODO: how do we send JSON web token with it so we can get the id's?
-      }
-
-		} else
+			}
+		}
+      else
 			if (array_key_exists('customerIdLogin', $_POST)) {
+				$customer_id = $_POST['c_id'];
 				$tuple = array (
-					":bind1" => $_POST['c_id']
+					":bind1" => $customer_id
 				);
 				$alltuples = array (
 					$tuple
@@ -176,10 +122,12 @@ if ($db_conn) {
         $row = OCI_Fetch_Array($result, OCI_BOTH);
 
         if ($_POST && $success && $row) {
+					setcookie("custid", $customer_id);
           header("location: custHome.php");
         }
 
-			} else
+			} 
+			else
 				if (array_key_exists('newCustomer', $_POST)) {
 					$tuple = array (
 						":bind1" => $_POST['newC_id'],
@@ -193,9 +141,9 @@ if ($db_conn) {
 					$result = executeBoundSQL("insert into customer values (:bind1, :bind2, :bind3, :bind4)", $alltuples);
 					OCICommit($db_conn);
 
-          if ($_POST && $success) {
-        		header("location: custHome.php");
-          }
+          // if ($success) {
+        	// 	header("location: custVariables.php");
+          // }
         }
 
 	//Commit to save changes...
@@ -207,3 +155,62 @@ if ($db_conn) {
 }
 
 ?>
+<!DOCTYPE html>
+<html>
+<!-- Page title -->
+<title>Hotel Ski Resort</title>
+<center>
+  <h1>Hotel Ski Resort</h1>
+
+  <p>Insert your id below:</p>
+
+  <!-- Staff Login -->
+  <div style="background-color:lightGrey;
+              width: 25%;
+              padding-top: 10px;
+              padding-bottom: 10px">
+    <h3>Staff Login</h3>
+    <form method="POST" action="home.php">
+    <!-- if not a existing account, stay in same page and get error message -->
+
+      Id: <input type="number" name="staff_id" size="6">
+      <input type="submit" value="Log in" name="staffIdLogin">
+    </form>
+  </div>
+
+  <div style="height: 10px;"></div>
+
+  <!-- Customer Login -->
+  <div style="background-color:lightGrey;
+              width: 25%;
+              padding-top: 10px;
+              padding-bottom: 10px">
+    <h3>Customer Login</h3>
+    <form method="POST" action="home.php">
+      Id: <input type="number" name="c_id" size="6">
+      <input type="submit" value="Log in" name="customerIdLogin">
+    </form>
+  </div>
+
+  <div style="height: 10px;"></div>
+
+  <!-- New Customers: Create new account -->
+  <div style="background-color:lightGrey;
+              width: 25%;
+              padding-top: 10px;
+              padding-bottom: 10px">
+    <h3>New Customers</h3>
+    <p>Don't have an account? Create one below:</p>
+    <form method="POST" action="home.php">
+      <div style="padding-left: 50px;">
+        <p align="left">Id: <br> <input type="number" name="newC_id" size="6"> </p>
+        <p align="left">Name: <br> <input type="text" name="newC_name" size="20"> </p>
+        <p align="left">E-mail: <br> <input type="text" name="newC_email" size="40"> </p>
+        <p align="left">Credit Card Number: (max: 16 digits) <br> <input type="number" name="newC_CCnum" size="16"> </p>
+      </div>
+      <input type="submit" value="Create New Account" name="newCustomer">
+    </form>
+  </div>
+
+</center>
+</html>
