@@ -9,7 +9,7 @@
   <div style="background-color:lightGrey; width: 50%; padding-top: 10px; padding-bottom: 10px">
     <h4> Personal Information </h4>
     <!-- TODO: this table printing set up needs to be completed -->
-      
+
   </div>
 
   <div style="height: 10px;"></div>
@@ -17,7 +17,7 @@
 
   <div style="height: 30px;"></div>
 
-<!---------------- Form: ---------------->
+<!-- Form: -->
 <center>
 <!-- Update personal info -->
   <div>
@@ -36,7 +36,7 @@
 <!--  Setup connection and connect to DB -->
 <?php
 $success = True; //keep track of errors so it redirects the page only if there are no errors
-$db_conn = OCILogon("ora_c5b1b", "a34248161", "dbhost.ugrad.cs.ubc.ca:1522/ug"); 
+$db_conn = OCILogon("ora_c5b1b", "a34248161", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 
 function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
   //echo "<br>running ".$cmdstr."<br>";
@@ -116,19 +116,19 @@ function printResult($result) { //prints results from a select statement
 }
 
 if ($db_conn) {
-  if (array_key_exists('updateStaff', $_POST)) { 
-    $tuple = array ( 
+  if (array_key_exists('updateStaff', $_POST)) {
+    $tuple = array (
       ":bind1" => 1, //TODO
       ":bind2" => $_POST['editName'],
-      ":bind3" => $_POST['editPhone'], 
+      ":bind3" => $_POST['editPhone'],
       );
     $alltuples = array ($tuple);
     $result = executeBoundSQL("select * from hotelStaff where staff_id=:bind1", $alltuples);
-    if($row = OCI_Fetch_Array($result, OCI_BOTH)){ 
+    if($row = OCI_Fetch_Array($result, OCI_BOTH)){
       executeBoundSQL("update hotelStaff set s_name=:bind2, phone=:bind3 where staff_id=:bind1", $alltuples);
     } else {
       $result = executeBoundSQL("select * from skiStaff where staff_id=:bind1", $alltuples);
-      if($row = OCI_Fetch_Array($result, OCI_BOTH)){ 
+      if($row = OCI_Fetch_Array($result, OCI_BOTH)){
           executeBoundSQL("update skiStaff set s_name=:bind2, phone=:bind3 where staff_id=:bind1", $alltuples);
       }
     }
@@ -146,7 +146,3 @@ if ($db_conn) {
   echo htmlentities($e['message']);
 }
 ?>
-
-
-
-
