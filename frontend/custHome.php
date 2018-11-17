@@ -5,9 +5,7 @@
 <title>Hotel Ski Resort</title>
 <p> Welcome customer id:<?php echo $_POST[""];?> </p> <!-- TODO: echo the customer id. -->
 
-<div style="display: flex;
-            width: 100%;
-            justify-content: space-between;">
+<div style="display: flex; width: 100%; justify-content: space-between;">
 
   <!-- View table entries -->
   <div style="justify-content: flex-start;">
@@ -35,12 +33,9 @@
   <!-- Directory -->
   <div style="justify-content: flex-end;">
     <!-- Edit Profile-->
-    <div style="background-color:lightGrey;
-                  width: 200px;
-                  padding-top: 20px;
-                  padding-bottom: 1px">
+    <div style="background-color:lightGrey; width: 200px; padding-top: 20px; padding-bottom: 1px">
       <center>
-        <form action=""> <!-- TODO: Add rerouting to other staff pages -->
+        <form action="custProfile.php">
           <input type="submit" value="Edit Profile" name="custProfile">
         </form>
       </center>
@@ -54,9 +49,7 @@
 <!---------------- Forms to add & update data ---------------->
 <!-- IMPORTANT: before adding any SQL check to see what needs to be done by looking at the createTables file and checking for functional dependencies! Or else THINGS WILL BREAK!!-->
 <center>
-  <div style="display: flex;
-              width: 100%;
-              justify-content: space-around;">
+  <div style="display: flex; width: 100%; justify-content: space-around;">
 
     <div> <!-- Room Reservations -->
       <div style="width: 300px; padding: 20px 20px 10px 20px; background-color: lightGrey; ">
@@ -239,23 +232,32 @@ function printResult($result) { //prints results from a select statement
 // Connect to Oracle DB
 if ($db_conn) {
 
-		if (array_key_exists('staffIdLogin', $_POST)) {
+		if (array_key_exists('editRoomReservation', $_POST)) {
 			$tuple = array (
-				":bind1" => $_POST['staff_id']
+				":bind1" => $_POST['editRoomConfNum'],
+        ":bind2" => $_POST['editRoomNum'],
+        ":bind3" => $_POST['editRoomCid'],
+        ":bind4" => $_POST['editRoomSDate'],
+        ":bind5" => $_POST['editRoomEDate']
 			);
 			$alltuples = array (
 				$tuple
 			);
-			$result = executeBoundSQL("select * from hotelStaff h where h.staff_id =:bind1 union select * from skiStaff s where s.staff_id =:bind1", $alltuples);
-      $row = OCI_Fetch_Array($result, OCI_BOTH);
+      $result = executeBoundSQL("select * from roomReservation where confirm_num =:bind1", $alltuples);
+      if($row = OCI_Fetch_Array($result, OCI_BOTH)){
+        //update room
+        executeBoundSQL("update roomReservation set room_num=:bind2, c_id=:bind3, start_date=:bind4, end_date=:bind5 where confirm_num=:bind1", $alltuples);
+      }else{
+        //add
+        executeBoundSQL("insert into roomReservation values (:bind1, :bind2, :bind3, :bind4, :bind5)", $alltuples);
+      }
 
-      if ($_POST && $success && $row) {
-        header("location: staffDir.php");
-        //TODO: how do we send JSON web token with it so we can get the id's?
+      if ($_POST && $success) {
+        header("location: custHome.php");
       }
 
 		} else
-			if (array_key_exists('customerIdLogin', $_POST)) {
+			if (array_key_exists('', $_POST)) {
 				$tuple = array (
 					":bind1" => $_POST['c_id']
 				);
