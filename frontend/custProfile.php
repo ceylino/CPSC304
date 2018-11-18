@@ -5,9 +5,11 @@
 session_start();
 
 $success = True; //keep track of errors so it redirects the page only if there are no errors
-$db_conn = OCILogon("ora_u3i0b", "a14691142", "dbhost.ugrad.cs.ubc.ca:1522/ug");
+$db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 
 $custid = $_POST['customerid'];
+setcookie("custid", $custid);
+$custidcookie = $_COOKIE["custid"];
 ?>
 
 <title>Hotel Ski Resort</title>
@@ -28,18 +30,18 @@ $custid = $_POST['customerid'];
 
 <center>
   <!-- Personal  Info-->
-  <p> Welcome customer id: <?php echo $custid;?> </p>
+  <p> Welcome customer id: <?php echo $custidcookie;?> </p>
 
   <div style="background-color:lightGrey; width: 50%; padding-top: 10px; padding-bottom: 10px">
     <h4> Personal Information </h4>
       <?php
-        $result = executePlainSQL("select * customer where c_id=$custid");
+        $result = executePlainSQL("select * from customer where c_id=$custidcookie");
         echo "<table>";
 
         echo "<tr><th>Id:</th><th>Name:</th><th>E-mail:</th><th>Credit Card Number:</th></tr>";
 
         while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-          echo "<tr><td>" . $row["ID"] . "</td><td>" . $row["NAME"] . "</td></tr>";
+          echo "<tr><td>" . $row["ID"] . "</td><td>" . $row["C_NAME"] . "</td><td>" . $row["E_MAIL"] . "</td><td>" . $row["CREDITCARD_NUM"] . "</td></tr>";
         }
         echo "</table>";
       ?>
@@ -73,7 +75,7 @@ $custid = $_POST['customerid'];
       <center>Update Personal Information: </center>
       <form method="POST" action="custProfile.php"> <!-- TODO: Add any SQL processing necessary-->
           <!--<p align="left">Id: <br> <input type="number" name="c_id" size="6"> </p>-->
-          <input type="hidden" name="customerid" value="<?php echo $custid; ?>">
+          <input type="hidden" name="customerid" value="<?php echo $custidcookie; ?>">
           <p align="left">Name: <br> <input type="text" name="editName" size="20"> </p>
           <p align="left">E-mail: <br> <input type="text" name="editEmail" size="40"> </p>
           <p align="left">Credit Card Number: <br> <input type="number" name="editCCnum" size="16"> </p>
@@ -92,8 +94,8 @@ $custid = $_POST['customerid'];
   <div>
     <div style="width: 300px;  padding: 30px 20px 10px 20px; background-color: lightGrey; ">
       <form method="POST" action="custProfile.php"> <!-- TODO: Add any SQL processing necessary-->
+          <input type="hidden" name="customerid" value="<?php echo $custidcookie; ?>">
         <center>
-
           <input type="submit" value="Become a member" name="newMember">
           <!-- Check if person is a member already, if so: do nothing?. If not then add them to the membership table and then refresh this page so the membership info can appear in the table above-->
         </center>
@@ -211,12 +213,15 @@ if ($db_conn) {
     } else
     if (array_key_exists('newMember', $_POST)) {
       $tuple = array (
-       ":bind1" => $_POST['customerid']  //TODO: check if this works JOYCE
+       ":bind1" => $_POST['customerid'],  //TODO: check if this works JOYCE
+       ":bind2" => 12.50,
+       ":bind3" => 0,
+       ":bind4" => '20181121',
       );
       $alltuples = array (
         $tuple
       );
-      $result = executeBoundSQL("insert into member values (:bind1, 12.50, 0, '20181121')", $alltuples);
+      $result = executeBoundSQL("insert into member values (:bind1, :bind2, :bind3, :bind4)", $alltuples);
 
       printResult($result);
       $row = OCI_Fetch_Array($result, OCI_BOTH);
