@@ -2,6 +2,11 @@
 
 <!-- Page title -->
 <?php
+session_start();
+
+$success = True; //keep track of errors so it redirects the page only if there are no errors
+$db_conn = OCILogon("ora_u3i0b", "a14691142", "dbhost.ugrad.cs.ubc.ca:1522/ug");
+
 $custid = $_POST['customerid'];
 ?>
 
@@ -9,24 +14,20 @@ $custid = $_POST['customerid'];
 
 <center>
   <!-- Personal  Info-->
-  <p> Welcome customer id: <?php echo $custid;?> </p> <!-- TODO: echo the customer id.
+  <p> Welcome customer id: <?php echo $custid;?> </p>
+
   <div style="background-color:lightGrey; width: 50%; padding-top: 10px; padding-bottom: 10px">
     <h4> Personal Information </h4>
-    <!-- TODO: this table printing set up needs to be completed -->
-
       <?php
+        $result = executePlainSQL("select * customer where c_id=$custid");
+        echo "<table>";
 
-        //$result = executePlainSQL("select * customer where c_id=3");
-        //TODO: set up the cid & use views
+        echo "<tr><th>Id:</th><th>Name:</th><th>E-mail:</th><th>Credit Card Number:</th></tr>";
 
-        //echo "<table>";
-
-       // echo "<tr><th>Id:</th><th>Name:</th><th>E-mail:</th><th>Credit Card Number:</th></tr>";
-
-        //while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-          //echo "<tr><td>" . $row["ID"] . "</td><td>" . $row["NAME"] . "</td></tr>";
-        //}
-        //echo "</table>";
+        while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+          echo "<tr><td>" . $row["ID"] . "</td><td>" . $row["NAME"] . "</td></tr>";
+        }
+        echo "</table>";
       ?>
   </div>
 
@@ -90,9 +91,6 @@ $custid = $_POST['customerid'];
 <!--  Setup connection and connect to DB -->
 <?php
 //Setup
-$success = True; //keep track of errors so it redirects the page only if there are no errors
-$db_conn = OCILogon("ora_u3i0b", "a14691142", "dbhost.ugrad.cs.ubc.ca:1522/ug");
-
 function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
   //echo "<br>running ".$cmdstr."<br>";
   global $db_conn, $success;

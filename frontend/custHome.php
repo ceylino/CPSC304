@@ -46,6 +46,7 @@ $custid = $_COOKIE["custid"];
       <center>
         <form action="custProfile.php">
           <input type="submit" value="Edit Profile" name="custProfile">
+          <input type="hidden" name="customerid" value="<?php echo $custid; ?>">
         </form>
       </center>
     </div>
