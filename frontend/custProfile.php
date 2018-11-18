@@ -1,23 +1,28 @@
 <!-- Customer profile: This is the page where customer may view their profiles and edit their data -->
 
 <!-- Page title -->
+<?php
+$custid = $_POST['customerid'];
+?>
+
 <title>Hotel Ski Resort</title>
 
 <center>
   <!-- Personal  Info-->
-  <p> Welcome customer id: 1 </p> <!-- TODO: echo the customer id. 
+  <p> Welcome customer id: <?php echo $custid;?> </p> <!-- TODO: echo the customer id.
   <div style="background-color:lightGrey; width: 50%; padding-top: 10px; padding-bottom: 10px">
     <h4> Personal Information </h4>
     <!-- TODO: this table printing set up needs to be completed -->
+
       <?php
-        
-        //$result = executePlainSQL("select * customer where c_id=3"); 
+
+        //$result = executePlainSQL("select * customer where c_id=3");
         //TODO: set up the cid & use views
-        
+
         //echo "<table>";
-        
+
        // echo "<tr><th>Id:</th><th>Name:</th><th>E-mail:</th><th>Credit Card Number:</th></tr>";
-        
+
         //while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
           //echo "<tr><td>" . $row["ID"] . "</td><td>" . $row["NAME"] . "</td></tr>";
         //}
@@ -47,12 +52,13 @@
 
 <!--- Forms to add & update data --->
 <center>
-<!-- Update personal info -->
+  <!-- Update personal info -->
   <div>
     <div style="width: 300px; padding: 20px 20px 10px 20px; background-color: lightGrey; ">
       <center>Update Personal Information: </center>
       <form method="POST" action="custProfile.php"> <!-- TODO: Add any SQL processing necessary-->
-          <p align="left">Id: <br> <input type="number" name="c_id" size="6"> </p>
+          <!--<p align="left">Id: <br> <input type="number" name="c_id" size="6"> </p>-->
+          <input type="hidden" name="customerid" value="<?php echo $custid; ?>">
           <p align="left">Name: <br> <input type="text" name="editName" size="20"> </p>
           <p align="left">E-mail: <br> <input type="text" name="editEmail" size="40"> </p>
           <p align="left">Credit Card Number: <br> <input type="number" name="editCCnum" size="16"> </p>
@@ -72,7 +78,7 @@
     <div style="width: 300px;  padding: 30px 20px 10px 20px; background-color: lightGrey; ">
       <form method="POST" action="custProfile.php"> <!-- TODO: Add any SQL processing necessary-->
         <center>
-          
+
           <input type="submit" value="Become a member" name="newMember">
           <!-- Check if person is a member already, if so: do nothing?. If not then add them to the membership table and then refresh this page so the membership info can appear in the table above-->
         </center>
@@ -85,7 +91,7 @@
 <?php
 //Setup
 $success = True; //keep track of errors so it redirects the page only if there are no errors
-$db_conn = OCILogon("ora_c5b1b", "a34248161", "dbhost.ugrad.cs.ubc.ca:1522/ug"); 
+$db_conn = OCILogon("ora_u3i0b", "a14691142", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 
 function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
   //echo "<br>running ".$cmdstr."<br>";
@@ -169,7 +175,7 @@ if ($db_conn) {
 
     if (array_key_exists('updateCust', $_POST)) {
       $tuple = array (
-        ":bind1" => $_POST['c_id'],
+        ":bind1" => $_POST['customerid'],
         ":bind2" => $_POST['editName'],
         ":bind3" => $_POST['editEmail'],
         ":bind4" => $_POST['editCCnum'],
@@ -178,7 +184,7 @@ if ($db_conn) {
         $tuple
       );
       $result = executeBoundSQL("select * from customer where c_id=:bind1", $alltuples);
-      
+
       if($row = OCI_Fetch_Array($result, OCI_BOTH)){
         //update room
         executeBoundSQL("update customer set c_name=:bind2, e_mail=:bind3, creditcard_num=:bind4 where c_id=:bind1", $alltuples);
@@ -191,25 +197,24 @@ if ($db_conn) {
       }
 
     } else
-        if (array_key_exists('newMember', $_POST)) {
-          $tuple = array (
-           //get c_id 
-          );
-          $alltuples = array (
-            $tuple
-          );
-          //replace 1 with customer id 
-          $result = executeBoundSQL("insert into member values (1, 12.50, 0, '20181121')", $alltuples);
+    if (array_key_exists('newMember', $_POST)) {
+      $tuple = array (
+       ":bind1" => $_POST['customerid']  //TODO: check if this works JOYCE
+      );
+      $alltuples = array (
+        $tuple
+      );
+      $result = executeBoundSQL("insert into member values (:bind1, 12.50, 0, '20181121')", $alltuples);
 
-          printResult($result);
-          $row = OCI_Fetch_Array($result, OCI_BOTH);
+      printResult($result);
+      $row = OCI_Fetch_Array($result, OCI_BOTH);
 
-          OCICommit($db_conn);
+      OCICommit($db_conn);
 
-          if ($_POST && $success) {
-            header("location: custProfile.php");
-          }
-        }
+      if ($_POST && $success) {
+        header("location: custProfile.php");
+      }
+    }
 
   //Commit to save changes...
   OCILogoff($db_conn);
@@ -220,7 +225,3 @@ if ($db_conn) {
 }
 
 ?>
-
-
-
-

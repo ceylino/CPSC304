@@ -3,6 +3,14 @@ Staff and customers can log in from here and then get redirected to the appropri
 If their logins are incorrect then they remain on this page and get an error.
 -->
 
+<!-- Starting session and setting session variables -->
+<!--  Setup connection and connect to DB -->
+<?php
+session_start();
+?>
+
+<!DOCTYPE html>
+<html>
 <!-- Page title -->
 <title>Hotel Ski Resort</title>
 <center>
@@ -59,13 +67,11 @@ If their logins are incorrect then they remain on this page and get an error.
   </div>
 
 </center>
+</html>
 
-
-<!--  Setup connection and connect to DB -->
 <?php
-//Setup
 $success = True; //keep track of errors so it redirects the page only if there are no errors
-$db_conn = OCILogon("ora_u3i0b", "a14691142", "dbhost.ugrad.cs.ubc.ca:1522/ug"); // TODO: make this git ignored
+$db_conn = OCILogon("ora_u3i0b", "a14691142", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 
 function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
 	//echo "<br>running ".$cmdstr."<br>";
@@ -160,43 +166,44 @@ if ($db_conn) {
 
       if ($_POST && $success && $row) {
         header("location: staffDir.php");
-        //TODO: how do we send JSON web token with it so we can get the id's?
+			}
+		}else
+    if (array_key_exists('customerIdLogin', $_POST)) {
+			$customer_id = $_POST['c_id'];
+			$tuple = array (
+				":bind1" => $customer_id
+			);
+			$alltuples = array (
+				$tuple
+			);
+
+      $result = executeBoundSQL("select c_id from customer where c_id =:bind1", $alltuples);
+      $row = OCI_Fetch_Array($result, OCI_BOTH);
+
+      if ($_POST && $success && $row) {
+				setcookie("custid", $customer_id);
+        header("location: custHome.php");
       }
 
-		} else
-			if (array_key_exists('customerIdLogin', $_POST)) {
+		}
+		else
+			if (array_key_exists('newCustomer', $_POST)) {
 				$tuple = array (
-					":bind1" => $_POST['c_id']
+					":bind1" => $_POST['newC_id'],
+					":bind2" => $_POST['newC_name'],
+          ":bind3" => $_POST['newC_email'],
+          ":bind4" => $_POST['newC_CCnum']
 				);
-				$alltuples = array (
+        $alltuples = array (
 					$tuple
 				);
+				$result = executeBoundSQL("insert into customer values (:bind1, :bind2, :bind3, :bind4)", $alltuples);
+				OCICommit($db_conn);
 
-        $result = executeBoundSQL("select c_id from customer where c_id =:bind1", $alltuples);
-        $row = OCI_Fetch_Array($result, OCI_BOTH);
-
-        if ($_POST && $success && $row) {
-          header("location: custHome.php");
-        }
-
-			} else
-				if (array_key_exists('newCustomer', $_POST)) {
-					$tuple = array (
-						":bind1" => $_POST['newC_id'],
-						":bind2" => $_POST['newC_name'],
-            ":bind3" => $_POST['newC_email'],
-            ":bind4" => $_POST['newC_CCnum']
-					);
-          $alltuples = array (
-  					$tuple
-  				);
-					$result = executeBoundSQL("insert into customer values (:bind1, :bind2, :bind3, :bind4)", $alltuples);
-					OCICommit($db_conn);
-
-          if ($_POST && $success) {
+        if ($_POST && $success) {
         		header("location: custHome.php");
           }
-        }
+      }
 
 	//Commit to save changes...
 	OCILogoff($db_conn);
