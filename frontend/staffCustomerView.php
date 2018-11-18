@@ -249,4 +249,74 @@ if ($db_conn) {
       }
       echo "<meta http-equiv='refresh' content='0'>";
 
-    } else if (ar
+    } else if (array_key_exists('deleteCust', $_POST)) {
+        $tuple = array (
+         //get c_id 
+          ":bind1" => $_POST['deleteC_id'],
+        );
+        $alltuples = array (
+          $tuple
+        );
+
+        //if customer id exists, then delete it
+        $result = executeBoundSQL("select * from customer where c_id=:bind1", $alltuples);
+        if($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+          $result = executeBoundSQL("delete from customer where c_id=:bind1", $alltuples);
+        }
+
+        OCICommit($db_conn);
+
+        if ($_POST && $success && $row) {
+          header("location: staffCustomerView.php");
+        }
+        echo "<meta http-equiv='refresh' content='0'>";
+
+      } else if (array_key_exists('addMember', $_POST)){
+         $tuple = array (
+           //get c_id 
+            ":bind1" => $_POST['addIDMember'],
+            ":bind2" => 12.50,
+            ":bind3" => 0,
+            ":bind4" => date("Ymd"),  //LOCALTIMESTAMP TODO
+          );
+          $alltuples = array (
+            $tuple
+          );
+
+          //check if customer is already a member
+
+          $result = executeBoundSQL("select * from member where c_id=:bind1", $alltuples);
+          if($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+            echo "Already a member";
+          } else {
+
+            $result = executeBoundSQL("select * from customer where c_id=:bind1", $alltuples); 
+            if($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+                  $result = executeBoundSQL("insert into member values (:bind1, :bind2, :bind3, :bind4)", $alltuples); 
+                  echo "Membership created";
+
+            } else {
+              echo "customer with that that ID does not exist!";
+            }
+
+          }
+
+          OCICommit($db_conn);
+
+          if ($_POST && $success) {
+            header("location: staffCustomerView.php");
+          }
+          echo "<meta http-equiv='refresh' content='0'>";
+
+      }
+
+  //Commit to save changes...
+  OCILogoff($db_conn);
+} else {
+  echo "cannot connect";
+  $e = OCI_Error(); // For OCILogon errors pass no handle
+  echo htmlentities($e['message']);
+}
+
+?>
+
