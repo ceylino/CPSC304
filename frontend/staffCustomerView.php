@@ -1,14 +1,17 @@
 
 <?php
-
+session_start();
+$staff_id = $_POST['staffid'];
+setcookie("staffid", $staff_id);
+$staffidcookie = $_COOKIE["staffid"];
 //Setup
 $success = True; //keep track of errors so it redirects the page only if there are no errors
-$db_conn = OCILogon("ora_i4s0b", "a13641155", "dbhost.ugrad.cs.ubc.ca:1522/ug"); // TODO: make this git ignored
+$db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug"); // TODO: make this git ignored
 ?>
 
 <!-- Page title -->
 <title>Hotel Ski Resort</title>
-<p> Welcome staff id:<?php echo $_POST[""];?> </p> <!-- TODO: echo the staff id. -->
+<p> Welcome staff id:<?php echo $staffidcookie;?> </p> <!-- TODO: echo the staff id. -->
 
 
 <div style="display: flex;
@@ -63,6 +66,7 @@ $db_conn = OCILogon("ora_i4s0b", "a13641155", "dbhost.ugrad.cs.ubc.ca:1522/ug");
                   padding-bottom: 1px">
       <center>
         <form method="POST" action="staffDir.php"> <!-- TODO: Add rerouting to other staff pages -->
+        <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
           <input type="submit" value="Back to Main Page" name="staffDir">
         </form>
       </center>
@@ -87,6 +91,7 @@ $db_conn = OCILogon("ora_i4s0b", "a13641155", "dbhost.ugrad.cs.ubc.ca:1522/ug");
       <div style="width: 300px; padding: 20px 20px 10px 20px; background-color: lightGrey; ">
         <center>Add New/Update Customer: </center>
         <form method="POST" action="staffCustomerView.php">
+        <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
           <!-- TODO: Add any SQL processing: check if this room number exists. If so: update, if not insert-->
           <p align="left">ID:<br> <input type="number" name="newC_id" size="6"> </p>
         	<p align="left">Name:<br> <input type="text" name="newC_name" size="20"> </p>
@@ -111,6 +116,7 @@ $db_conn = OCILogon("ora_i4s0b", "a13641155", "dbhost.ugrad.cs.ubc.ca:1522/ug");
             </center>
 
             <form method="POST" action="staffCustomerView.php"> 
+            <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
             <p align="left"> ID: <br> <input type="number" name="deleteC_id" size="6"> </p>
             <input type="submit" value="Delete customer" name="deleteCust">
             </form>
@@ -127,7 +133,8 @@ $db_conn = OCILogon("ora_i4s0b", "a13641155", "dbhost.ugrad.cs.ubc.ca:1522/ug");
       <div>
         <div style="width: 300px;  padding: 30px 20px 10px 20px; background-color: lightGrey; ">
           <form method="POST" action="staffCustomerView.php"> <!-- TODO: Add any SQL processing necessary & add form tag details-->
-            <center>Add Memebership: <br>
+          <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
+            <center>Add Membership: <br>
             </center>
             <p align="left">ID: <br> <input type="number" name="addIDMember" size="6"> </p>
             <center><input type="submit" value="add member" name="addMember"></center>
@@ -319,4 +326,3 @@ if ($db_conn) {
 }
 
 ?>
-

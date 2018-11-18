@@ -7,7 +7,7 @@ $staffidcookie = $_COOKIE["staffid"];
 
 $success = True; //keep track of errors so it redirects the page only if there are no errors
 
-$db_conn = OCILogon("ora_u3i0b", "a14691142", "dbhost.ugrad.cs.ubc.ca:1522/ug");
+$db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 ?>
 
 <!-- Page title -->

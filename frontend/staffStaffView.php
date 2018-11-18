@@ -1,13 +1,17 @@
 <?php
 //Setup
+session_start();
+$staff_id = $_POST['staffid'];
+setcookie("staffid", $staff_id);
+$staffidcookie = $_COOKIE["staffid"];
 $success = True; //keep track of errors so it redirects the page only if there are no errors
-$db_conn = OCILogon("ora_u3i0b", "a14691142", "dbhost.ugrad.cs.ubc.ca:1522/ug");
+$db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 ?>
 
 <!-- Page title -->
 <title>Hotel Ski Resort</title>
 
-<p> Welcome staff id:<?php echo $_POST[""];?> </p> <!-- TODO: echo the staff id. -->
+<p> Welcome staff id:<?php echo $staffidcookie;?> </p> <!-- TODO: echo the staff id. -->
 
 <div style="display: flex; justify-content: space-between;">
 
@@ -48,7 +52,8 @@ $db_conn = OCILogon("ora_u3i0b", "a14691142", "dbhost.ugrad.cs.ubc.ca:1522/ug");
                   padding-top: 20px;
                   padding-bottom: 1px">
       <center>
-        <form action=""> <!-- TODO: Add rerouting to other staff pages -->
+        <form method="POST" action="staffDir.php"> <!-- TODO: Add rerouting to other staff pages -->
+        <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
           <input type="submit" value="Back to Main Page" name="staffDir">
         </form>
       </center>
@@ -67,6 +72,7 @@ $db_conn = OCILogon("ora_u3i0b", "a14691142", "dbhost.ugrad.cs.ubc.ca:1522/ug");
       <div style="width: 300px; padding: 20px 20px 10px 20px; background-color: lightGrey; ">
         <center>Add new hotel staff: </center>
         <form method="POST" action="staffStaffView.php">
+        <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
             <p align="left">Staff id: <br> <input type="number" name="newHSid" size="6"> </p>
             <p align="left">Staff name: <br> <input type="text" name="newHSname" size="20"> </p>
             <p align="left">Phone: <br> <input type="text" name="newHSphone" size="20"> </p>
@@ -84,6 +90,7 @@ $db_conn = OCILogon("ora_u3i0b", "a14691142", "dbhost.ugrad.cs.ubc.ca:1522/ug");
       <div style="width: 300px; padding: 20px 20px 10px 20px; background-color: lightGrey; ">
         <center>Add new ski staff: </center>
         <form method="POST" action="staffStaffView.php">
+        <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
             <p align="left">Staff id: <br> <input type="number" name="newSSid" size="6"> </p>
             <p align="left">Staff name: <br> <input type="text" name="newSSname" size="20"> </p>
             <p align="left">Phone: <br> <input type="text" name="newSSphone" size="20"> </p>
