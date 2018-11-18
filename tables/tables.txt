@@ -19,7 +19,7 @@
 
 -- lessonTime (type, lesson_datetime)
 -- lesson (staff_id, lesson_datetime, lesson_type)
--- bookedLessons (c_id, lesson_type)
+-- bookedLessons (c_id, lesson_datetime, lesson_type)
 
 
 Notes:
