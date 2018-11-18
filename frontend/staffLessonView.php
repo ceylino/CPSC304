@@ -1,8 +1,5 @@
-<?php
-//Setup
-$success = True; //keep track of errors so it redirects the page only if there are no errors
-$db_conn = OCILogon("ora_i4s0b", "a13641155", "dbhost.ugrad.cs.ubc.ca:1522/ug"); // TODO: make this git ignored
-?>
+<!-- Customer page: This is the main customer page. This is where logged in customers and members can view their current reservations etc. and be redirected to create new ones, edit or delete existing ones.
+-->
 
 <!-- Page title -->
 <title>Hotel Ski Resort</title>
@@ -17,42 +14,19 @@ $db_conn = OCILogon("ora_i4s0b", "a13641155", "dbhost.ugrad.cs.ubc.ca:1522/ug");
     <h3> Booked Lessons: </h3> <!-- TODO: this table printing set up needs to be completed and added for the other tables as well -->
       <?php
       //TODO : this part needs to be changed
-        $result = executePlainSQL("select c.c_name, s.s_name, l.lesson_type, l.lesson_datetime from bookedLessons b, lesson l, customer c, skistaff s where b.lesson_type = l.lesson_type and b.c_id = c.c_id and l.staff_id = s.staff_id"); 
+        $result = executePlainSQL("select * roomReservation where c_id=3"); //TODO: set up the cid & use views
         echo "<table>";
-        echo "<tr><th>Customer Name</th><th>Staff Name</th><th>Lesson Type Name</th><th>Lesson Date&Time</th></tr>";
+        echo "<tr><th>COLUMN1</th><th>COLUMN2</th></tr>";
         while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-          echo "<tr><td>" . $row["C_NAME"] . "</td><td>" . $row["S_NAME"] . "</td><td>" . $row["LESSON_TYPE"] . "</td><td>" . $row["LESSON_DATETIME"] . "</td></tr>";
+          echo "<tr><td>" . $row["COL1"] . "</td><td>" . $row["COL2"] . "</td></tr>";
         }
         echo "</table>";
       ?>
-     
 
-    <h3> Available Lessons: </h3> 
-    <?php
-      //TODO currently displays all the lessons
-      echo "This is not the right query";
-        $result = executePlainSQL("select s.s_name, l.lesson_type, l.lesson_datetime from lesson l, skistaff s where l.staff_id = s.staff_id"); 
-        echo "<table>";
-        echo "<tr><th>Instructor Name</th><th>Lesson Type</th><th>Date and Time</th></tr>";
-        while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-          echo "<tr><td>" . $row["S_NAME"] . "</td><td>" . $row["LESSON_TYPE"] . "</td><td>" . $row["LESSON_DATETIME"] . "</td></tr>";
-        }
-        echo "</table>";
-      ?>
-      </div>
+    <h3> Available Lessons: </h3> <!-- TODO: Join lesson and staff. Display staff name and all lesson details-->
 
-    <div style="justify-content: flex-start;">
-    <h3> Lessons Classlist: </h3>
-    <?php
-        $result = executePlainSQL("select s.s_name, l.lesson_type, l.lesson_datetime from lesson l, skistaff s where l.staff_id = s.staff_id"); 
-        echo "<table>";
-        echo "<tr><th>Instructor Name</th><th>Lesson Type</th><th>Date and Time</th></tr>";
-        while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-          echo "<tr><td>" . $row["S_NAME"] . "</td><td>" . $row["LESSON_TYPE"] . "</td><td>" . $row["LESSON_DATETIME"] . "</td></tr>";
-        }
-        echo "</table>";
-      ?>
-      </div>
+    <h3> Lessons Classlist: </h3> <!-- TODO: Join lesson, staff and customer tables and group by lesson type. Display customer name, staff name and all lesson details-->
+  </div>
 
   <!-- Directory -->
   <div style="justify-content: flex-end;">
@@ -71,10 +45,6 @@ $db_conn = OCILogon("ora_i4s0b", "a13641155", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 </div>
 
 <div style="height: 30px;"></div>
-
-
-
-
 
 <!-- Forms to add & update data -->
 <!-- IMPORTANT: before adding any SQL check to see what needs to be done by looking at the createTables file and checking for functional dependencies! Or else THINGS WILL BREAK!!-->
@@ -163,6 +133,9 @@ $db_conn = OCILogon("ora_i4s0b", "a13641155", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 
 <!--  Setup connection and connect to DB -->
 <?php
+//Setup
+$success = True; //keep track of errors so it redirects the page only if there are no errors
+$db_conn = OCILogon("ora_u3i0b", "a14691142", "dbhost.ugrad.cs.ubc.ca:1522/ug"); // TODO: make this git ignored
 
 function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
 	//echo "<br>running ".$cmdstr."<br>";
@@ -229,6 +202,18 @@ function executeBoundSQL($cmdstr, $list) {
 
 }
 
+function printResult($result) { //prints results from a select statement
+	echo "result from SQL:";
+  echo "<table>";
+	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+  echo "<tr>\n";
+    foreach ($row as $item) {
+        echo "    <td>" . ($item !== null ? htmlentities($item, ENT_QUOTES) : "&nbsp;") . "</td>\n";
+    }
+    echo "</tr>\n";
+  }
+  echo "</table>\n";
+}
 
 // Connect to Oracle DB
 if ($db_conn) {
@@ -279,8 +264,6 @@ if ($db_conn) {
       if($row = OCI_Fetch_Array($result, OCI_BOTH)){ // If this entry already exists in Lesson time = update lesson
       executeBoundSQL("update lesson set staff_id=:bind3, lesson_datetime=:bind4, lesson_type=:bind5 where lesson_datetime=:bind0 and staff_id=:bind1 and lesson_type=:bind2", $alltuples);
       OCICommit($db_conn);
-      echo "<meta http-equiv='refresh' content='0'>";
-
       }
       else{
         //add entry to lessonTime first
@@ -289,12 +272,10 @@ if ($db_conn) {
         executeBoundSQL("update lesson set staff_id=:bind3, lesson_datetime=:bind4, lesson_type=:bind5 where lesson_datetime=:bind0 and staff_id=:bind1 and lesson_type=:bind2", $alltuples);
         OCICommit($db_conn);
       }
-      echo "<meta http-equiv='refresh' content='0'>";
     }
     if ($_POST && $success) {
       header("location: staffLessonView.php");
     }
-    echo "<meta http-equiv='refresh' content='0'>";
 
 	} else
   if (array_key_exists('deleteLesson', $_POST)) {
@@ -315,12 +296,11 @@ if ($db_conn) {
     if ($_POST && $success) {
       header("location: staffLessonView.php");
     }
-    echo "<meta http-equiv='refresh' content='0'>";
 
 	} else
   if (array_key_exists('addBooking', $_POST)) {
   	$tuple = array (
-      ":bind1" => $_POST['addBCid'],
+      ":bind1" => 1, //TODO: add token -cid
       ":bind2" => $_POST['addBDate'],
       ":bind3" => $_POST['addBType']
   	);
@@ -334,7 +314,6 @@ if ($db_conn) {
     if ($_POST && $success) {
       header("location: staffLessonView.php");
     }
-    echo "<meta http-equiv='refresh' content='0'>";
 
 	} else
   if(array_key_exists('deleteBooking', $_POST)){
@@ -354,7 +333,6 @@ if ($db_conn) {
     if ($_POST && $success) {
     	header("location: staffLessonView.php");
     }
-    echo "<meta http-equiv='refresh' content='0'>";
   }else
 
 	//Commit to save changes...

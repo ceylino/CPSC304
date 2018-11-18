@@ -6,23 +6,20 @@ setcookie("staffid", $staff_id);
 $staffidcookie = $_COOKIE["staffid"];
 
 $success = True; //keep track of errors so it redirects the page only if there are no errors
-$db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug"); // TODO: make this git ignored
+
+$db_conn = OCILogon("ora_u3i0b", "a14691142", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 ?>
 
 <!-- Page title -->
 <title>Hotel Ski Resort</title>
 <p> Welcome staff id:<?php echo $staffidcookie; ?> </p> <!-- TODO: echo the staff id. -->
 
-<div style="display: flex;
-            width: 100%;
-            justify-content: space-around;">
+<div style="display: flex; width: 100%; justify-content: space-around;">
 
   <!-- View table entries -->
   <div style="justify-content: flex-start;">
-    <h3> Room Reservations: </h3> <!-- TODO: this table printing set up needs to be completed and added for the other tables as well -->
+    <h3> Room Reservations: </h3>
       <?php
-      //TODO : this part needs tobe changed
-        //$result = executePlainSQL("select * from roomReservation, customer");
         $result = executePlainSQL("select r.room_num, r.start_date, r.end_date, c.c_id, c.c_name, c.e_mail from roomReservation r, customer c where r.c_id = c.c_id");
         echo "<table>";
         echo "<tr><th>Room Number</th><th>Start Date</th><th>End Date</th><th>CID</th><th>Customer Name</th><th>Customer E-mail</th></tr>";
@@ -32,35 +29,35 @@ $db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
         echo "</table>";
 
       ?>
-      </div>
-      
-      <div style="justify-content: flex-start;">
-      <h3> Rooms: </h3>
-      <?php
+  </div>
 
-        $result1 = executePlainSQL("select * from room");
-        echo "<table>";
-        echo "<tr><th>Number</th><th>Type</th><th>Rate</th></tr>";
-        while ($row = OCI_Fetch_Array($result1, OCI_BOTH)) {
-          echo "<tr><td>" . $row["ROOM_NUM"] . "</td><td>" . $row["ROOM_TYPE"] . "</td><td>" . $row["ROOM_RATE"] . "</td></tr>";
-        }
-        echo "</table>";
-      ?>
-      </div>
+  <div style="justify-content: flex-start;">
+    <h3> Rooms: </h3>
+    <?php
 
-      <div style="justify-content: flex-start;">
-      <h3> Room Rates: </h3>
-      <?php
+      $result1 = executePlainSQL("select * from room");
+      echo "<table>";
+      echo "<tr><th>Number</th><th>Type</th><th>Rate</th></tr>";
+      while ($row = OCI_Fetch_Array($result1, OCI_BOTH)) {
+        echo "<tr><td>" . $row["ROOM_NUM"] . "</td><td>" . $row["ROOM_TYPE"] . "</td><td>" . $row["ROOM_RATE"] . "</td></tr>";
+      }
+      echo "</table>";
+    ?>
+  </div>
 
-        $result1 = executePlainSQL("select * from roomRate");
-        echo "<table>";
-        echo "<tr><th>Type</th><th>Rate</th></tr>";
-        while ($row = OCI_Fetch_Array($result1, OCI_BOTH)) {
-          echo "<tr><td>" . $row["ROOM_TYPE"] . "</td><td>" . $row["ROOM_RATE"] . "</td></tr>";
-        }
-        echo "</table>";
-      ?>
-      </div>
+  <div style="justify-content: flex-start;">
+    <h3> Room Rates: </h3>
+    <?php
+
+      $result1 = executePlainSQL("select * from roomRate");
+      echo "<table>";
+      echo "<tr><th>Type</th><th>Rate</th></tr>";
+      while ($row = OCI_Fetch_Array($result1, OCI_BOTH)) {
+        echo "<tr><td>" . $row["ROOM_TYPE"] . "</td><td>" . $row["ROOM_RATE"] . "</td></tr>";
+      }
+      echo "</table>";
+    ?>
+  </div>
 
       <!-- Directory -->
       <div style="justify-content: flex-end;">
@@ -70,22 +67,21 @@ $db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
                       padding-top: 20px;
                       padding-bottom: 1px">
           <center>
-            <form method ="POST" action="staffDir.php"> 
+            <form method ="POST" action="staffDir.php">
             <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
               <input type="submit" value="Back to Main Staff Page" name="staffDir">
             </form>
           </center>
         </div>
 
-        <div style="height: 10px;"></div>
-      </div>
+    <div style="height: 10px;"></div>
   </div>
+</div>
 
 <div style="height: 30px;"></div>
 
 
-<!---------------- Forms to add & update data ---------------->
-<!-- IMPORTANT: before adding any SQL check to see what needs to be done by looking at the createTables file and checking for functional dependencies! Or else THINGS WILL BREAK!!-->
+<!-- Forms to add & update data-->
 <center>
   <div style="display: flex;
               width: 100%;
@@ -95,11 +91,9 @@ $db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
         <center>Add new room: </center>
         <form method="POST" action="staffRoomView.php">
         <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
-          <!-- TODO: Add any SQL processing: check if this room number exists. If so: update, if not insert-->
             <p align="left">Room number: <br> <input type="number" name="addRoomNum" size="6"> </p>
             <p align="left">Room Type: <br> <input type="text" name="addType" size="20"> </p>
             <p align="left">Room Rate: <br> <input type="number" name="addRate" size="6"> </p>
-            <!-- Note: remember to update the roomRate table if needed -BEFORE- making any changes to the room table or it will not work!! Once this is done, refresh the page (redirect to itself)-->
           <center>
             <input type="submit" value="Add" name="addRoom">
           </center>
@@ -112,13 +106,11 @@ $db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
         <center>Update existing room: </center>
         <form method="POST" action="staffRoomView.php">
         <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
-          <!-- TODO: Add any SQL processing: check if this room number exists. If so: update, if not insert-->
             <p align="left">Old Room number: <br> <input type="number" name="oldRoomNum" size="6"> </p>
             <br>
             <p align="left">New Room number: <br> <input type="number" name="editRoomNum" size="6"> </p>
             <p align="left">New Room Type: <br> <input type="text" name="editType" size="20"> </p>
             <p align="left">New Room Rate: <br> <input type="number" name="editRate" size="6"> </p>
-            <!-- Note: remember to update the roomRate table if needed -BEFORE- making any changes to the room table or it will not work!! Once this is done, refresh the page (redirect to itself)-->
           <center>
             <input type="submit" value="Update" name="editRoom">
           </center>
@@ -128,18 +120,16 @@ $db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
       <div style="height: 10px;"></div>
 
       <!-- Delete a room -->
-      <!-- TODO: make sure that the necessary information is cascading properly from reservations etc. -->
       <div>
         <div style="width: 300px;  padding: 30px 20px 10px 20px; background-color: lightGrey; ">
-          <form method="POST" action="staffRoomView.php"> 
+          <form method="POST" action="staffRoomView.php">
           <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
+
             <center>Delete a Room: <br>
               Are you sure you want to delete this room? This action cannot be undone. Deletion will cause cascading through other functionalities.<br>
             </center>
             <p align="left"> Room number: <br> <input type="number" name="deleteRoomNum"></p>
             <center><input type="submit" value="Delete room" name="deleteRoom"></center>
-            <!-- check if room exists, if so, delete. refresh page.-->
-
           </form>
         </div>
       </div>
@@ -150,12 +140,10 @@ $db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
         <center>Add a new reservation: </center>
         <form method="POST" action="staffRoomView.php">
         <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
-          <!-- TODO: Add any SQL processing: check if this room number exists. If so: update, if not insert-->
             <p align="left">Room number: <br> <input type="number" name="addRoomNum" size="6"> </p>
             <p align="left">Customer Id: <br> <input type="number" name="addCid" size="6"> </p>
             <p align="left">Start Date: (numbers only - yyyymmdd) <br> <input type="text" name="addSDate" size="8"> </p>
             <p align="left">End Date: (numbers only - yyyymmdd) <br> <input type="text" name="addEDate" size="8"> </p>
-            <!-- Note: remember to update the roomResDate table if needed -BEFORE- making any changes to the roomReservation table or it will not work!! Once this is done, refresh the page (redirect to itself)-->
           <center>
             <input type="submit" value="Add" name="addRoomReservation">
           </center>
@@ -168,7 +156,6 @@ $db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
         <center>Update existing room reservation: </center>
         <form method="POST" action="staffRoomView.php">
         <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
-          <!-- TODO: Add any SQL processing: check if this room number exists. If so: update, if not insert-->
             <p align="left">Old Room number: <br> <input type="number" name="oldRoomNum" size="6"> </p>
             <p align="left">Old Start Date: (numbers only - yyyymmdd) <br> <input type="text" name="oldSDate" size="8"> </p>
             <p align="left">Old End Date: (numbers only - yyyymmdd) <br> <input type="text" name="oldEDate" size="8"> </p>
@@ -176,7 +163,6 @@ $db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
             <p align="left">New Room number: <br> <input type="number" name="updateRoomNum" size="6"> </p>
             <p align="left">New Start Date: (numbers only - yyyymmdd) <br> <input type="text" name="updateSDate" size="8"> </p>
             <p align="left">New End Date: (numbers only - yyyymmdd) <br> <input type="text" name="updateEDate" size="8"> </p>
-            <!-- Note: remember to update the roomResDate table if needed -BEFORE- making any changes to the roomReservation table or it will not work!! Once this is done, refresh the page (redirect to itself)-->
           <center>
             <input type="submit" value="Update" name="updateRoomReservation">
           </center>
@@ -186,7 +172,6 @@ $db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
       <div style="height: 10px;"></div>
 
       <!-- Delete a room reservation -->
-      <!-- TODO: make sure that the necessary information is cascading properly from reservations etc. -->
       <div>
         <div style="width: 300px;  padding: 30px 20px 10px 20px; background-color: lightGrey; ">
           <form method="POST" action="staffRoomView.php"> <!-- TODO: Add any SQL processing necessary & add form tag details-->
@@ -199,7 +184,6 @@ $db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
             <p align="left">Start Date: (numbers only - yyyymmdd) <br> <input type="text" name="deleteSDate" size="8"> </p>
             <p align="left">End Date: (numbers only - yyyymmdd) <br> <input type="text" name="deleteEDate" size="8"> </p>
             <center><input type="submit" value="Delete reservation" name="deleteRoomReservation"></center>
-            <!-- check if reservation exists, if so, delete. refresh page.-->
           </form>
         </div>
       </div>
@@ -321,7 +305,7 @@ if ($db_conn) {
     );
     $result1 = executeBoundSQL("select * from room where room_num=:bind1", $alltuples);
     if($row = OCI_Fetch_Array($result1, OCI_BOTH)){
-      //update room 
+      //update room
       executeBoundSQL("update room set room_num=:bind2, room_type=:bind3, room_rate=:bind4 where room_num=:bind1", $alltuples);
       OCICommit($db_conn);
     }
@@ -427,4 +411,3 @@ if ($db_conn) {
 }
 
 ?>
-
