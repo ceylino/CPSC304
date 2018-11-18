@@ -155,8 +155,9 @@ function printResult($result) { //prints results from a select statement
 if ($db_conn) {
 
 		if (array_key_exists('staffIdLogin', $_POST)) {
+			$staff_id = $_POST['staff_id'];
 			$tuple = array (
-				":bind1" => $_POST['staff_id']
+				":bind1" => $staff_id
 			);
 			$alltuples = array (
 				$tuple
@@ -165,6 +166,7 @@ if ($db_conn) {
       $row = OCI_Fetch_Array($result, OCI_BOTH);
 
       if ($_POST && $success && $row) {
+				setcookie("staffid", $staff_id);
         header("location: staffDir.php");
 			}
 		}else

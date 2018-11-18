@@ -1,11 +1,14 @@
 <!-- Staff home page: This is the staff directory. This is where logged in staff members can select what they want to do next. This page is basically for rediretion purposes.
 -->
-
+<?php
+session_start();
+$staffid = $_COOKIE["staffid"];
+?>
 <!-- Page title -->
 <title>Hotel Ski Resort</title>
 <center>
   <h1>Staff Homepage</h1>
-  <p> Welcome staff id:<?php echo $_POST[""];?> </p> <!-- TODO: echo the staff id. -->
+  <p> Welcome staff id:<?php echo $staffid;?> </p> <!-- TODO: echo the staff id. -->
 
     <!-- TODO:
     - Ensure that the rooms/equipment buttons are disabled depending on staff type
@@ -13,8 +16,10 @@
     -->
   <!-- Below are the directory options -->
   <div style="background-color:lightGrey; width: 10%; padding-top: 20px; padding-bottom: 1px">
-    <form action="staffProfile.php">
+    <form method="POST" action="staffProfile.php">
+    <input type="hidden" name="staffid" value="<?php echo $staffid; ?>">
       <input type="submit" value="Edit Profile" name="staffProfile">
+
     </form>
   </div>
 
