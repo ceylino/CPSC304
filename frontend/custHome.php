@@ -10,10 +10,10 @@
 <?php 
 $custid = $_COOKIE["custid"];
 echo $custid;
-?>
 
-<!--  Setup connection and connect to DB -->
-<?php
+
+//Setup connection and connect to DB -->
+
 session_start();
 echo $custid;
 
@@ -266,11 +266,18 @@ if ($db_conn) {
   <div style="justify-content: flex-start;">
     <h3> Rooms Reservations: </h3> <!-- TODO: this table printing set up needs to be completed and added for the other tables as well -->
       <?php
-        $result = executePlainSQL("select * from roomReservation where c_id=$custid"); //TODO: set up the cid & use views
+
+        $tuple = array (
+          ":bind1" => $custid //TODO: get this from token - cid
+        );
+        $alltuples = array (
+          $tuple
+        );
+        $result = executeBoundSQL("select * from roomReservation where c_id=:bind1", $alltuples);
         echo "<table>";
-        echo "<tr><th>COLUMN1</th><th>COLUMN2</th></tr>";
+        echo "<tr><th>Room Number</th><th>Customer ID</th><th>Start Date</th><th>End Date</th></tr>";
         while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-          echo "<tr><td>" . $row["COL1"] . "</td><td>" . $row["COL2"] . "</td></tr>";
+          echo "<tr><td>" . $row["ROOM_NUM"] . "</td><td>" . $row["C_ID"] . "</td><td>" . $row["START_DATE"] . "</td><td>" . $row["END_DATE"] . "</td></tr>";
         }
         echo "</table>";
       ?>
