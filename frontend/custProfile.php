@@ -1,14 +1,19 @@
 <!-- Customer profile: This is the page where customer may view their profiles and edit their data -->
 
 <!-- Page title -->
+<?php
+$custid = $_POST['customerid'];
+?>
+
 <title>Hotel Ski Resort</title>
 
 <center>
   <!-- Personal  Info-->
-  <p> Welcome customer id: 1 </p> <!-- TODO: echo the customer id. 
+  <p> Welcome customer id: <?php echo $custid;?> </p> <!-- TODO: echo the customer id. 
   <div style="background-color:lightGrey; width: 50%; padding-top: 10px; padding-bottom: 10px">
     <h4> Personal Information </h4>
     <!-- TODO: this table printing set up needs to be completed -->
+
       <?php
         
         //$result = executePlainSQL("select * customer where c_id=3"); 
@@ -52,7 +57,8 @@
     <div style="width: 300px; padding: 20px 20px 10px 20px; background-color: lightGrey; ">
       <center>Update Personal Information: </center>
       <form method="POST" action="custProfile.php"> <!-- TODO: Add any SQL processing necessary-->
-          <p align="left">Id: <br> <input type="number" name="c_id" size="6"> </p>
+          <!--<p align="left">Id: <br> <input type="number" name="c_id" size="6"> </p>-->
+          <input type="hidden" name="customerid" value="<?php echo $custid; ?>">
           <p align="left">Name: <br> <input type="text" name="editName" size="20"> </p>
           <p align="left">E-mail: <br> <input type="text" name="editEmail" size="40"> </p>
           <p align="left">Credit Card Number: <br> <input type="number" name="editCCnum" size="16"> </p>
@@ -85,7 +91,7 @@
 <?php
 //Setup
 $success = True; //keep track of errors so it redirects the page only if there are no errors
-$db_conn = OCILogon("ora_c5b1b", "a34248161", "dbhost.ugrad.cs.ubc.ca:1522/ug"); 
+$db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug"); 
 
 function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
   //echo "<br>running ".$cmdstr."<br>";
@@ -169,7 +175,7 @@ if ($db_conn) {
 
     if (array_key_exists('updateCust', $_POST)) {
       $tuple = array (
-        ":bind1" => $_POST['c_id'],
+        ":bind1" => $_POST['customerid'],
         ":bind2" => $_POST['editName'],
         ":bind3" => $_POST['editEmail'],
         ":bind4" => $_POST['editCCnum'],

@@ -141,9 +141,9 @@ if ($db_conn) {
 					$result = executeBoundSQL("insert into customer values (:bind1, :bind2, :bind3, :bind4)", $alltuples);
 					OCICommit($db_conn);
 
-          // if ($success) {
-        	// 	header("location: custVariables.php");
-          // }
+        //   if ($_POST && $success) {
+        // 	 header("location: custVariables.php");
+        //  }
         }
 
 	//Commit to save changes...
