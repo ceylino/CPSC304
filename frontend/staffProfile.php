@@ -1,5 +1,11 @@
 <!-- Staff profile: This is the page where staff may view their profiles and edit their data -->
 
+<?php
+session_start();
+$staff_id = $_POST['staffid'];
+setcookie("staffid", $staff_id);
+$staffidcookie = $_COOKIE["staffid"];
+?>
 <!-- Page title -->
 <title>Hotel Ski Resort</title>
 
@@ -19,7 +25,7 @@
 
 <center>
   <!-- Personal  Info-->
-  <p> Welcome staff id: 1 </p> <!-- TODO: echo the staff id. -->
+  <p> Welcome staff id: <?php echo $staffidcookie; ?> </p> <!-- TODO: echo the staff id. -->
   <div style="background-color:lightGrey; width: 50%; padding-top: 10px; padding-bottom: 10px">
     <h4> Personal Information </h4>
     <!-- TODO: this table printing set up needs to be completed -->
@@ -38,6 +44,7 @@
     <div style="width: 200px; padding: 20px 20px 10px 20px; background-color: lightGrey; ">
       <center>Update Personal Information:
         <form method="POST" action="staffProfile.php"> <!-- TODO: Add any SQL processing necessary-->
+          <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
           <p align="left">Name: <br> <input type="text" name="editName" size="20"> </p>
           <p align="left">Phone Number: <br> <input type="number" name="editPhone" size="10"> </p>
           <input type="submit" value="Update" name="updateStaff">
@@ -50,7 +57,7 @@
 <!--  Setup connection and connect to DB -->
 <?php
 $success = True; //keep track of errors so it redirects the page only if there are no errors
-$db_conn = OCILogon("ora_c5b1b", "a34248161", "dbhost.ugrad.cs.ubc.ca:1522/ug");
+$db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 
 function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
   //echo "<br>running ".$cmdstr."<br>";
@@ -132,7 +139,7 @@ function printResult($result) { //prints results from a select statement
 if ($db_conn) {
   if (array_key_exists('updateStaff', $_POST)) {
     $tuple = array (
-      ":bind1" => 1, //TODO
+      ":bind1" => $staffidcookie, //TODO
       ":bind2" => $_POST['editName'],
       ":bind3" => $_POST['editPhone'],
       );
