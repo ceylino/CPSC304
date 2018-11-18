@@ -1,9 +1,18 @@
 <!-- Customer page: This is the main customer page. This is where logged in customers and members can view their current reservations etc. and be redirected to create new ones, edit or delete existing ones.
 -->
 
+<?php
+session_start();
+
+$success = True; //keep track of errors so it redirects the page only if there are no errors
+$db_conn = OCILogon("ora_u3i0b", "a14691142", "dbhost.ugrad.cs.ubc.ca:1522/ug");
+
+$custid = $_COOKIE["custid"];
+?>
+
 <!-- Page title -->
 <title>Hotel Ski Resort</title>
-<p> Welcome customer id:<?php echo $_POST[""];?> </p> <!-- TODO: echo the customer id. -->
+<p> Welcome customer id: <?php echo $custid; ?></p>
 
 <div style="display: flex; width: 100%; justify-content: space-between;">
 
@@ -11,11 +20,11 @@
   <div style="justify-content: flex-start;">
     <h3> Rooms Reservations: </h3> <!-- TODO: this table printing set up needs to be completed and added for the other tables as well -->
       <?php
-        $result = executePlainSQL("select * roomReservation where c_id=3"); //TODO: set up the cid & use views
+        $result = executePlainSQL("select * from roomReservation where c_id=$custid");
         echo "<table>";
-        echo "<tr><th>COLUMN1</th><th>COLUMN2</th></tr>";
+        echo "<tr><th>Room Number</th><th>Customer Id</th><th>Start Date</th><th>End Date</th></tr>";
         while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-          echo "<tr><td>" . $row["COL1"] . "</td><td>" . $row["COL2"] . "</td></tr>";
+          echo "<tr><td>" . $row["ROOM_NUM"] . "</td><td>" . $row["C_ID"] . "</td><td>" . $row["START_DATE"] . "</td><td>" . $row["END_DATE"] . "</td></tr>";
         }
         echo "</table>";
       ?>
@@ -47,7 +56,6 @@
 <div style="height: 30px;"></div>
 
 <!-- Forms to add & update data -->
-<!-- IMPORTANT: before adding any SQL check to see what needs to be done by looking at the createTables file and checking for functional dependencies! Or else THINGS WILL BREAK!!-->
 <center>
   <div style="display: flex; width: 100%; justify-content: space-around;">
 
@@ -90,7 +98,6 @@
             <p align="left">Equipment Id: <br> <input type="number" name="editEquipId" size="6"> </p>
             <p align="left">Start Date: (numbers only - yyyymmdd) <br> <input type="text" name="editEquipSDate" size="8"> </p>
             <p align="left">End Date: (numbers only - yyyymmdd) <br> <input type="text" name="editEquipEDate" size="8"> </p>
-            <!-- Note: remember to update the roomResDate table if needed -BEFORE- making any changes to the roomReservation table or it will not work!! Once this is done, refresh the page (redirect to itself)-->
           <center>
             <input type="submit" value="Add" name="addEquipReservation">
           </center>
@@ -161,10 +168,6 @@
 
 <!--  Setup connection and connect to DB -->
 <?php
-//Setup
-$success = True; //keep track of errors so it redirects the page only if there are no errors
-$db_conn = OCILogon("ora_u3i0b", "a14691142", "dbhost.ugrad.cs.ubc.ca:1522/ug"); // TODO: make this git ignored
-
 function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
 	//echo "<br>running ".$cmdstr."<br>";
 	global $db_conn, $success;
@@ -249,7 +252,7 @@ if ($db_conn) {
 	if (array_key_exists('addRoomReservation', $_POST)) {
    $tuple = array (
       ":bind2" => $_POST['addRoomNum'],
-      ":bind3" => 1, //TODO: get this from token - cid
+      ":bind3" => $custid,
       ":bind4" => $_POST['addRoomSDate'],
       ":bind5" => $_POST['addRoomEDate']
 		);
@@ -257,7 +260,7 @@ if ($db_conn) {
 			$tuple
 		);
     //add reservation
-    $result2 = executeBoundSQL("insert into roomReservation values (:bind2, :bind3, :bind4, :bind5)", $alltuples);
+    $result = executeBoundSQL("insert into roomReservation values (:bind2, :bind3, :bind4, :bind5)", $alltuples);
     OCICommit($db_conn);
 
     if ($_POST && $success) {
@@ -267,7 +270,7 @@ if ($db_conn) {
 	} else
   if (array_key_exists('updateRoomReservation', $_POST)){
 		$tuple = array (
-      ":bind1" => 1, //TODO: get this from token - cid
+      ":bind1" => $custid,
       ":bind2" => $_POST['oldRoomNum'],
       ":bind4" => $_POST['oldRoomSDate'],
       ":bind5" => $_POST['oldRoomEDate'],
@@ -293,7 +296,7 @@ if ($db_conn) {
   if (array_key_exists('addEquipReservation', $_POST)) {
   	$tuple = array (
       ":bind0" => $_POST['editEquipId'],
-      ":bind1" => 1, //TODO: add token -cid
+      ":bind1" => $custid,
       ":bind2" => $_POST['editEquipSDate'],
       ":bind3" => $_POST['editEquipEDate']
   	);
@@ -319,7 +322,7 @@ if ($db_conn) {
       ":bind5" => $_POST['newEquipSDate'],
       ":bind6" => $_POST['newEquipEDate'],
 
-      ":bind7" => 1, //TODO: get this from token - cid
+      ":bind7" => $custid,
 
     );
     $alltuples = array (
@@ -341,7 +344,7 @@ if ($db_conn) {
   if (array_key_exists('addBooking', $_POST)) {
   	$tuple = array (
       ":bind0" => $_POST['addType'],
-      ":bind1" => 1, //TODO: add token -cid
+      ":bind1" => $custid,
       ":bind2" => $_POST['addLDate']
   	);
   	$alltuples = array (
@@ -358,7 +361,7 @@ if ($db_conn) {
   if(array_key_exists('deleteLBooking', $_POST)){
     $tuple = array (
       ":bind1" => $_POST['deleteLType'],
-      ":bind2" => 1 //TODO: add token -cid
+      ":bind2" => $custid,
   	);
     $alltuples = array (
       $tuple
@@ -375,7 +378,7 @@ if ($db_conn) {
   }else
   if(array_key_exists('addPass', $_POST)){
     $tuple = array (
-      ":bind0" => 1, //TODO: add token -cid
+      ":bind0" => $custid,
       ":bind1" => $_POST['passPid'],
       ":bind2" => $_POST['passDate'],
       ":bind3" => 50 // pass price is fixed.
