@@ -121,6 +121,7 @@
         <center>Book a new lesson: </center>
         <form method="POST" action="custHome.php">
             <p align="left">Lesson Type: <br> <input type="text" name="addType" size="20"> </p>
+            <p align="left">Lesson Datetime: <br>(numbers only - yyyymmddhhmm) <br> <input type="number" name="addLDate" size="12"> </p>
           <center>
             <input type="submit" value="Book Lesson" name="addBooking">
           </center>
@@ -340,13 +341,13 @@ if ($db_conn) {
   if (array_key_exists('addBooking', $_POST)) {
   	$tuple = array (
       ":bind0" => $_POST['addType'],
-      ":bind1" => 1 //TODO: add token -cid
+      ":bind1" => 1, //TODO: add token -cid
+      ":bind2" => $_POST['addLDate']
   	);
   	$alltuples = array (
   		$tuple
   	);
-    //add reservation
-    $result2 = executeBoundSQL("insert into bookedLessons values (:bind1, :bind0)", $alltuples);
+    $result2 = executeBoundSQL("insert into bookedLessons values (:bind1, :bind2, :bind0)", $alltuples);
     OCICommit($db_conn);
 
     if ($_POST && $success) {
