@@ -47,15 +47,15 @@ grant select on roomReservation to public;
 create table hotelStaff
     (staff_id int not null,
 	s_name varchar(20) not null,
-	phone char(10) null,
+	phone char(10) not null,
 	primary key (staff_id));
 
 grant select on hotelStaff to public;
 
 create table skiStaff
     (staff_id int not null,
-	s_name varchar(20) null,
-	phone char(10) null,
+	s_name varchar(20) not null,
+	phone char(10) not null,
 	primary key (staff_id));
 
 grant select on skiStaff to public;
