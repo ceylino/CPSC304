@@ -1,9 +1,15 @@
 <!-- Customer page: This is the main customer page. This is where logged in customers and members can view their current reservations etc. and be redirected to create new ones, edit or delete existing ones.
 -->
+<?php
+session_start();
+$staff_id = $_POST['staffid'];
+setcookie("staffid", $staff_id);
+$staffidcookie = $_COOKIE["staffid"];
+?>
 
 <!-- Page title -->
 <title>Hotel Ski Resort</title>
-<p> Welcome staff id:M </p> <!-- TODO: echo the staff id. -->
+<p> Welcome staff id: <?php echo $staffidcookie; ?> </p> <!-- TODO: echo the staff id. -->
 
 <div style="display: flex; width: 100%; justify-content: space-between;">
 
@@ -29,7 +35,8 @@
     <!-- Edit Profile-->
     <div style="background-color:lightGrey; width: 200px; padding-top: 20px; padding-bottom: 1px">
       <center>
-        <form action=""> <!-- TODO: Add rerouting to other staff pages -->
+        <form method="POST" action=""> <!-- TODO: Add rerouting to other staff pages -->
+        <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
           <input type="submit" value="Back to Main Page" name="staffDir">
         </form>
       </center>
@@ -48,6 +55,7 @@
       <div style="width: 300px; padding: 20px 20px 10px 20px; background-color: lightGrey; ">
         <center>Add new room management: </center>
         <form method="POST" action="staffManagementView.php">
+        <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
           <p align="left">Room number: <br> <input type="number" name="editRoomNum" size="6"></p>
           <p align="left">Staff Id: <br> <input type="number" name="editSid" size="6"> </p>
           <center><input type="submit" value="Add" name="addRoomManage"></center>
@@ -60,6 +68,7 @@
       <div style="width: 300px; padding: 20px 20px 10px 20px; background-color: lightGrey; ">
         <center>Update existing room management: </center>
         <form method="POST" action="staffManagementView.php">
+        <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
           <p align="left">Old Room number: <br> <input type="number" name="oldRoomNum" size="6"></p>
           <p align="left">Old Staff Id: <br> <input type="number" name="oldSid" size="6"> </p>
           <p align="left">New Room number: <br> <input type="number" name="newRoomNum" size="6"></p>
@@ -74,6 +83,7 @@
       <div>
         <div style="width: 300px;  padding: 30px 20px 10px 20px; background-color: lightGrey; ">
           <form method="POST" action="staffManagementView.php">
+          <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
             <center>Delete room management: <br> Are you sure you want to delete this entry? This action cannot be undone.<br></center>
             <p align="left">Room number: <br> <input type="number" name="deleteRoomNum" size="6"></p>
             <p align="left">Staff Id: <br> <input type="number" name="deleteSid" size="6"> </p>
@@ -88,6 +98,7 @@
       <div style="width: 300px; padding: 20px 20px 10px 20px; background-color: lightGrey; ">
         <center>Add new equipment management: </center>
         <form method="POST" action="staffManagementView.php">
+        <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
           <!-- TODO: Add any SQL processing: check if this equipment & staff exists. If so: update, if not insert-->
           <p align="left">Equipment ID: <br> <input type="number" name="editEquipId" size="6"></p>
           <p align="left">Staff Id: <br> <input type="number" name="editSid" size="6"> </p>
@@ -101,6 +112,7 @@
       <div style="width: 300px; padding: 20px 20px 10px 20px; background-color: lightGrey; ">
         <center>Update existing equipment management: </center>
         <form method="POST" action="staffManagementView.php">
+        <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
           <p align="left">Old Equip Id: <br> <input type="number" name="oldEquipId" size="6"></p>
           <p align="left">Old Staff Id: <br> <input type="number" name="oldESid" size="6"> </p>
           <p align="left">New Equip Id: <br> <input type="number" name="newEquipId" size="6"></p>
@@ -115,6 +127,7 @@
       <div>
         <div style="width: 300px;  padding: 30px 20px 10px 20px; background-color: lightGrey; ">
           <form method="POST" action="staffManagementView.php">
+          <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
             <center>Delete equipment management: <br> Are you sure you want to delete this entry? This action cannot be undone.<br></center>
             <p align="left">Equipment ID: <br> <input type="number" name="deleteEquipId" size="6"></p>
             <p align="left">Staff Id: <br> <input type="number" name="deleteSid" size="6"> </p>
@@ -130,7 +143,7 @@
 <?php
 //Setup
 $success = True; //keep track of errors so it redirects the page only if there are no errors
-$db_conn = OCILogon("ora_u3i0b", "a14691142", "dbhost.ugrad.cs.ubc.ca:1522/ug");
+$db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 
 function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
 	//echo "<br>running ".$cmdstr."<br>";

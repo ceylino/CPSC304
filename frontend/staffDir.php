@@ -26,27 +26,33 @@ $staffid = $_COOKIE["staffid"];
   <div style="height: 10px;"></div>
 
   <div style="background-color:lightGrey; width: 10%; padding-top: 20px; padding-bottom: 1px">
-    <form action="staffRoomView.php">
+    <form method="POST" action="staffRoomView.php">
+    <input type="hidden" name="staffid" value="<?php echo $staffid; ?>">
       <input type="submit" value="Rooms" name="staffRooms">
     </form>
 
-    <form action="staffEquipView.php">
+    <form method="POST" action="staffEquipView.php">
+    <input type="hidden" name="staffid" value="<?php echo $staffid; ?>">
       <input type="submit" value="Equipment" name="staffEquip">
     </form>
 
-    <form action="staffLessonView.php">
+    <form method="POST" action="staffLessonView.php">
+    <input type="hidden" name="staffid" value="<?php echo $staffid; ?>">
       <input type="submit" value="Lessons" name="staffLessons">
     </form>
 
-    <form action="staffCustomerView.php">
+    <form method="POST" action="staffCustomerView.php">
+    <input type="hidden" name="staffid" value="<?php echo $staffid; ?>">
       <input type="submit" value="Customers" name="staffCustomers">
     </form>
 
-    <form action="staffManagementView.php">
+    <form method="POST" action="staffManagementView.php">
+    <input type="hidden" name="staffid" value="<?php echo $staffid; ?>">
       <input type="submit" value="Management" name="staffManage">
     </form>
 
-    <form action="staffStaffView.php">
+    <form method="POST" action="staffStaffView.php">
+    <input type="hidden" name="staffid" value="<?php echo $staffid; ?>">
       <input type="submit" value="Staff" name="Staff">
     </form>
   </div>
