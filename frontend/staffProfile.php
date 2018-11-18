@@ -16,7 +16,8 @@ $staffidcookie = $_COOKIE["staffid"];
                   padding-top: 20px;
                   padding-bottom: 1px">
       <center>
-        <form action="staffDir.php">
+        <form method="POST" action="staffDir.php">
+        <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
           <input type="submit" value="Back to Main Page" name="staffDir">
         </form>
       </center>
