@@ -1,8 +1,10 @@
-<!-- Customer page: This is the main customer page. This is where logged in customers and members can view their current reservations etc. and be redirected to create new ones, edit or delete existing ones.
--->
+<?php
+//Setup
+$success = True; //keep track of errors so it redirects the page only if there are no errors
+$db_conn = OCILogon("ora_i4s0b", "a13641155", "dbhost.ugrad.cs.ubc.ca:1522/ug"); // TODO: make this git ignored
+?>
 
 <!-- Page title -->
-
 <title>Hotel Ski Resort</title>
 <p> Welcome staff id: </p> <!-- TODO: echo the staff id. -->
 
@@ -12,19 +14,48 @@
 
   <!-- View table entries -->
   <div style="justify-content: flex-start;">
-    <h3> Equipment Reservations: </h3> <!-- TODO: this table printing set up needs to be completed and added for the other tables as well -->
-<!--       <?php
-      //TODO : this part needs tobe changed
-        // $result = executePlainSQL("select * roomReservation where c_id=3"); //TODO: set up the cid & use views
-        // echo "<table>";
-        // echo "<tr><th>COLUMN1</th><th>COLUMN2</th></tr>";
-        // while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-        //   echo "<tr><td>" . $row["COL1"] . "</td><td>" . $row["COL2"] . "</td></tr>";
-        // }
-        // echo "</table>";
-      ?> -->
+    <h3> Equipment Reservations: </h3> 
+    <?php
+        $result = executePlainSQL(" select e.equip_id, r.equip_type, r.rental_rate, e.c_id, c.c_name, e.start_date, e.end_date from equipReservation e, customer c, rentalEquip r where e.c_id = c.c_id and e.equip_id = r.equip_id");
+        echo "<table>";
+        echo "<tr><th>Equipment Id</th><th>Equipment Type</th><th>Rental Rate</th><th>Customer Id</th><th>Customer Name</th><th>Rental Start Date</th><th>Rental End Date</th></tr>";
+        while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+          echo "<tr><td>" . $row["EQUIP_ID"] . "</td><td>" . $row["EQUIP_TYPE"] . "</td><td>" . $row["RENTAL_RATE"] . "</td><td>" . $row["C_ID"] . "</td><td>" . $row["C_NAME"] . "</td><td>" . $row["START_DATE"] . "</td><td>" . $row["END_DATE"] . "</td></tr>";
+        }
+        echo "</table>";
+      ?>
 
-    <h3> Available Equipments: </h3>
+    
+    <div style="display: flex;
+            width: 100%;
+            justify-content: space-between;">
+            <div style="justify-content: flex-start;">
+    <h3> All Equipments: </h3>
+    <?php
+        $result = executePlainSQL("select * from rentalEquip");
+        echo "<table>";
+        echo "<tr><th>Equipment Id</th><th>Type</th><th>Rental Rate</th></tr>";
+        while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+          echo "<tr><td>" . $row["EQUIP_ID"] . "</td><td>" . $row["EQUIP_TYPE"] . "</td><td>" . $row["RENTAL_RATE"] . "</td></tr>";
+        }
+        echo "</table>";
+      ?>
+      </div>
+
+    <div style="justify-content: flex-start;">
+    <h3> Customers: </h3>
+    <?php
+        $result = executePlainSQL("select * from customer");
+        echo "<table>";
+        echo "<tr><th>Customer Id</th><th>Customer Name</th><th>E-mail</th></tr>";
+        while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+          echo "<tr><td>" . $row["C_ID"] . "</td><td>" . $row["C_NAME"] . "</td><td>" . $row["E_MAIL"] . "</td></tr>";
+        }
+        echo "</table>";
+      ?>
+      </div>
+
+  </div>
   </div>
 
   <!-- Directory -->
@@ -151,10 +182,6 @@
 
 <!--  Setup connection and connect to DB -->
 <?php
-// ini_set('display_errors', 'On');
-// error_reporting(E_ALL | E_STRICT);
-$success = True; //keep track of errors so it redirects the page only if there are no errors
-$db_conn = OCILogon("ora_c5b1b", "a34248161", "dbhost.ugrad.cs.ubc.ca:1522/ug"); 
 
 function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
   //echo "<br>running ".$cmdstr."<br>";
@@ -183,13 +210,6 @@ function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL com
 }
 
 function executeBoundSQL($cmdstr, $list) {
-  /* Sometimes the same statement will be executed for several times ... only
-   the value of variables need to be changed.
-   In this case, you don't need to create the statement several times;
-   using bind variables can make the statement be shared and just parsed once.
-   This is also very useful in protecting against SQL injection.
-      See the sample code below for how this functions is used */
-
   global $db_conn, $success;
   $statement = OCIParse($db_conn, $cmdstr);
 
@@ -219,18 +239,6 @@ function executeBoundSQL($cmdstr, $list) {
   }
   return $statement;
 
-}
-function printResult($result) { //prints results from a select statement
-  echo "result from SQL:";
-  echo "<table>";
-  while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-  echo "<tr>\n";
-    foreach ($row as $item) {
-        echo "    <td>" . ($item !== null ? htmlentities($item, ENT_QUOTES) : "&nbsp;") . "</td>\n";
-    }
-    echo "</tr>\n";
-  }
-  echo "</table>\n";
 }
 
 if ($db_conn) {
@@ -267,6 +275,7 @@ if ($db_conn) {
     if ($_POST && $success){
       header("location: staffStaffView.php");
     }
+    echo "<meta http-equiv='refresh' content='0'>";
   } 
   //delete equipment 
   else if (array_key_exists('deleteEq', $_POST)){
@@ -285,7 +294,8 @@ if ($db_conn) {
     OCICommit($db_conn);
     if ($_POST && $success){
       header("location: staffEquipView.php");
-    }   
+    }
+    echo "<meta http-equiv='refresh' content='0'>";   
   } 
   //edit equip reservation 
   else if(array_key_exists('addEquipReservation', $_POST)){
@@ -307,6 +317,7 @@ if ($db_conn) {
     if ($_POST && $success) {
       header("location: staffEquipView.php");
     }
+    echo "<meta http-equiv='refresh' content='0'>";
   }
   //or update reservatiom
   else if(array_key_exists('deleteEquipReservation', $_POST)) {
@@ -334,6 +345,7 @@ if ($db_conn) {
     if ($_POST && $success) {
       header("location: staffEquipView.php");
     }
+    echo "<meta http-equiv='refresh' content='0'>";
 
   } else if(array_key_exists('updateEquipReservation', $_POST)) {
    $tuple = array (
@@ -360,6 +372,7 @@ if ($db_conn) {
     if ($_POST && $success) {
       header("location: staffEquipView.php");
     }
+    echo "<meta http-equiv='refresh' content='0'>";
 
   }
 
