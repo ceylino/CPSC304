@@ -1,7 +1,4 @@
-<!-- Customer page: This is the main customer page. This is where logged in customers and members can view their current reservations etc. and be redirected to create new ones, edit or delete existing ones.
--->
 <?php
-
 //Setup
 $success = True; //keep track of errors so it redirects the page only if there are no errors
 $db_conn = OCILogon("ora_i4s0b", "a13641155", "dbhost.ugrad.cs.ubc.ca:1522/ug"); // TODO: make this git ignored

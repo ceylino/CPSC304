@@ -1,5 +1,8 @@
-<!-- Customer page: This is the main customer page. This is where logged in customers and members can view their current reservations etc. and be redirected to create new ones, edit or delete existing ones.
--->
+<?php
+//Setup
+$success = True; //keep track of errors so it redirects the page only if there are no errors
+$db_conn = OCILogon("ora_i4s0b", "a13641155", "dbhost.ugrad.cs.ubc.ca:1522/ug"); // TODO: make this git ignored
+?>
 
 <!-- Page title -->
 <title>Hotel Ski Resort</title>
@@ -8,16 +11,37 @@
 
 <div style="display: flex;
             width: 100%;
-            justify-content: space-between;">
+            justify-content: space-around;">
 
   <!-- View table entries -->
   <div style="justify-content: flex-start;">
-    <h3> Hotel Staff: </h3> <!-- TODO: this table printing set up needs to be completed and added for the other tables as well -->
+    <h3> Hotel Staff: </h3> 
+    <?php
 
+        $result1 = executePlainSQL("select * from hotelStaff");
+        echo "<table>";
+        echo "<tr><th>ID</th><th>Name</th><th>Phone</th></tr>";
+        while ($row = OCI_Fetch_Array($result1, OCI_BOTH)) {
+          echo "<tr><td>" . $row["STAFF_ID"] . "</td><td>" . $row["S_NAME"] . "</td><td>" . $row["PHONE"] . "</td></tr>";
+        }
+        echo "</table>";
+      ?>
+      </div>
 
+<div style="justify-content: flex-start;">
     <h3> Ski Staff: </h3>
-  </div>
+    <?php
 
+        $result1 = executePlainSQL("select * from skiStaff");
+        echo "<table>";
+        echo "<tr><th>ID</th><th>Name</th><th>Phone</th></tr>";
+        while ($row = OCI_Fetch_Array($result1, OCI_BOTH)) {
+          echo "<tr><td>" . $row["STAFF_ID"] . "</td><td>" . $row["S_NAME"] . "</td><td>" . $row["PHONE"] . "</td></tr>";
+        }
+        echo "</table>";
+      ?>
+      </div>
+  
   <!-- Directory -->
   <div style="justify-content: flex-end;">
     <!-- Edit Profile-->
@@ -32,9 +56,11 @@
       </center>
     </div>
   </div>
+
 </div>
 
 <div style="height: 10px;"></div>
+
 
 <!---------------- Forms to add & update data ---------------->
 <!-- IMPORTANT: before adding any SQL check to see what needs to be done by looking at the createTables file and checking for functional dependencies! Or else THINGS WILL BREAK!!-->
@@ -43,7 +69,7 @@
   <div style="display: flex;
               width: 100%;
               justify-content: space-around;">
-    <div> <!-- Hotel Staff -->
+     <!-- Hotel Staff -->
       <div style="width: 300px; padding: 20px 20px 10px 20px; background-color: lightGrey; ">
         <center>Add a hotel staff: </center>
         <form method="POST" action="staffStaffView.php">
@@ -62,7 +88,7 @@
 
 <!-- ***************************************************************** -->
 
-      <div> <!-- Ski Staff -->
+       <!-- Ski Staff -->
       <div style="width: 300px; padding: 20px 20px 10px 20px; background-color: lightGrey; ">
         <center>Add new a ski staff: </center>
         <form method="POST" action="staffStaffView.php">
@@ -78,15 +104,11 @@
       </div>
 
       <div style="height: 10px;"></div>
-      </div>
-    </div>
   </div>
 </center>
 
 <!--  Setup connection and connect to DB -->
 <?php
-$success = True; //keep track of errors so it redirects the page only if there are no errors
-$db_conn = OCILogon("ora_c5b1b", "a34248161", "dbhost.ugrad.cs.ubc.ca:1522/ug"); 
 
 function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
   //echo "<br>running ".$cmdstr."<br>";
@@ -186,13 +208,16 @@ if ($db_conn) {
           //do nothing!
       }else {
         executeBoundSQL("insert into hotelStaff values (:bind1, :bind2, :bind3)", $alltuples);
-      }      
+      } 
+
     }
 
     OCICommit($db_conn);
     if ($_POST && $success){
       header("location: staffStaffView.php");
-  }
+    }
+  echo "<meta http-equiv='refresh' content='0'>";
+
   } else if (array_key_exists('newSS', $_POST)){
     $tuple = array ( 
       ":bind1" => $_POST['newSSid'],
@@ -213,13 +238,15 @@ if ($db_conn) {
           //do nothing!
       }else {
         executeBoundSQL("insert into skiStaff values (:bind1, :bind2, :bind3)", $alltuples);
-      }      
+      }
+      echo "<meta http-equiv='refresh' content='0'>";      
     }
 
     OCICommit($db_conn);
     if ($_POST && $success){
       header("location: staffStaffView.php");
-  }    
+  }
+  echo "<meta http-equiv='refresh' content='0'>";    
   }
 
   OCILogoff($db_conn);
