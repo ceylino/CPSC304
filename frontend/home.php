@@ -155,9 +155,8 @@ function printResult($result) { //prints results from a select statement
 if ($db_conn) {
 
 		if (array_key_exists('staffIdLogin', $_POST)) {
-			$staff_id = $_POST['staff_id'];
 			$tuple = array (
-				":bind1" => $staff_id
+				":bind1" => $_POST['staff_id']
 			);
 			$alltuples = array (
 				$tuple
@@ -166,7 +165,6 @@ if ($db_conn) {
       $row = OCI_Fetch_Array($result, OCI_BOTH);
 
       if ($_POST && $success && $row) {
-				setcookie("staffid", $staff_id);
         header("location: staffDir.php");
 			}
 		}else
@@ -190,8 +188,9 @@ if ($db_conn) {
 		}
 		else
 			if (array_key_exists('newCustomer', $_POST)) {
-				$tuple = array (
-					":bind1" => $_POST['newC_id'],
+        $customer_id = $_POST['newC_id'];
+        $tuple = array (
+					":bind1" => $customer_id,
 					":bind2" => $_POST['newC_name'],
           ":bind3" => $_POST['newC_email'],
           ":bind4" => $_POST['newC_CCnum']
@@ -203,7 +202,8 @@ if ($db_conn) {
 				OCICommit($db_conn);
 
         if ($_POST && $success) {
-        		header("location: custHome.php");
+          setcookie("custid", $customer_id);
+          header("location: custHome.php");
           }
       }
 
