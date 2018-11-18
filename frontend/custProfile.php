@@ -12,6 +12,20 @@ $custid = $_POST['customerid'];
 
 <title>Hotel Ski Resort</title>
 
+<!-- Directory -->
+  <div style="float: right;">
+    <div style="background-color:lightGrey;
+                  width: 200px;
+                  padding-top: 20px;
+                  padding-bottom: 1px">
+      <center>
+        <form action="custHome.php">
+          <input type="submit" value="Back to Main Page" name="staffDir">
+        </form>
+      </center>
+    </div>
+  </div>
+
 <center>
   <!-- Personal  Info-->
   <p> Welcome customer id: <?php echo $custid;?> </p>
