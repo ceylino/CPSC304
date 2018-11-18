@@ -1,23 +1,19 @@
 <?php
 //Setup
 $success = True; //keep track of errors so it redirects the page only if there are no errors
-$db_conn = OCILogon("ora_i4s0b", "a13641155", "dbhost.ugrad.cs.ubc.ca:1522/ug"); // TODO: make this git ignored
+$db_conn = OCILogon("ora_u3i0b", "a14691142", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 ?>
 
 <!-- Page title -->
 <title>Hotel Ski Resort</title>
 <p> Welcome staff id:<?php echo $_POST[""];?> </p> <!-- TODO: echo the staff id. -->
 
-<div style="display: flex;
-            width: 100%;
-            justify-content: space-around;">
+<div style="display: flex; width: 100%; justify-content: space-around;">
 
   <!-- View table entries -->
   <div style="justify-content: flex-start;">
-    <h3> Room Reservations: </h3> <!-- TODO: this table printing set up needs to be completed and added for the other tables as well -->
+    <h3> Room Reservations: </h3>
       <?php
-      //TODO : this part needs tobe changed
-        //$result = executePlainSQL("select * from roomReservation, customer");
         $result = executePlainSQL("select r.room_num, r.start_date, r.end_date, c.c_id, c.c_name, c.e_mail from roomReservation r, customer c where r.c_id = c.c_id");
         echo "<table>";
         echo "<tr><th>Room Number</th><th>Start Date</th><th>End Date</th><th>CID</th><th>Customer Name</th><th>Customer E-mail</th></tr>";
@@ -27,53 +23,53 @@ $db_conn = OCILogon("ora_i4s0b", "a13641155", "dbhost.ugrad.cs.ubc.ca:1522/ug");
         echo "</table>";
 
       ?>
-      </div>
-      
-      <div style="justify-content: flex-start;">
-      <h3> Rooms: </h3>
-      <?php
-
-        $result1 = executePlainSQL("select * from room");
-        echo "<table>";
-        echo "<tr><th>Number</th><th>Type</th><th>Rate</th></tr>";
-        while ($row = OCI_Fetch_Array($result1, OCI_BOTH)) {
-          echo "<tr><td>" . $row["ROOM_NUM"] . "</td><td>" . $row["ROOM_TYPE"] . "</td><td>" . $row["ROOM_RATE"] . "</td></tr>";
-        }
-        echo "</table>";
-      ?>
-      </div>
-
-      <div style="justify-content: flex-start;">
-      <h3> Room Rates: </h3>
-      <?php
-
-        $result1 = executePlainSQL("select * from roomRate");
-        echo "<table>";
-        echo "<tr><th>Type</th><th>Rate</th></tr>";
-        while ($row = OCI_Fetch_Array($result1, OCI_BOTH)) {
-          echo "<tr><td>" . $row["ROOM_TYPE"] . "</td><td>" . $row["ROOM_RATE"] . "</td></tr>";
-        }
-        echo "</table>";
-      ?>
-      </div>
-
-      <!-- Directory -->
-      <div style="justify-content: flex-end;">
-        <!-- Edit Profile-->
-        <div style="background-color:lightGrey;
-                      width: 200px;
-                      padding-top: 20px;
-                      padding-bottom: 1px">
-          <center>
-            <form action="staffDir.php""> 
-              <input type="submit" value="Back to Main Staff Page" name="staffDir">
-            </form>
-          </center>
-        </div>
-
-        <div style="height: 10px;"></div>
-      </div>
   </div>
+
+  <div style="justify-content: flex-start;">
+    <h3> Rooms: </h3>
+    <?php
+
+      $result1 = executePlainSQL("select * from room");
+      echo "<table>";
+      echo "<tr><th>Number</th><th>Type</th><th>Rate</th></tr>";
+      while ($row = OCI_Fetch_Array($result1, OCI_BOTH)) {
+        echo "<tr><td>" . $row["ROOM_NUM"] . "</td><td>" . $row["ROOM_TYPE"] . "</td><td>" . $row["ROOM_RATE"] . "</td></tr>";
+      }
+      echo "</table>";
+    ?>
+  </div>
+
+  <div style="justify-content: flex-start;">
+    <h3> Room Rates: </h3>
+    <?php
+
+      $result1 = executePlainSQL("select * from roomRate");
+      echo "<table>";
+      echo "<tr><th>Type</th><th>Rate</th></tr>";
+      while ($row = OCI_Fetch_Array($result1, OCI_BOTH)) {
+        echo "<tr><td>" . $row["ROOM_TYPE"] . "</td><td>" . $row["ROOM_RATE"] . "</td></tr>";
+      }
+      echo "</table>";
+    ?>
+  </div>
+
+  <!-- Directory -->
+  <div style="justify-content: flex-end;">
+    <!-- Edit Profile-->
+    <div style="background-color:lightGrey;
+                  width: 200px;
+                  padding-top: 20px;
+                  padding-bottom: 1px">
+      <center>
+        <form action="staffDir.php">
+          <input type="submit" value="Back to Main Staff Page" name="staffDir">
+        </form>
+      </center>
+    </div>
+
+    <div style="height: 10px;"></div>
+  </div>
+</div>
 
 <div style="height: 30px;"></div>
 
@@ -123,7 +119,7 @@ $db_conn = OCILogon("ora_i4s0b", "a13641155", "dbhost.ugrad.cs.ubc.ca:1522/ug");
       <!-- TODO: make sure that the necessary information is cascading properly from reservations etc. -->
       <div>
         <div style="width: 300px;  padding: 30px 20px 10px 20px; background-color: lightGrey; ">
-          <form action="staffRoomView.php"> 
+          <form action="staffRoomView.php">
             <center>Delete a Room: <br>
               Are you sure you want to delete this room? This action cannot be undone. Deletion will cause cascading through other functionalities.<br>
             </center>
@@ -313,7 +309,7 @@ if ($db_conn) {
     );
     $result1 = executeBoundSQL("select * from room where room_num=:bind1", $alltuples);
     if($row = OCI_Fetch_Array($result1, OCI_BOTH)){
-      //update room 
+      //update room
       executeBoundSQL("update room set room_num=:bind2, room_type=:bind3, room_rate=:bind4 where room_num=:bind1", $alltuples);
       OCICommit($db_conn);
     }
@@ -419,4 +415,3 @@ if ($db_conn) {
 }
 
 ?>
-
