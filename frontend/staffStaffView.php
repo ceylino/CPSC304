@@ -1,22 +1,46 @@
-<!-- Customer page: This is the main customer page. This is where logged in customers and members can view their current reservations etc. and be redirected to create new ones, edit or delete existing ones.
--->
+<?php
+//Setup
+$success = True; //keep track of errors so it redirects the page only if there are no errors
+$db_conn = OCILogon("ora_u3i0b", "a14691142", "dbhost.ugrad.cs.ubc.ca:1522/ug");
+?>
 
 <!-- Page title -->
 <title>Hotel Ski Resort</title>
 
-<p> Welcome staff id: </p> <!-- TODO: echo the staff id. -->
+<p> Welcome staff id:<?php echo $_POST[""];?> </p> <!-- TODO: echo the staff id. -->
 
 <div style="display: flex;
             width: 100%;
-            justify-content: space-between;">
+            justify-content: space-around;">
 
   <!-- View table entries -->
   <div style="justify-content: flex-start;">
-    <h3> Hotel Staff: </h3> <!-- TODO: this table printing set up needs to be completed and added for the other tables as well -->
+    <h3> Hotel Staff: </h3>
+    <?php
 
+        $result1 = executePlainSQL("select * from hotelStaff");
+        echo "<table>";
+        echo "<tr><th>ID</th><th>Name</th><th>Phone</th></tr>";
+        while ($row = OCI_Fetch_Array($result1, OCI_BOTH)) {
+          echo "<tr><td>" . $row["STAFF_ID"] . "</td><td>" . $row["S_NAME"] . "</td><td>" . $row["PHONE"] . "</td></tr>";
+        }
+        echo "</table>";
+      ?>
+      </div>
 
+<div style="justify-content: flex-start;">
     <h3> Ski Staff: </h3>
-  </div>
+    <?php
+
+        $result1 = executePlainSQL("select * from skiStaff");
+        echo "<table>";
+        echo "<tr><th>ID</th><th>Name</th><th>Phone</th></tr>";
+        while ($row = OCI_Fetch_Array($result1, OCI_BOTH)) {
+          echo "<tr><td>" . $row["STAFF_ID"] . "</td><td>" . $row["S_NAME"] . "</td><td>" . $row["PHONE"] . "</td></tr>";
+        }
+        echo "</table>";
+      ?>
+      </div>
 
   <!-- Directory -->
   <div style="justify-content: flex-end;">
@@ -26,67 +50,62 @@
                   padding-top: 20px;
                   padding-bottom: 1px">
       <center>
-        <form method="POST" action="staffDir.php"> <!-- TODO: Add rerouting to other staff pages -->
+        <form action=""> <!-- TODO: Add rerouting to other staff pages -->
           <input type="submit" value="Back to Main Page" name="staffDir">
         </form>
       </center>
     </div>
   </div>
+
 </div>
 
 <div style="height: 10px;"></div>
 
-<!---------------- Forms to add & update data ---------------->
-<!-- IMPORTANT: before adding any SQL check to see what needs to be done by looking at the createTables file and checking for functional dependencies! Or else THINGS WILL BREAK!!-->
 
+<!-- Forms to add & update data -->
 <center>
   <div style="display: flex;
               width: 100%;
               justify-content: space-around;">
-    <div> <!-- Hotel Staff -->
+     <!-- Hotel Staff -->
       <div style="width: 300px; padding: 20px 20px 10px 20px; background-color: lightGrey; ">
-        <center>Add a hotel staff: </center>
+        <center>Add new or update a hotel staff: </center>
         <form method="POST" action="staffStaffView.php">
           <!-- TODO: Add any SQL processing: check if this room number exists. If so: update, if not insert-->
-            <p align="left">Staff id: <br> <input type="number" name="newHSid" size="6"> </p>
-            <p align="left">Staff name: <br> <input type="text" name="newHSname" size="20"> </p>
-            <p align="left">Phone: <br> <input type="text" name="newHSnum" size="20"> </p>
+            <p align="left">Staff id: <br> <input type="number" name="editHSid" size="6"> </p>
+            <p align="left">Staff name: <br> <input type="text" name="editHSname" size="20"> </p>
+            <p align="left">Phone: <br> <input type="text" name="editHSphone" size="20"> </p>
             <!-- Note: remember to update the roomRate table if needed -BEFORE- making any changes to the room table or it will not work!! Once this is done, refresh the page (redirect to itself)-->
           <center>
-            <input type="submit" value="Add/Update" name="newHS">
+            <input type="submit" value="Add/Update" name="editHStaff">
           </center>
         </form>
       </div>
 
       <div style="height: 10px;"></div>
 
-<!-- ***************************************************************** -->
 
-      <div> <!-- Ski Staff -->
+       <!-- Ski Staff -->
       <div style="width: 300px; padding: 20px 20px 10px 20px; background-color: lightGrey; ">
-        <center>Add new a ski staff: </center>
+        <center>Add new or update a ski staff: </center>
         <form method="POST" action="staffStaffView.php">
           <!-- TODO: Add any SQL processing: check if this room number exists. If so: update, if not insert-->
-            <p align="left">Staff id: <br> <input type="number" name="newSSid" size="6"> </p>
-            <p align="left">Staff name: <br> <input type="text" name="newSSname" size="20"> </p>
-            <p align="left">Phone: <br> <input type="text" name="newSSnum" size="20"> </p>
+            <p align="left">Staff id: <br> <input type="number" name="editSSid" size="6"> </p>
+            <p align="left">Staff name: <br> <input type="text" name="editSSname" size="20"> </p>
+            <p align="left">Phone: <br> <input type="text" name="editSSphone" size="20"> </p>
             <!-- Note: remember to update the roomRate table if needed -BEFORE- making any changes to the room table or it will not work!! Once this is done, refresh the page (redirect to itself)-->
           <center>
-            <input type="submit" value="Add/Update" name="newSS">
+            <input type="submit" value="Add/Update" name="editSStaff">
           </center>
         </form>
       </div>
 
       <div style="height: 10px;"></div>
-      </div>
-    </div>
   </div>
 </center>
 
 <!--  Setup connection and connect to DB -->
 <?php
-$success = True; //keep track of errors so it redirects the page only if there are no errors
-$db_conn = OCILogon("ora_c5b1b", "a34248161", "dbhost.ugrad.cs.ubc.ca:1522/ug"); 
 
 function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
   //echo "<br>running ".$cmdstr."<br>";
@@ -166,60 +185,65 @@ function printResult($result) { //prints results from a select statement
 }
 
 if ($db_conn) {
-  if (array_key_exists('newHS', $_POST)) { 
-    $tuple = array ( 
+  if (array_key_exists('newHS', $_POST)) {
+    $tuple = array (
       ":bind1" => $_POST['newHSid'],
       ":bind2" => $_POST['newHSname'],
-      ":bind3" => $_POST['newHSnum'] 
+      ":bind3" => $_POST['newHSnum']
       );
     $alltuples = array ($tuple);
     $result = executeBoundSQL("select * from hotelStaff where staff_id=:bind1", $alltuples);
-    
+
     //check if id exists in hotel staff
-    if($row = OCI_Fetch_Array($result, OCI_BOTH)){ 
+    if($row = OCI_Fetch_Array($result, OCI_BOTH)){
         //do nothing!
     } else {
 
       $result2 = executeBoundSQL("select * from skiStaff where staff_id=:bind1", $alltuples);
-      //check if id exists in ski staff       
-      if($row = OCI_Fetch_Array($result2, OCI_BOTH)){ 
+      //check if id exists in ski staff
+      if($row = OCI_Fetch_Array($result2, OCI_BOTH)){
           //do nothing!
       }else {
         executeBoundSQL("insert into hotelStaff values (:bind1, :bind2, :bind3)", $alltuples);
-      }      
+      }
+
+    }
+
+    OCICommit($db_conn);
+    if ($_POST && $success){
+      header("location: staffStaffView.php");
+    }
+  echo "<meta http-equiv='refresh' content='0'>";
+
+  } else if (array_key_exists('newSS', $_POST)){
+    $tuple = array (
+      ":bind1" => $_POST['newSSid'],
+      ":bind2" => $_POST['newSSname'],
+      ":bind3" => $_POST['newSSnum']
+      );
+    $alltuples = array ($tuple);
+    $result = executeBoundSQL("select * from skiStaff where staff_id=:bind1", $alltuples);
+
+    //check if id exists in ski staff
+    if($row = OCI_Fetch_Array($result, OCI_BOTH)){
+        //do nothing!
+    } else {
+
+      $result2 = executeBoundSQL("select * from hotelStaff where staff_id=:bind1", $alltuples);
+      //check if id exists in ski staff
+      if($row = OCI_Fetch_Array($result2, OCI_BOTH)){
+          //do nothing!
+      }else {
+        executeBoundSQL("insert into skiStaff values (:bind1, :bind2, :bind3)", $alltuples);
+      }
+      echo "<meta http-equiv='refresh' content='0'>";
     }
 
     OCICommit($db_conn);
     if ($_POST && $success){
       header("location: staffStaffView.php");
   }
-  } else if (array_key_exists('newSS', $_POST)){
-    $tuple = array ( 
-      ":bind1" => $_POST['newSSid'],
-      ":bind2" => $_POST['newSSname'],
-      ":bind3" => $_POST['newSSnum'] 
-      );
-    $alltuples = array ($tuple);
-    $result = executeBoundSQL("select * from skiStaff where staff_id=:bind1", $alltuples);
-    
-    //check if id exists in ski staff
-    if($row = OCI_Fetch_Array($result, OCI_BOTH)){ 
-        //do nothing!
-    } else {
-
-      $result2 = executeBoundSQL("select * from hotelStaff where staff_id=:bind1", $alltuples);
-      //check if id exists in ski staff       
-      if($row = OCI_Fetch_Array($result2, OCI_BOTH)){ 
-          //do nothing!
-      }else {
-        executeBoundSQL("insert into skiStaff values (:bind1, :bind2, :bind3)", $alltuples);
-      }      
-    }
-
-    OCICommit($db_conn);
-    if ($_POST && $success){
-      header("location: staffStaffView.php");
-  }    
+  echo "<meta http-equiv='refresh' content='0'>";
   }
 
   OCILogoff($db_conn);
