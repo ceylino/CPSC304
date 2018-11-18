@@ -453,20 +453,20 @@ commit;
 
 /*---------------------------------------------------------------------------------*/
 /*BOOKEDLESSONS TABLE - 5 entries*/
-INSERT INTO bookedLessons (c_id, lesson_type)
-VALUES (1, 'beginnersSki');
+INSERT INTO bookedLessons (c_id, lesson_datetime, lesson_type)
+VALUES (1, '201808091130', 'beginnersSki');
 
-INSERT INTO bookedLessons (c_id, lesson_type)
-VALUES (6, 'beginnersSnowboard');
+INSERT INTO bookedLessons (c_id, lesson_datetime, lesson_type)
+VALUES (6, '201809031415', 'beginnersSnowboard');
 
-INSERT INTO bookedLessons (c_id, lesson_type)
-VALUES (4, 'intermediateSnowboard');
+INSERT INTO bookedLessons (c_id, lesson_datetime, lesson_type)
+VALUES (4, '201809041515', 'intermediateSnowboard');
 
-INSERT INTO bookedLessons (c_id, lesson_type)
-VALUES (10, 'beginnersSki');
+INSERT INTO bookedLessons (c_id, lesson_datetime, lesson_type)
+VALUES (10, '201808091130', 'beginnersSki');
 
-INSERT INTO bookedLessons (c_id, lesson_type)
-VALUES (7, 'crosscountrySki');
+INSERT INTO bookedLessons (c_id, lesson_datetime, lesson_type)
+VALUES (7, '201510030900', 'crosscountrySki');
 
 commit;
 
