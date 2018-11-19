@@ -1,28 +1,27 @@
--- customer (c_id, c_name, e_mail, creditcard_num)
--- member (c_id, fee, points, join_date)
+-- customer (*c_id, c_name, e_mail, creditcard_num)
+-- member (*c_id, fee, points, join_date)
 
--- roomRate (room_type, room_rate)
--- room (room_num, room_type, room_rate)
--- roomReservation (room_num, c_id, start_date, end_date)
+-- roomRate (*room_type, room_rate)
+-- room (*room_num, room_type, room_rate)
+-- roomReservation (*room_num, c_id, *start_date, *end_date)
 
--- hotelStaff (staff_id, s_name, phone)
--- skiStaff (staff_id, s_name, phone)
+-- hotelStaff (*staff_id, s_name, phone)
+-- skiStaff (*staff_id, s_name, phone)
 
--- rentalEquipRate (equip_type, rental_rate)
--- rentalEquip (equip_id, equip_type, rental_rate)
--- equipReservation (equip_id, c_id, start_date, end_date)
+-- rentalEquipRate (*equip_type, rental_rate)
+-- rentalEquip (*equip_id, equip_type, rental_rate)
+-- equipReservation (*equip_id, c_id, *start_date, *end_date)
 
--- roomManagement (room_num, staff_id)
--- equipManagement (equip_id, staff_id)
+-- roomManagement (*room_num, *staff_id)
+-- equipManagement (*equip_id, *staff_id)
 
--- purchasedLiftPass (c_id, pass_id, purchase_date, pass_price)
+-- purchasedLiftPass (*c_id, *pass_id, purchase_date, pass_price)
 
--- lessonTime (type, lesson_datetime)
--- lesson (staff_id, lesson_datetime, lesson_type)
--- bookedLessons (c_id, lesson_datetime, lesson_type)
+-- lessonTime (*type, *lesson_datetime)
+-- lesson (*staff_id, lesson_datetime, *lesson_type)
+-- bookedLessons (*c_id, lesson_datetime, *lesson_type)
 
 
 Notes:
 - all datetime are strings of the form "yyyymmddhhmm"
 - all date are strings of the form "yyyymmdd"
-- roomResDate and equipResDate were added to ensure unique reservations
