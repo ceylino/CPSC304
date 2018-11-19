@@ -1,7 +1,12 @@
 <?php
 //Setup
+if (isset($_POST["staffid"])) {
+  $staffidcookie = $_POST['staffid'];   
+}else{  
+  $staffidcookie = $_COOKIE["staffid"];
+}
 $success = True; //keep track of errors so it redirects the page only if there are no errors
-$db_conn = OCILogon("ora_i4s0b", "a13641155", "dbhost.ugrad.cs.ubc.ca:1522/ug"); // TODO: make this git ignored
+$db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug"); // TODO: make this git ignored
 ?>
 
 <!-- Page title -->
@@ -51,6 +56,7 @@ $db_conn = OCILogon("ora_i4s0b", "a13641155", "dbhost.ugrad.cs.ubc.ca:1522/ug");
                   padding-bottom: 1px">
       <center>
         <form method="POST" action="staffDir.php"> <!-- TODO: Add rerouting to other staff pages -->
+        <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
           <input type="submit" value="Back to Main Page" name="staffDir">
         </form>
       </center>
@@ -214,9 +220,10 @@ if ($db_conn) {
 
     OCICommit($db_conn);
     if ($_POST && $success){
-      header("location: staffStaffView.php");
+      setcookie("staffid", $staffidcookie);
+      echo "<meta http-equiv='refresh' content='0'>";
     }
-  echo "<meta http-equiv='refresh' content='0'>";
+  
 
   } else if (array_key_exists('newSS', $_POST)){
     $tuple = array ( 
@@ -239,14 +246,16 @@ if ($db_conn) {
       }else {
         executeBoundSQL("insert into skiStaff values (:bind1, :bind2, :bind3)", $alltuples);
       }
+      setcookie("staffid", $staffidcookie);
       echo "<meta http-equiv='refresh' content='0'>";      
     }
 
     OCICommit($db_conn);
     if ($_POST && $success){
-      header("location: staffStaffView.php");
+      setcookie("staffid", $staffidcookie);
+      echo "<meta http-equiv='refresh' content='0'>";
   }
-  echo "<meta http-equiv='refresh' content='0'>";    
+  
   }
 
   OCILogoff($db_conn);

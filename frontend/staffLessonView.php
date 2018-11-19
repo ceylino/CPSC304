@@ -1,12 +1,18 @@
 <?php
 //Setup
+session_start();
+if (isset($_POST["staffid"])) {
+  $staffidcookie = $_POST['staffid'];   
+}else{  
+  $staffidcookie = $_COOKIE["staffid"];
+}
 $success = True; //keep track of errors so it redirects the page only if there are no errors
-$db_conn = OCILogon("ora_c5b1b", "a34248161", "dbhost.ugrad.cs.ubc.ca:1522/ug"); // TODO: make this git ignored
+$db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug"); // TODO: make this git ignored
 ?>
 
 <!-- Page title -->
 <title>Hotel Ski Resort</title>
-<p> Welcome staff id:</p> <!-- TODO: echo the staff id. -->
+<p> Welcome staff id: <?php echo $staffidcookie; ?></p> <!-- TODO: echo the staff id. -->
 
 <div style="display: flex; width: 100%; justify-content: space-between;">
 
@@ -106,7 +112,8 @@ $db_conn = OCILogon("ora_c5b1b", "a34248161", "dbhost.ugrad.cs.ubc.ca:1522/ug");
                   padding-top: 20px;
                   padding-bottom: 1px">
       <center>
-        <form action="staffDir.php">
+       <form method="POST" action="staffDir.php">
+       <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
           <input type="submit" value="Back to Main Page" name="staffDir">
         </form>
       </center>
@@ -304,9 +311,10 @@ if ($db_conn) {
       //echo "<script type='text/javascript'>alert('$message');</script>";
     //}
     if ($_POST && $success) {
-      header("location: staffLessonView.php");
+      setcookie("staffid", $staffidcookie);
+      echo "<meta http-equiv='refresh' content='0'>";
     }
-    echo "<meta http-equiv='refresh' content='0'>";
+    
 
 	} else
   if (array_key_exists('updateLesson', $_POST)){
@@ -337,9 +345,10 @@ if ($db_conn) {
       
     }
     if ($_POST && $success) {
-      header("location: staffLessonView.php");
+      setcookie("staffid", $staffidcookie);
+      echo "<meta http-equiv='refresh' content='0'>";
     }
-    echo "<meta http-equiv='refresh' content='0'>";
+    
 
 	} else
   if (array_key_exists('deleteLesson', $_POST)) {
@@ -357,9 +366,10 @@ if ($db_conn) {
     }
 
     if ($_POST && $success) {
-      header("location: staffLessonView.php");
+      setcookie("staffid", $staffidcookie);
+      echo "<meta http-equiv='refresh' content='0'>";
     }
-    echo "<meta http-equiv='refresh' content='0'>";
+   
 
 	} else
   if (array_key_exists('addBooking', $_POST)) {
@@ -377,9 +387,10 @@ if ($db_conn) {
     OCICommit($db_conn);
 
     if ($_POST && $success) {
-      header("location: staffLessonView.php");
+      setcookie("staffid", $staffidcookie);
+      echo "<meta http-equiv='refresh' content='0'>";
     }
-    echo "<meta http-equiv='refresh' content='0'>";
+    
 
 	} else
   if(array_key_exists('deleteBooking', $_POST)){
@@ -397,9 +408,9 @@ if ($db_conn) {
       OCICommit($db_conn);
     }
     if ($_POST && $success) {
-    	header("location: staffLessonView.php");
+    	setcookie("staffid", $staffidcookie);
+      echo "<meta http-equiv='refresh' content='0'>";
     }
-    echo "<meta http-equiv='refresh' content='0'>";
   }else
 
 	//Commit to save changes...

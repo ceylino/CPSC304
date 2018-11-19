@@ -2,13 +2,14 @@
 -->
 <?php
 //Setup
-session_start();
-$staff_id = $_POST['staffid'];
-setcookie("staffid", $staff_id);
-$staffidcookie = $_COOKIE["staffid"];
+if (isset($_POST["staffid"])) {
+  $staffidcookie = $_POST['staffid'];   
+}else{  
+  $staffidcookie = $_COOKIE["staffid"];
+}
 
 $success = True; //keep track of errors so it redirects the page only if there are no errors
-$db_conn = OCILogon("ora_i4s0b", "a13641155", "dbhost.ugrad.cs.ubc.ca:1522/ug");
+$db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 ?>
 
 <!-- Page title -->
@@ -125,7 +126,7 @@ $db_conn = OCILogon("ora_i4s0b", "a13641155", "dbhost.ugrad.cs.ubc.ca:1522/ug");
       <div style="width: 300px; padding: 20px 20px 10px 20px; background-color: lightGrey; ">
         <center>Add new room management: </center>
         <form method="POST" action="staffManagementView.php">
-        <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
+        
           <p align="left">Room number: <br> <input type="number" name="editRoomNum" size="6"></p>
           <p align="left">Staff Id: <br> <input type="number" name="editSid" size="6"> </p>
           <center><input type="submit" value="Add" name="addRoomManage"></center>
@@ -138,7 +139,6 @@ $db_conn = OCILogon("ora_i4s0b", "a13641155", "dbhost.ugrad.cs.ubc.ca:1522/ug");
       <div style="width: 300px; padding: 20px 20px 10px 20px; background-color: lightGrey; ">
         <center>Update existing room management: </center>
         <form method="POST" action="staffManagementView.php">
-        <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
           <p align="left">Old Room number: <br> <input type="number" name="oldRoomNum" size="6"></p>
           <p align="left">Staff Id: <br> <input type="number" name="oldSid" size="6"> </p>
           <p align="left">New Room number: <br> <input type="number" name="newRoomNum" size="6"></p>
@@ -152,7 +152,6 @@ $db_conn = OCILogon("ora_i4s0b", "a13641155", "dbhost.ugrad.cs.ubc.ca:1522/ug");
       <div>
         <div style="width: 300px;  padding: 30px 20px 10px 20px; background-color: lightGrey; ">
           <form method="POST" action="staffManagementView.php">
-          <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
             <center>Delete room management: <br> Are you sure you want to delete this entry? This action cannot be undone.<br></center>
             <p align="left">Room number: <br> <input type="number" name="deleteRoomNum" size="6"></p>
             <p align="left">Staff Id: <br> <input type="number" name="deleteSid" size="6"> </p>
@@ -167,7 +166,6 @@ $db_conn = OCILogon("ora_i4s0b", "a13641155", "dbhost.ugrad.cs.ubc.ca:1522/ug");
       <div style="width: 300px; padding: 20px 20px 10px 20px; background-color: lightGrey; ">
         <center>Add new equipment management: </center>
         <form method="POST" action="staffManagementView.php">
-        <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
           <!-- TODO: Add any SQL processing: check if this equipment & staff exists. If so: update, if not insert-->
           <p align="left">Equipment ID: <br> <input type="number" name="editEquipId" size="6"></p>
           <p align="left">Staff Id: <br> <input type="number" name="editSid" size="6"> </p>
@@ -181,7 +179,6 @@ $db_conn = OCILogon("ora_i4s0b", "a13641155", "dbhost.ugrad.cs.ubc.ca:1522/ug");
       <div style="width: 300px; padding: 20px 20px 10px 20px; background-color: lightGrey; ">
         <center>Update existing equipment management: </center>
         <form method="POST" action="staffManagementView.php">
-        <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
           <p align="left">Old Equip Id: <br> <input type="number" name="oldEquipId" size="6"></p>
           <p align="left">Staff Id: <br> <input type="number" name="oldESid" size="6"> </p>
           <p align="left">New Equip Id: <br> <input type="number" name="newEquipId" size="6"></p>
@@ -195,7 +192,6 @@ $db_conn = OCILogon("ora_i4s0b", "a13641155", "dbhost.ugrad.cs.ubc.ca:1522/ug");
       <div>
         <div style="width: 300px;  padding: 30px 20px 10px 20px; background-color: lightGrey; ">
           <form method="POST" action="staffManagementView.php">
-          <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
             <center>Delete equipment management: <br> Are you sure you want to delete this entry? This action cannot be undone.<br></center>
             <p align="left">Equipment ID: <br> <input type="number" name="deleteEquipId" size="6"></p>
             <p align="left">Staff Id: <br> <input type="number" name="deleteSid" size="6"> </p>
@@ -291,9 +287,10 @@ if ($db_conn) {
     OCICommit($db_conn);
 
     if ($_POST && $success) {
-      header("location: staffManagementView.php");
+      setcookie("staffid", $staffidcookie);
+      echo "<meta http-equiv='refresh' content='0'>";
     }
-    echo "<meta http-equiv='refresh' content='0'>";
+   
 
 	} else
   if (array_key_exists('updateRoomManage', $_POST)){
@@ -314,9 +311,10 @@ if ($db_conn) {
       OCICommit($db_conn);
     }
     if ($_POST && $success) {
-      header("location: staffManagementView.php");
+      setcookie("staffid", $staffidcookie);
+      echo "<meta http-equiv='refresh' content='0'>";
     }
-    echo "<meta http-equiv='refresh' content='0'>";
+    
 
 	} else
   if(array_key_exists('deleteRoomManage', $_POST)){
@@ -334,9 +332,10 @@ if ($db_conn) {
       OCICommit($db_conn);
     }
     if ($_POST && $success) {
-    	header("location: staffManagementView.php");
+    	setcookie("staffid", $staffidcookie);
+      echo "<meta http-equiv='refresh' content='0'>";
     }
-    echo "<meta http-equiv='refresh' content='0'>";
+    
   }
   if (array_key_exists('addEquipManage', $_POST)) {
    $tuple = array (
@@ -351,9 +350,10 @@ if ($db_conn) {
     OCICommit($db_conn);
 
     if ($_POST && $success) {
-      header("location: staffManagementView.php");
+      setcookie("staffid", $staffidcookie);
+      echo "<meta http-equiv='refresh' content='0'>";
     }
-    echo "<meta http-equiv='refresh' content='0'>";
+    
 
   } else
   if (array_key_exists('updateEquipManage', $_POST)){
@@ -374,9 +374,10 @@ if ($db_conn) {
       OCICommit($db_conn);
     }
     if ($_POST && $success) {
-      header("location: staffManagementView.php");
+      setcookie("staffid", $staffidcookie);
+      echo "<meta http-equiv='refresh' content='0'>";
     }
-    echo "<meta http-equiv='refresh' content='0'>";
+    
 
   } else
   if(array_key_exists('deleteEquipManage', $_POST)){
@@ -394,9 +395,10 @@ if ($db_conn) {
       OCICommit($db_conn);
     }
     if ($_POST && $success) {
-      header("location: staffManagementView.php");
+      setcookie("staffid", $staffidcookie);
+      echo "<meta http-equiv='refresh' content='0'>";
     }
-    echo "<meta http-equiv='refresh' content='0'>";
+    
   }
 
 	//Commit to save changes...
