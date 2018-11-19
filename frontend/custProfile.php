@@ -1,19 +1,18 @@
 <!-- Customer profile: This is the page where customer may view their profiles and edit their data -->
 
-<!-- Page title -->
 <?php
 session_start();
 
 $success = True; //keep track of errors so it redirects the page only if there are no errors
-$db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
+$db_conn = OCILogon("ora_u3i0b", "a14691142", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 
 if (isset($_POST["custid"])) {
-  $custid = $_POST['custid'];   
-}else{  
+  $custid = $_POST['custid'];
+}else{
   $custid = $_COOKIE["custid"];
 }
 ?>
-
+<!-- Page title -->
 <title>Hotel Ski Resort</title>
 
 <!-- Directory -->
@@ -172,7 +171,6 @@ function executeBoundSQL($cmdstr, $list) {
     }
   }
   return $statement;
-
 }
 
 function printResult($result) { //prints results from a select statement
@@ -245,5 +243,4 @@ if ($db_conn) {
   $e = OCI_Error(); // For OCILogon errors pass no handle
   echo htmlentities($e['message']);
 }
-
 ?>

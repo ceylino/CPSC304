@@ -2,25 +2,19 @@
 -->
 <?php
 session_start();
-$staffidcookie = $_COOKIE["staffid"];    
+$staffidcookie = $_COOKIE["staffid"];
 
 ?>
 <!-- Page title -->
 <title>Hotel Ski Resort</title>
 <center>
   <h1>Staff Homepage</h1>
-  <p> Welcome staff id:<?php echo $staffidcookie;?> </p> <!-- TODO: echo the staff id. -->
-
-    <!-- TODO:
-    - Ensure that the rooms/equipment buttons are disabled depending on staff type
-    - Ensure data to profile is redirected to the correct profile, according tot he staff id given in login.
-    -->
+  <p> Welcome staff id:<?php echo $staffidcookie;?> </p>
   <!-- Below are the directory options -->
   <div style="background-color:lightGrey; width: 10%; padding-top: 20px; padding-bottom: 1px">
     <form method="POST" action="staffProfile.php">
     <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
       <input type="submit" value="Edit Profile" name="staffProfile">
-
     </form>
   </div>
 

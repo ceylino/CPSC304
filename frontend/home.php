@@ -3,8 +3,6 @@ Staff and customers can log in from here and then get redirected to the appropri
 If their logins are incorrect then they remain on this page and get an error.
 -->
 
-<!-- Starting session and setting session variables -->
-<!--  Setup connection and connect to DB -->
 <?php
 session_start();
 ?>
@@ -26,7 +24,6 @@ session_start();
     <h3>Staff Login</h3>
     <form method="POST" action="home.php">
     <!-- if not a existing account, stay in same page and get error message -->
-
       Id: <input type="number" name="staff_id" size="6">
       <input type="submit" value="Log in" name="staffIdLogin">
     </form>
@@ -35,10 +32,7 @@ session_start();
   <div style="height: 10px;"></div>
 
   <!-- Customer Login -->
-  <div style="background-color:lightGrey;
-              width: 25%;
-              padding-top: 10px;
-              padding-bottom: 10px">
+  <div style="background-color:lightGrey;  width: 25%;padding-top: 10px; padding-bottom: 10px">
     <h3>Customer Login</h3>
     <form method="POST" action="home.php">
       Id: <input type="number" name="c_id" size="6">

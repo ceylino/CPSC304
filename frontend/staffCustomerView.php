@@ -2,18 +2,18 @@
 <?php
 session_start();
 if (isset($_POST["staffid"])) {
-  $staffidcookie = $_POST['staffid'];   
-}else{  
+  $staffidcookie = $_POST['staffid'];
+}else{
   $staffidcookie = $_COOKIE["staffid"];
 }
 //Setup
 $success = True; //keep track of errors so it redirects the page only if there are no errors
-$db_conn = OCILogon("ora_c5b1b", "a34248161", "dbhost.ugrad.cs.ubc.ca:1522/ug"); // TODO: make this git ignored
+$db_conn = OCILogon("ora_u3i0b", "a14691142", "dbhost.ugrad.cs.ubc.ca:1522/ug"); // TODO: make this git ignored
 ?>
 
 <!-- Page title -->
 <title>Hotel Ski Resort</title>
-<p> Welcome staff id:<?php echo $staffidcookie;?> </p> <!-- TODO: echo the staff id. -->
+<p> Welcome staff id:<?php echo $staffidcookie;?> </p>
 
 
 <div style="display: flex;
@@ -22,9 +22,7 @@ $db_conn = OCILogon("ora_c5b1b", "a34248161", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 
   <!-- View table entries -->
   <div style="justify-content: flex-start;">
-    <h3> Customers </h3> 
-    <!-- TODO: this table printing set up needs to be completed and added for the other tables as well -->
-    <!-- insert php --> 
+    <h3> Customers </h3>
     <?php
         $result = executePlainSQL("select * from customer");
         echo "<table>";
@@ -37,43 +35,36 @@ $db_conn = OCILogon("ora_c5b1b", "a34248161", "dbhost.ugrad.cs.ubc.ca:1522/ug");
       </div>
 
     <div style="justify-content: flex-start;">
-    <h3> Members </h3>
-    <!-- TODO: this table printing set up needs to be completed and added for the other tables as well -->
-    <!-- insert php -->
-    <?php
-
-        $result1 = executePlainSQL(" select c.c_id, c.c_name, m.fee, m.points, m.join_date from customer c, member m where c.c_id = m.c_id");
-        echo "<table>";
-        echo "<tr><th>ID</th></td><td><th></th><th>Name</th><th>Member Fee</th></td><td><th>Member Points</th></td><td><th>Membership Date</th></tr>";
-        while ($row = OCI_Fetch_Array($result1, OCI_BOTH)) {
-          echo "<tr><td>" . $row["C_ID"] . "</td><td></td><td></td><td>" . $row["C_NAME"] . "</td><td>" . $row["FEE"] . "</td><td></td><td>" . $row["POINTS"] . "</td><td></td><td>" . $row["JOIN_DATE"] . "</td></tr>";
-        }
-        echo "</table>";
-      ?>
+      <h3> Members </h3>
+        <?php
+          $result1 = executePlainSQL("select c.c_id, c.c_name, m.fee, m.points, m.join_date from customer c, member m where c.c_id = m.c_id");
+          echo "<table>";
+          echo "<tr><th>ID</th></td><td><th></th><th>Name</th><th>Member Fee</th></td><td><th>Member Points</th></td><td><th>Membership Date</th></tr>";
+          while ($row = OCI_Fetch_Array($result1, OCI_BOTH)) {
+            echo "<tr><td>" . $row["C_ID"] . "</td><td></td><td></td><td>" . $row["C_NAME"] . "</td><td>" . $row["FEE"] . "</td><td></td><td>" . $row["POINTS"] . "</td><td></td><td>" . $row["JOIN_DATE"] . "</td></tr>";
+          }
+          echo "</table>";
+        ?>
 
       <h3> Leading Reservations </h3>
-    
-      <?php
-        $result1 = executePlainSQL("select c.c_id, c.c_name, count(r.c_id) as count from reservations r, customer c where r.c_id=c.c_id group by c.c_id, c.c_name order by count(r.c_id) desc");
+        <?php
+          $result1 = executePlainSQL("select c.c_id, c.c_name, count(r.c_id) as count from reservations r, customer c where r.c_id=c.c_id group by c.c_id, c.c_name order by count(r.c_id) desc");
 
-        echo "<table>";
-        echo "<tr><th>ID</th></td><td><th>Customer Name</th></td><td><th>Reservation Count</th></tr>";
-        while ($row = OCI_Fetch_Array($result1, OCI_BOTH)) {
-          echo "<tr><td>" . $row["C_ID"] . "</td><td></td><td>" . $row["C_NAME"] . "</td><td></td><td>" . $row["COUNT"] . "</td></tr>";
-        }
-        echo "</table>";
-      ?>
-      </div>
+          echo "<table>";
+          echo "<tr><th>ID</th></td><td><th>Customer Name</th></td><td><th>Reservation Count</th></tr>";
+          while ($row = OCI_Fetch_Array($result1, OCI_BOTH)) {
+            echo "<tr><td>" . $row["C_ID"] . "</td><td></td><td>" . $row["C_NAME"] . "</td><td></td><td>" . $row["COUNT"] . "</td></tr>";
+          }
+          echo "</table>";
+        ?>
+    </div>
 
  <!-- Directory -->
   <div style="justify-content: flex-end;">
     <!-- Edit Profile-->
-    <div style="background-color:lightGrey;
-                  width: 200px;
-                  padding-top: 20px;
-                  padding-bottom: 1px">
+    <div style="background-color:lightGrey;width: 200px;padding-top: 20px;padding-bottom: 1px">
       <center>
-        <form method="POST" action="staffDir.php"> <!-- TODO: Add rerouting to other staff pages -->
+        <form method="POST" action="staffDir.php">
         <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
           <input type="submit" value="Back to Main Page" name="staffDir">
         </form>
@@ -89,12 +80,9 @@ $db_conn = OCILogon("ora_c5b1b", "a34248161", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 
 <div style="height: 30px;"></div>
 
-<!---------------- Forms to add & update data ---------------->
-<!-- IMPORTANT: before adding any SQL check to see what needs to be done by looking at the createTables file and checking for functional dependencies! Or else THINGS WILL BREAK!!-->
+<!-- Forms to add & update data -->
 <center>
-  <div style="display: flex;
-              width: 100%;
-              justify-content: space-around;">
+  <div style="display: flex;width: 100%;justify-content: space-around;">
     <div> <!-- Members -->
       <div style="width: 300px; padding: 20px 20px 10px 20px; background-color: lightGrey; ">
         <center>Add New/Update Customer: </center>
@@ -104,7 +92,6 @@ $db_conn = OCILogon("ora_c5b1b", "a34248161", "dbhost.ugrad.cs.ubc.ca:1522/ug");
         	<p align="left">Name:<br> <input type="text" name="newC_name" size="20"> </p>
         	<p align="left">E-mail:<br> <input type="text" name="newC_email" size="40"> </p>
         	<p align="left">Credit Card Number:(max: 16 digits) <br> <input type="number" name="newC_CCnum" size="16"> </p>
-            <!-- Note: remember to update the roomRate table if needed -BEFORE- making any changes to the room table or it will not work!! Once this is done, refresh the page (redirect to itself)-->
           <center>
             <input type="submit" value="Add/Update" name="addUpdateCust">
           </center>
@@ -114,19 +101,16 @@ $db_conn = OCILogon("ora_c5b1b", "a34248161", "dbhost.ugrad.cs.ubc.ca:1522/ug");
       <div style="height: 10px;"></div>
 
       <!-- Delete a customer -->
-      <!-- TODO: make sure that the necessary information is cascading properly from reservations etc. -->
       <div>
         <div style="width: 300px;  padding: 30px 20px 10px 20px; background-color: lightGrey; ">
-          <!-- TODO: Add any SQL processing necessary & add form tag details-->
             <center>Delete Customer: <br><br>
               Are you sure you want to delete this room? This action cannot be undone. Deletion will cause cascading through other functionalities.<br><br>
             </center>
 
-            <form method="POST" action="staffCustomerView.php"> 
+            <form method="POST" action="staffCustomerView.php">
             <p align="left"> ID: <br> <input type="number" name="deleteC_id" size="6"> </p>
             <input type="submit" value="Delete customer" name="deleteCust">
             </form>
-            <!-- check if room exists, if so, delete. refresh page.-->
         </div>
       </div>
     </div>
@@ -135,21 +119,19 @@ $db_conn = OCILogon("ora_c5b1b", "a34248161", "dbhost.ugrad.cs.ubc.ca:1522/ug");
       <div style="height: 10px;"></div>
 
       <!-- Delete a room -->
-      <!-- TODO: make sure that the necessary information is cascading properly from reservations etc. -->
       <div>
         <div style="width: 300px;  padding: 30px 20px 10px 20px; background-color: lightGrey; ">
-          <form method="POST" action="staffCustomerView.php"> <!-- TODO: Add any SQL processing necessary & add form tag details-->
+          <form method="POST" action="staffCustomerView.php">
               <center>Add Membership: <br>
             </center>
             <p align="left">ID: <br> <input type="number" name="addIDMember" size="6"> </p>
             <center><input type="submit" value="add member" name="addMember"></center>
-            <!-- check if reservation exists, if so, delete. refresh page.-->
           </form>
         </div>
       </div>
     </div>
   </div>
-</center> 
+</center>
 
 <!--  Setup connection and connect to DB -->
 <?php
@@ -245,7 +227,7 @@ if ($db_conn) {
         $tuple
       );
       $result = executeBoundSQL("select * from customer where c_id=:bind1", $alltuples);
-      
+
       if($row = OCI_Fetch_Array($result, OCI_BOTH)){
         //update customer
 
@@ -260,11 +242,10 @@ if ($db_conn) {
         setcookie("staffid", $staffidcookie);
         echo "<meta http-equiv='refresh' content='0'>";
       }
-      
 
     } else if (array_key_exists('deleteCust', $_POST)) {
         $tuple = array (
-         //get c_id 
+         //get c_id
           ":bind1" => $_POST['deleteC_id'],
         );
         $alltuples = array (
@@ -283,46 +264,39 @@ if ($db_conn) {
           setcookie("staffid", $staffidcookie);
           echo "<meta http-equiv='refresh' content='0'>";
         }
-        
 
       } else if (array_key_exists('addMember', $_POST)){
          $tuple = array (
-           //get c_id 
             ":bind1" => $_POST['addIDMember'],
             ":bind2" => 12.50,
             ":bind3" => 0,
-            ":bind4" => date("Ymd"),  //LOCALTIMESTAMP TODO
+            ":bind4" => date("Ymd"),
           );
           $alltuples = array (
             $tuple
           );
 
           //check if customer is already a member
-
           $result = executeBoundSQL("select * from member where c_id=:bind1", $alltuples);
           if($row = OCI_Fetch_Array($result, OCI_BOTH)) {
             echo "Already a member";
           } else {
 
-            $result = executeBoundSQL("select * from customer where c_id=:bind1", $alltuples); 
+            $result = executeBoundSQL("select * from customer where c_id=:bind1", $alltuples);
             if($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-                  $result = executeBoundSQL("insert into member values (:bind1, :bind2, :bind3, :bind4)", $alltuples); 
+                  $result = executeBoundSQL("insert into member values (:bind1, :bind2, :bind3, :bind4)", $alltuples);
                   echo "Membership created";
 
             } else {
               echo "customer with that that ID does not exist!";
             }
-
           }
-
           OCICommit($db_conn);
 
           if ($_POST && $success) {
             setcookie("staffid", $staffidcookie);
             echo "<meta http-equiv='refresh' content='0'>";
           }
-         
-
       }
 
   //Commit to save changes...

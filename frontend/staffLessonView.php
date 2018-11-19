@@ -2,26 +2,25 @@
 //Setup
 session_start();
 if (isset($_POST["staffid"])) {
-  $staffidcookie = $_POST['staffid'];   
-}else{  
+  $staffidcookie = $_POST['staffid'];
+}else{
   $staffidcookie = $_COOKIE["staffid"];
 }
 $success = True; //keep track of errors so it redirects the page only if there are no errors
-$db_conn = OCILogon("ora_c5b1b", "a34248161", "dbhost.ugrad.cs.ubc.ca:1522/ug"); // TODO: make this git ignored
+$db_conn = OCILogon("ora_u3i0b", "a14691142", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 ?>
 
 <!-- Page title -->
 <title>Hotel Ski Resort</title>
-<p> Welcome staff id: <?php echo $staffidcookie; ?></p> 
+<p> Welcome staff id: <?php echo $staffidcookie; ?></p>
 
 <div style="display: flex; width: 100%; justify-content: space-between;">
 
   <!-- View table entries -->
   <div style="justify-content: flex-start;">
-    <h3> Booked Lessons: </h3> 
+    <h3> Booked Lessons: </h3>
       <?php
-
-        $result = executePlainSQL("select bl.c_id, bl.lesson_id, bl.lesson_type, bl.lesson_datetime, c.c_name from bookedLessons bl, customer c where c.c_id = bl.c_id"); 
+        $result = executePlainSQL("select bl.c_id, bl.lesson_id, bl.lesson_type, bl.lesson_datetime, c.c_name from bookedLessons bl, customer c where c.c_id = bl.c_id");
         echo "<table>";
         echo "<tr><th>Customer Id</th><th>Customer Name</th><th>Lesson Id</th><th>Lesson Type Name</th><th>Lesson Date&Time</th></tr>";
         while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
@@ -29,11 +28,10 @@ $db_conn = OCILogon("ora_c5b1b", "a34248161", "dbhost.ugrad.cs.ubc.ca:1522/ug");
         }
         echo "</table>";
       ?>
-     
 
-    <h3>Lessons: </h3> 
+    <h3>Lessons: </h3>
     <?php
-        $result = executePlainSQL("select s.s_name, l.lesson_type, l.lesson_datetime, l.lesson_id from lesson l, skiStaff s where l.staff_id = s.staff_id"); 
+        $result = executePlainSQL("select s.s_name, l.lesson_type, l.lesson_datetime, l.lesson_id from lesson l, skiStaff s where l.staff_id = s.staff_id");
         echo "<table>";
         echo "<tr><th>ID</th><th>Instructor Name</th><th>Lesson Type</th><th>Date and Time</th></tr>";
         while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
@@ -42,7 +40,6 @@ $db_conn = OCILogon("ora_c5b1b", "a34248161", "dbhost.ugrad.cs.ubc.ca:1522/ug");
         echo "</table>";
       ?>
 
-          
       <h3> Customers: </h3>
       <?php
           $result = executePlainSQL("select * from customer");
@@ -55,12 +52,10 @@ $db_conn = OCILogon("ora_c5b1b", "a34248161", "dbhost.ugrad.cs.ubc.ca:1522/ug");
       ?>
   </div>
 
-
-
   <div style="justify-content: flex-start;">
     <h3> Lessons Classlist: </h3>
     <?php
-        $result = executePlainSQL("select s.s_name, l.lesson_type, l.lesson_datetime from lesson l, skistaff s where l.staff_id = s.staff_id"); 
+        $result = executePlainSQL("select s.s_name, l.lesson_type, l.lesson_datetime from lesson l, skistaff s where l.staff_id = s.staff_id");
         echo "<table>";
         echo "<tr><th>Instructor Name</th><th>Lesson Type</th><th>Lesson Datetime</th></tr>";
         while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
@@ -69,46 +64,24 @@ $db_conn = OCILogon("ora_c5b1b", "a34248161", "dbhost.ugrad.cs.ubc.ca:1522/ug");
         echo "</table>";
       ?>
 
-    <div style="display: flex; width: 100%; justify-content: space-between;">
-      <div style="justify-content: flex-start;">
-      <h3> Ski Staff: </h3>
-      <?php
-            //sql statement 
-            $result = executePlainSQL("select staff_id, s_name from skiStaff"); 
-            echo "<table>";
-            echo "<tr><th>Staff Id</th><th>Name</th></tr>"; //column names
-            while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-              //column names, caps for var names
-              echo "<tr><td>" . $row["STAFF_ID"] . "</td><td>" . $row["S_NAME"] . "</td></tr>";
-            }
-            //
-            echo "</table>";
-      ?>
-      </div>
-
-    <div style="justify-content: flex-start;">
-      <h3> Head Instructor: </h3>
-      <p>This ski staff member</p>
-      <p>teaches all the lessons.</p>
-      <?php
-          //sql statement 
-          $result = executePlainSQL("select p.staff_id, p.s_name from skiStaff p where not exists ((select lesson_type, lesson_datetime from lessonTime) minus (select t.lesson_type, t.lesson_datetime from lesson l, lessonTime t, skiStaff s where l.staff_id = s.staff_id and l.lesson_type = t.lesson_type and p.staff_id = s.staff_id))"); 
-          echo "<table>";
-          echo "<tr><th>Staff Id</th><th>Name</th></tr>"; //column names
-          while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-            //column names, caps for var names
-            echo "<tr><td>" . $row["STAFF_ID"] . "</td><td>" . $row["S_NAME"] . "</td></tr>";
-          }
-          //
-          echo "</table>";
-      ?>
-      </div>
-    </div>
+    <h3> Ski Staff: </h3>
+    <?php
+        //sql statement
+        $result = executePlainSQL("select staff_id, s_name from skiStaff");
+        echo "<table>";
+        echo "<tr><th>Staff Id</th><th>Name</th></tr>"; //column names
+        while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+          //column names, caps for var names
+          echo "<tr><td>" . $row["STAFF_ID"] . "</td><td>" . $row["S_NAME"] . "</td></tr>";
+        }
+        //
+        echo "</table>";
+    ?>
 
     <h3> Lessons Times: </h3>
     <?php
-          //sql statement 
-          $result = executePlainSQL("select * from lessonTime"); 
+          //sql statement
+          $result = executePlainSQL("select * from lessonTime");
           echo "<table>";
           echo "<tr><th>Lesson Type</th><th>Lesson Datetime</th></tr>"; //column names
           while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
@@ -117,19 +90,12 @@ $db_conn = OCILogon("ora_c5b1b", "a34248161", "dbhost.ugrad.cs.ubc.ca:1522/ug");
           }
           echo "</table>";
     ?>
-      
   </div>
-
-
-
 
   <!-- Directory -->
   <div style="justify-content: flex-end;">
     <!-- Edit Profile-->
-    <div style="background-color:lightGrey;
-                  width: 200px;
-                  padding-top: 20px;
-                  padding-bottom: 1px">
+    <div style="background-color:lightGrey;width: 200px;padding-top: 20px;padding-bottom: 1px">
       <center>
        <form method="POST" action="staffDir.php">
        <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
@@ -142,12 +108,7 @@ $db_conn = OCILogon("ora_c5b1b", "a34248161", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 
 <div style="height: 30px;"></div>
 
-
-
-
-
 <!-- Forms to add & update data -->
-<!-- IMPORTANT: before adding any SQL check to see what needs to be done by looking at the createTables file and checking for functional dependencies! Or else THINGS WILL BREAK!!-->
 <center>
   <div style="display: flex; width: 100%; justify-content: space-around;">
 
@@ -229,8 +190,6 @@ $db_conn = OCILogon("ora_c5b1b", "a34248161", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 
   </div>
 </center>
-
- 
 
 <!--  Setup connection and connect to DB -->
 <?php
@@ -314,26 +273,17 @@ if ($db_conn) {
 		$alltuples = array (
 			$tuple
 		);
-    //add lesson
 
-    //$result = executeBoundSQL("select * from skiStaff where staff_id=:bind1", $alltuples);
-    //if($row = OCI_Fetch_Array($result, OCI_BOTH)){
-      //check if staff id exists
       executeBoundSQL("insert into lessonTime values (:bind4, :bind3)", $alltuples);
       OCICommit($db_conn);
 
       executeBoundSQL("insert into lesson values (:bind2, :bind1, :bind3, :bind4)", $alltuples);
       OCICommit($db_conn);
-    //}
-    //else{
-      //$message = "Staff member does not exists. Enter a valid staff member ID.";
-      //echo "<script type='text/javascript'>alert('$message');</script>";
-    //}
+
     if ($_POST && $success) {
       setcookie("staffid", $staffidcookie);
       echo "<meta http-equiv='refresh' content='0'>";
     }
-    
 
 	} else
   if (array_key_exists('updateLesson', $_POST)){
@@ -361,13 +311,12 @@ if ($db_conn) {
         executeBoundSQL("update lesson set staff_id=:bind3, lesson_datetime=:bind4, lesson_type=:bind5 where lesson_id=:bind1", $alltuples);
         OCICommit($db_conn);
       }
-      
+
     }
     if ($_POST && $success) {
       setcookie("staffid", $staffidcookie);
       echo "<meta http-equiv='refresh' content='0'>";
     }
-    
 
 	} else
   if (array_key_exists('deleteLesson', $_POST)) {
@@ -383,12 +332,10 @@ if ($db_conn) {
       executeBoundSQL("delete from lesson where lesson_id=:bind1", $alltuples);
       OCICommit($db_conn);
     }
-
     if ($_POST && $success) {
       setcookie("staffid", $staffidcookie);
       echo "<meta http-equiv='refresh' content='0'>";
     }
-   
 
 	} else
   if (array_key_exists('addBooking', $_POST)) {
@@ -409,7 +356,6 @@ if ($db_conn) {
       setcookie("staffid", $staffidcookie);
       echo "<meta http-equiv='refresh' content='0'>";
     }
-    
 
 	} else
   if(array_key_exists('deleteBooking', $_POST)){
@@ -439,5 +385,4 @@ if ($db_conn) {
 	$e = OCI_Error(); // For OCILogon errors pass no handle
 	echo htmlentities($e['message']);
 }
-
 ?>
