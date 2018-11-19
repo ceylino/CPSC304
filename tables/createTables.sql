@@ -155,3 +155,10 @@ select staff_id, s_name
 from skiStaff;
 
 commit;
+
+create view reservations as
+select c_id, room_num
+from roomReservation
+union
+select c_id, equip_id
+from equipReservation;
