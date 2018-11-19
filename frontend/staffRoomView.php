@@ -1,9 +1,11 @@
 <?php
 //Setup
 session_start();
-$staff_id = $_POST['staffid'];
-setcookie("staffid", $staff_id);
-$staffidcookie = $_COOKIE["staffid"];
+if (isset($_POST["staffid"])) {
+  $staffidcookie = $_POST['staffid'];   
+}else{  
+  $staffidcookie = $_COOKIE["staffid"];
+}
 
 $success = True; //keep track of errors so it redirects the page only if there are no errors
 
@@ -90,7 +92,7 @@ $db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
        <div style="width: 300px; padding: 20px 20px 10px 20px; background-color: lightGrey; ">
         <center>Add new room: </center>
         <form method="POST" action="staffRoomView.php">
-        <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
+        
             <p align="left">Room number: <br> <input type="number" name="addRoomNum" size="6"> </p>
             <p align="left">Room Type: <br> <input type="text" name="addType" size="20"> </p>
             <p align="left">Room Rate: <br> <input type="number" name="addRate" size="6"> </p>
@@ -105,7 +107,6 @@ $db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
       <div style="width: 300px; padding: 20px 20px 10px 20px; background-color: lightGrey; ">
         <center>Update existing room: </center>
         <form method="POST" action="staffRoomView.php">
-        <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
             <p align="left">Old Room number: <br> <input type="number" name="oldRoomNum" size="6"> </p>
             <br>
             <p align="left">New Room number: <br> <input type="number" name="editRoomNum" size="6"> </p>
@@ -123,8 +124,7 @@ $db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
       <div>
         <div style="width: 300px;  padding: 30px 20px 10px 20px; background-color: lightGrey; ">
           <form method="POST" action="staffRoomView.php">
-          <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
-
+          
             <center>Delete a Room: <br>
               Are you sure you want to delete this room? This action cannot be undone. Deletion will cause cascading through other functionalities.<br>
             </center>
@@ -139,8 +139,7 @@ $db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
       <div style="width: 300px; padding: 20px 20px 10px 20px; background-color: lightGrey; ">
         <center>Add a new reservation: </center>
         <form method="POST" action="staffRoomView.php">
-        <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
-            <p align="left">Room number: <br> <input type="number" name="addRoomNum" size="6"> </p>
+             <p align="left">Room number: <br> <input type="number" name="addRoomNum" size="6"> </p>
             <p align="left">Customer Id: <br> <input type="number" name="addCid" size="6"> </p>
             <p align="left">Start Date: (numbers only - yyyymmdd) <br> <input type="text" name="addSDate" size="8"> </p>
             <p align="left">End Date: (numbers only - yyyymmdd) <br> <input type="text" name="addEDate" size="8"> </p>
@@ -155,8 +154,7 @@ $db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
       <div style="width: 300px; padding: 20px 20px 10px 20px; background-color: lightGrey; ">
         <center>Update existing room reservation: </center>
         <form method="POST" action="staffRoomView.php">
-        <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
-            <p align="left">Old Room number: <br> <input type="number" name="oldRoomNum" size="6"> </p>
+           <p align="left">Old Room number: <br> <input type="number" name="oldRoomNum" size="6"> </p>
             <p align="left">Old Start Date: (numbers only - yyyymmdd) <br> <input type="text" name="oldSDate" size="8"> </p>
             <p align="left">Old End Date: (numbers only - yyyymmdd) <br> <input type="text" name="oldEDate" size="8"> </p>
             <br>
@@ -175,7 +173,6 @@ $db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
       <div>
         <div style="width: 300px;  padding: 30px 20px 10px 20px; background-color: lightGrey; ">
           <form method="POST" action="staffRoomView.php"> <!-- TODO: Add any SQL processing necessary & add form tag details-->
-          <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
             <center>Delete a Room Reservation: <br>
               Are you sure you want to delete this room reservation? This action can't be undone.
               Deletion will cause cascading through other functionalities.<br>
@@ -288,9 +285,10 @@ if ($db_conn) {
     OCICommit($db_conn);
 
     if ($_POST && $success) {
-      header("location: staffRoomView.php");
+      setcookie("staffid", $staffidcookie);
+      echo "<meta http-equiv='refresh' content='0'>";
     }
-    echo "<meta http-equiv='refresh' content='0'>";
+   
 
   } else
   if (array_key_exists('editRoom', $_POST)){
@@ -310,9 +308,10 @@ if ($db_conn) {
       OCICommit($db_conn);
     }
     if ($_POST && $success) {
-      header("location: staffRoomView.php");
+      setcookie("staffid", $staffidcookie);
+      echo "<meta http-equiv='refresh' content='0'>";
     }
-    echo "<meta http-equiv='refresh' content='0'>";
+    
 
   } else
   if(array_key_exists('deleteRoom', $_POST)){
@@ -329,9 +328,10 @@ if ($db_conn) {
       OCICommit($db_conn);
     }
     if ($_POST && $success) {
-      header("location: staffRoomView.php");
+      setcookie("staffid", $staffidcookie);
+      echo "<meta http-equiv='refresh' content='0'>";
     }
-    echo "<meta http-equiv='refresh' content='0'>";
+    
 
   } else
   if (array_key_exists('updateRoomReservation', $_POST)) {
@@ -356,9 +356,10 @@ if ($db_conn) {
     }
 
     if ($_POST && $success) {
-      header("location: staffRoomView.php");
+      setcookie("staffid", $staffidcookie);
+      echo "<meta http-equiv='refresh' content='0'>";
     }
-    echo "<meta http-equiv='refresh' content='0'>";
+    
 
   } else
   if (array_key_exists('addRoomReservation', $_POST)) {
@@ -376,9 +377,10 @@ if ($db_conn) {
     OCICommit($db_conn);
 
     if ($_POST && $success) {
-      header("location: staffRoomView.php");
+      setcookie("staffid", $staffidcookie);
+      echo "<meta http-equiv='refresh' content='0'>";
     }
-    echo "<meta http-equiv='refresh' content='0'>";
+    
 
   } else
   if(array_key_exists('deleteRoomReservation', $_POST)){
@@ -397,9 +399,10 @@ if ($db_conn) {
       OCICommit($db_conn);
     }
     if ($_POST && $success) {
-      header("location: staffRoomView.php");
+      setcookie("staffid", $staffidcookie);
+      echo "<meta http-equiv='refresh' content='0'>";
     }
-    echo "<meta http-equiv='refresh' content='0'>";
+    
   }
 
   //Commit to save changes...

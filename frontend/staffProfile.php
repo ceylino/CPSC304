@@ -3,11 +3,12 @@
 <?php
 session_start();
 $success = True; //keep track of errors so it redirects the page only if there are no errors
-$db_conn = OCILogon("ora_u3i0b", "a14691142", "dbhost.ugrad.cs.ubc.ca:1522/ug");
-
-$staff_id = $_POST['staffid'];
-setcookie("staffid", $staff_id);
-$staffidcookie = $_COOKIE["staffid"];
+$db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
+if (isset($_POST["staffid"])) {
+  $staffidcookie = $_POST['staffid'];   
+}else{  
+  $staffidcookie = $_COOKIE["staffid"];
+}
 ?>
 <!-- Page title -->
 <title>Hotel Ski Resort</title>
@@ -29,8 +30,8 @@ $staffidcookie = $_COOKIE["staffid"];
 
 <center>
   <!-- Personal  Info-->
-  <p> Welcome staff id: <?php echo $staffidcookie; ?> </p> <!-- TODO: echo the staff id. -->
-  <div style="background-color:lightGrey; width: 30%; padding-top: 10px; padding-bottom: 10px">
+  <p> Welcome staff id: <?php echo $staffidcookie; ?> </p> 
+  <div style="background-color:lightGrey; width: 50%; padding-top: 10px; padding-bottom: 10px">
     <h4> Personal Information </h4>
     <?php
       echo "<table>";
@@ -56,7 +57,7 @@ $staffidcookie = $_COOKIE["staffid"];
     <div style="width: 200px; padding: 20px 20px 10px 20px; background-color: lightGrey; ">
       <center>Update Personal Information:
         <form method="POST" action="staffProfile.php"> <!-- TODO: Add any SQL processing necessary-->
-          <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
+         <!-- <input type="hidden" name="staffid" value="<php echo $staffidcookie; ?>"> -->
           <p align="left">Name: <br> <input type="text" name="editName" size="20"> </p>
           <p align="left">Phone Number: <br> <input type="number" name="editPhone" size="10"> </p>
           <input type="submit" value="Update" name="updateStaff">
@@ -68,8 +69,8 @@ $staffidcookie = $_COOKIE["staffid"];
 
 <!--  Setup connection and connect to DB -->
 <?php
-function executePlainSQL($cmdstr) {
-  //takes a plain (no bound variables) SQL command and executes it
+
+function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
   //echo "<br>running ".$cmdstr."<br>";
   global $db_conn, $success;
   $statement = OCIParse($db_conn, $cmdstr); //There is a set of comments at the end of the file that describe some of the OCI specific functions and how they work
@@ -94,6 +95,7 @@ function executePlainSQL($cmdstr) {
   return $statement;
 
 }
+
 function executeBoundSQL($cmdstr, $list) {
   /* Sometimes the same statement will be executed for several times ... only
    the value of variables need to be changed.
@@ -165,8 +167,11 @@ if ($db_conn) {
 
   OCICommit($db_conn);
   if ($_POST && $success){
-    header("location: staffProfile.php");
-  }
+    setcookie("staffid", $staffidcookie);
+    echo "<meta http-equiv='refresh' content='0'>";
+    
+
+  } 
   }
 
   OCILogoff($db_conn);

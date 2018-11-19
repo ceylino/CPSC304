@@ -1,10 +1,15 @@
 <!-- Customer page: This is the main customer page. This is where logged in customers and members can view their current reservations etc. and be redirected to create new ones, edit or delete existing ones.
 -->
 <?php
-session_start();
-$staff_id = $_POST['staffid'];
-setcookie("staffid", $staff_id);
-$staffidcookie = $_COOKIE["staffid"];
+//Setup
+if (isset($_POST["staffid"])) {
+  $staffidcookie = $_POST['staffid'];   
+}else{  
+  $staffidcookie = $_COOKIE["staffid"];
+}
+
+$success = True; //keep track of errors so it redirects the page only if there are no errors
+$db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 ?>
 
 <!-- Page title -->
@@ -15,19 +20,85 @@ $staffidcookie = $_COOKIE["staffid"];
 
   <!-- View table entries -->
   <div style="justify-content: flex-start;">
-    <h3> equipment Management: </h3> <!-- TODO: this table printing set up needs to be completed and added for the other tables as well -->
+    <h3> Hotel Management: </h3> 
       <?php
-      //TODO : this part needs tobe changed
-        $result = executePlainSQL("select * equipmentReservation where c_id=3"); //TODO: set up the cid & use views
+        $result = executePlainSQL("select r.room_num, r.room_type, m.staff_id, h.s_name from room r, roomManagement m, hotelStaff h where r.room_num = m.room_num and m.staff_id = h.staff_id"); 
         echo "<table>";
-        echo "<tr><th>COLUMN1</th><th>COLUMN2</th></tr>";
+        echo "<tr><th>Room Number</th><th>Room Type</th><th>Staff Id</th><th>Staff Name</th></tr>";
         while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-          echo "<tr><td>" . $row["COL1"] . "</td><td>" . $row["COL2"] . "</td></tr>";
+          echo "<tr><td>" . $row["ROOM_NUM"] . "</td><td>" . $row["ROOM_TYPE"] . "</td><td>" . $row["STAFF_ID"] . "</td><td>" . $row["S_NAME"] . "</td></tr>";
         }
         echo "</table>";
       ?>
 
+      <div style="display: flex; width: 100%; justify-content: space-between;">
+        <div style="justify-content: flex-start;">
+        <h3> Hotel Staff: </h3> 
+        <?php
+          $result = executePlainSQL("select * from hotelStaff"); 
+          echo "<table>";
+          echo "<tr><th>Id</th><th>Staff Name</th></tr>";
+          while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+            echo "<tr><td>" . $row["STAFF_ID"] . "</td><td>" . $row["S_NAME"] . "</td></tr>";
+          }
+          echo "</table>";
+        ?>
+        </div>
+
+        <div style="justify-content: flex-start;">
+          <h3> Rooms: </h3> 
+          <?php
+            $result = executePlainSQL("select * from room"); 
+            echo "<table>";
+            echo "<tr><th>Room Number</th><th>Room Type</th></tr>";
+            while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+              echo "<tr><td>" . $row["ROOM_NUM"] . "</td><td>" . $row["ROOM_TYPE"] . "</td></tr>";
+            }
+            echo "</table>";
+          ?>
+        </div>
+      </div>
+    </div>
+    
+    <div style="justify-content: flex-start;">
     <h3> Equipment Management: </h3>
+    <?php
+        $result = executePlainSQL("select r.equip_id, r.equip_type, m.staff_id, s.s_name from rentalEquip r, equipManagement m, skiStaff s where r.equip_id = m.equip_id and m.staff_id = s.staff_id"); 
+        echo "<table>";
+        echo "<tr><th>Equipment Id</th><th>Equipment Type</th><th>Staff Id</th><th>Staff Name</th></tr>";
+        while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+          echo "<tr><td>" . $row["EQUIP_ID"] . "</td><td>" . $row["EQUIP_TYPE"] . "</td><td>" . $row["STAFF_ID"] . "</td><td>" . $row["S_NAME"] . "</td></tr>";
+        }
+        echo "</table>";
+      ?>
+
+      <div style="display: flex; width: 100%; justify-content: space-between;">
+        <div style="justify-content: flex-start;">
+        <h3> Ski Staff: </h3> 
+        <?php
+          $result = executePlainSQL("select * from skiStaff"); 
+          echo "<table>";
+          echo "<tr><th>Id</th><th>Staff Name</th></tr>";
+          while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+            echo "<tr><td>" . $row["STAFF_ID"] . "</td><td>" . $row["S_NAME"] . "</td></tr>";
+          }
+          echo "</table>";
+        ?>
+        </div>
+
+        <div style="justify-content: flex-start;">
+          <h3> Equipments: </h3> 
+          <?php
+            $result = executePlainSQL("select * from rentalEquip"); 
+            echo "<table>";
+            echo "<tr><th>Equipment Id</th><th>Equipment Type</th></tr>";
+            while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+              echo "<tr><td>" . $row["EQUIP_ID"] . "</td><td>" . $row["EQUIP_TYPE"] . "</td></tr>";
+            }
+            echo "</table>";
+          ?>
+        </div>
+      </div>
   </div>
 
   <!-- Directory -->
@@ -55,7 +126,7 @@ $staffidcookie = $_COOKIE["staffid"];
       <div style="width: 300px; padding: 20px 20px 10px 20px; background-color: lightGrey; ">
         <center>Add new room management: </center>
         <form method="POST" action="staffManagementView.php">
-        <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
+        
           <p align="left">Room number: <br> <input type="number" name="editRoomNum" size="6"></p>
           <p align="left">Staff Id: <br> <input type="number" name="editSid" size="6"> </p>
           <center><input type="submit" value="Add" name="addRoomManage"></center>
@@ -68,11 +139,9 @@ $staffidcookie = $_COOKIE["staffid"];
       <div style="width: 300px; padding: 20px 20px 10px 20px; background-color: lightGrey; ">
         <center>Update existing room management: </center>
         <form method="POST" action="staffManagementView.php">
-        <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
           <p align="left">Old Room number: <br> <input type="number" name="oldRoomNum" size="6"></p>
-          <p align="left">Old Staff Id: <br> <input type="number" name="oldSid" size="6"> </p>
+          <p align="left">Staff Id: <br> <input type="number" name="oldSid" size="6"> </p>
           <p align="left">New Room number: <br> <input type="number" name="newRoomNum" size="6"></p>
-          <p align="left">New Staff Id: <br> <input type="number" name="newSid" size="6"> </p>
           <center><input type="submit" value="Update" name="updateRoomManage"></center>
         </form>
       </div>
@@ -83,7 +152,6 @@ $staffidcookie = $_COOKIE["staffid"];
       <div>
         <div style="width: 300px;  padding: 30px 20px 10px 20px; background-color: lightGrey; ">
           <form method="POST" action="staffManagementView.php">
-          <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
             <center>Delete room management: <br> Are you sure you want to delete this entry? This action cannot be undone.<br></center>
             <p align="left">Room number: <br> <input type="number" name="deleteRoomNum" size="6"></p>
             <p align="left">Staff Id: <br> <input type="number" name="deleteSid" size="6"> </p>
@@ -98,7 +166,6 @@ $staffidcookie = $_COOKIE["staffid"];
       <div style="width: 300px; padding: 20px 20px 10px 20px; background-color: lightGrey; ">
         <center>Add new equipment management: </center>
         <form method="POST" action="staffManagementView.php">
-        <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
           <!-- TODO: Add any SQL processing: check if this equipment & staff exists. If so: update, if not insert-->
           <p align="left">Equipment ID: <br> <input type="number" name="editEquipId" size="6"></p>
           <p align="left">Staff Id: <br> <input type="number" name="editSid" size="6"> </p>
@@ -112,11 +179,9 @@ $staffidcookie = $_COOKIE["staffid"];
       <div style="width: 300px; padding: 20px 20px 10px 20px; background-color: lightGrey; ">
         <center>Update existing equipment management: </center>
         <form method="POST" action="staffManagementView.php">
-        <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
           <p align="left">Old Equip Id: <br> <input type="number" name="oldEquipId" size="6"></p>
-          <p align="left">Old Staff Id: <br> <input type="number" name="oldESid" size="6"> </p>
+          <p align="left">Staff Id: <br> <input type="number" name="oldESid" size="6"> </p>
           <p align="left">New Equip Id: <br> <input type="number" name="newEquipId" size="6"></p>
-          <p align="left">New Staff Id: <br> <input type="number" name="newESid" size="6"> </p>
           <center><input type="submit" value="Update" name="updateEquipManage"></center>
         </form>
       </div>
@@ -127,7 +192,6 @@ $staffidcookie = $_COOKIE["staffid"];
       <div>
         <div style="width: 300px;  padding: 30px 20px 10px 20px; background-color: lightGrey; ">
           <form method="POST" action="staffManagementView.php">
-          <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
             <center>Delete equipment management: <br> Are you sure you want to delete this entry? This action cannot be undone.<br></center>
             <p align="left">Equipment ID: <br> <input type="number" name="deleteEquipId" size="6"></p>
             <p align="left">Staff Id: <br> <input type="number" name="deleteSid" size="6"> </p>
@@ -141,9 +205,6 @@ $staffidcookie = $_COOKIE["staffid"];
 
 <!--  Setup connection and connect to DB -->
 <?php
-//Setup
-$success = True; //keep track of errors so it redirects the page only if there are no errors
-$db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 
 function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
 	//echo "<br>running ".$cmdstr."<br>";
@@ -210,19 +271,6 @@ function executeBoundSQL($cmdstr, $list) {
 
 }
 
-function printResult($result) { //prints results from a select statement
-	echo "result from SQL:";
-  echo "<table>";
-	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-  echo "<tr>\n";
-    foreach ($row as $item) {
-        echo "    <td>" . ($item !== null ? htmlentities($item, ENT_QUOTES) : "&nbsp;") . "</td>\n";
-    }
-    echo "</tr>\n";
-  }
-  echo "</table>\n";
-}
-
 // Connect to Oracle DB
 if ($db_conn) {
 
@@ -239,8 +287,10 @@ if ($db_conn) {
     OCICommit($db_conn);
 
     if ($_POST && $success) {
-      header("location: staffManagementView.php");
+      setcookie("staffid", $staffidcookie);
+      echo "<meta http-equiv='refresh' content='0'>";
     }
+   
 
 	} else
   if (array_key_exists('updateRoomManage', $_POST)){
@@ -248,8 +298,7 @@ if ($db_conn) {
       ":bind1" => $_POST['oldRoomNum'],
       ":bind2" => $_POST['oldSid'],
 
-      ":bind3" => $_POST['newRoomNum'],
-      ":bind4" => $_POST['newSid']
+      ":bind3" => $_POST['newRoomNum']
 		);
 		$alltuples = array (
 			$tuple
@@ -258,12 +307,14 @@ if ($db_conn) {
 
     if($row = OCI_Fetch_Array($result, OCI_BOTH)){
       //update room management
-      executeBoundSQL("update roomManagement set room_num=:bind3, staff_id=:bind4 where room_num=:bind1 and staff_id=:bind2", $alltuples);
+      executeBoundSQL("update roomManagement set room_num=:bind3 where room_num=:bind1 and staff_id=:bind2", $alltuples);
       OCICommit($db_conn);
     }
     if ($_POST && $success) {
-      header("location: staffManagementView.php");
+      setcookie("staffid", $staffidcookie);
+      echo "<meta http-equiv='refresh' content='0'>";
     }
+    
 
 	} else
   if(array_key_exists('deleteRoomManage', $_POST)){
@@ -281,8 +332,10 @@ if ($db_conn) {
       OCICommit($db_conn);
     }
     if ($_POST && $success) {
-    	header("location: staffManagementView.php");
+    	setcookie("staffid", $staffidcookie);
+      echo "<meta http-equiv='refresh' content='0'>";
     }
+    
   }
   if (array_key_exists('addEquipManage', $_POST)) {
    $tuple = array (
@@ -297,8 +350,10 @@ if ($db_conn) {
     OCICommit($db_conn);
 
     if ($_POST && $success) {
-      header("location: staffManagementView.php");
+      setcookie("staffid", $staffidcookie);
+      echo "<meta http-equiv='refresh' content='0'>";
     }
+    
 
   } else
   if (array_key_exists('updateEquipManage', $_POST)){
@@ -306,8 +361,7 @@ if ($db_conn) {
       ":bind1" => $_POST['oldEquipId'],
       ":bind2" => $_POST['oldESid'],
 
-      ":bind3" => $_POST['newEquipId'],
-      ":bind4" => $_POST['newESid']
+      ":bind3" => $_POST['newEquipId']
     );
     $alltuples = array (
       $tuple
@@ -316,12 +370,14 @@ if ($db_conn) {
 
     if($row = OCI_Fetch_Array($result, OCI_BOTH)){
       //update equip management
-      executeBoundSQL("update equipManagement set equip_id=:bind3, staff_id=:bind4 where equip_id=:bind1 and staff_id=:bind2", $alltuples);
+      executeBoundSQL("update equipManagement set equip_id=:bind3 where equip_id=:bind1 and staff_id=:bind2", $alltuples);
       OCICommit($db_conn);
     }
     if ($_POST && $success) {
-      header("location: staffManagementView.php");
+      setcookie("staffid", $staffidcookie);
+      echo "<meta http-equiv='refresh' content='0'>";
     }
+    
 
   } else
   if(array_key_exists('deleteEquipManage', $_POST)){
@@ -339,8 +395,10 @@ if ($db_conn) {
       OCICommit($db_conn);
     }
     if ($_POST && $success) {
-      header("location: staffManagementView.php");
+      setcookie("staffid", $staffidcookie);
+      echo "<meta http-equiv='refresh' content='0'>";
     }
+    
   }
 
 	//Commit to save changes...
