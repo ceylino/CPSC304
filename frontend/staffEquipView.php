@@ -1,12 +1,16 @@
 <?php
 //Setup
+session_start();
+$staff_id = $_POST['staffid'];
+setcookie("staffid", $staff_id);
+$staffidcookie = $_COOKIE["staffid"];
 $success = True; //keep track of errors so it redirects the page only if there are no errors
-$db_conn = OCILogon("ora_i4s0b", "a13641155", "dbhost.ugrad.cs.ubc.ca:1522/ug"); // TODO: make this git ignored
+$db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug"); // TODO: make this git ignored
 ?>
 
 <!-- Page title -->
 <title>Hotel Ski Resort</title>
-<p> Welcome staff id: </p> <!-- TODO: echo the staff id. -->
+<p> Welcome staff id:<?php echo $staffidcookie; ?> </p> <!-- TODO: echo the staff id. -->
 
 <div style="display: flex;
             width: 100%;
@@ -67,6 +71,7 @@ $db_conn = OCILogon("ora_i4s0b", "a13641155", "dbhost.ugrad.cs.ubc.ca:1522/ug");
                   padding-bottom: 1px">
       <center>
         <form method="POST" action="staffDir.php"> 
+        <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
           <input type="submit" value="Back to Main Page" name="staffDir">
         </form>
       </center>
@@ -86,6 +91,7 @@ $db_conn = OCILogon("ora_i4s0b", "a13641155", "dbhost.ugrad.cs.ubc.ca:1522/ug");
       <div style="width: 300px; padding: 20px 20px 10px 20px; background-color: lightGrey; ">
         <center>Add new or update rental equipment: </center>
         <form method="POST" action="staffEquipView.php">
+        <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
           <!-- TODO: Add any SQL processing: check if this room number exists. If so: update, if not insert-->
             <p align="left">Equipment id: <br> <input type="number" name="editEqId" size="6"> </p>
             <p align="left">Equipment Type: <br> <input type="text" name="editEqType" size="20"> </p>
@@ -104,6 +110,7 @@ $db_conn = OCILogon("ora_i4s0b", "a13641155", "dbhost.ugrad.cs.ubc.ca:1522/ug");
       <div>
         <div style="width: 300px;  padding: 30px 20px 10px 20px; background-color: lightGrey; ">
           <form method="POST" action="staffEquipView.php"> <!-- TODO: Add any SQL processing necessary & add form tag details-->
+          <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
             <center>Delete an equipment: <br>
               Are you sure you want to delete this equipment? This action cannot be undone. Deletion will cause cascading through other functionalities.<br>
             </center>
@@ -120,6 +127,7 @@ $db_conn = OCILogon("ora_i4s0b", "a13641155", "dbhost.ugrad.cs.ubc.ca:1522/ug");
       <div style="width: 300px; padding: 20px 20px 10px 20px; background-color: lightGrey; ">
         <center>Add new equipment reservation: </center>
         <form method="POST" action="staffEquipView.php">
+        <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
             <p align="left">Equipment Id: <br> <input type="number" name="equipID" size="6"> </p>
             <p align="left">Customer Id: <br> <input type="number" name="custID" size="6"> </p>
             
@@ -140,6 +148,7 @@ $db_conn = OCILogon("ora_i4s0b", "a13641155", "dbhost.ugrad.cs.ubc.ca:1522/ug");
       <div>
         <div style="width: 300px;  padding: 30px 20px 10px 20px; background-color: lightGrey; ">
           <form method="POST" action="staffEquipView.php"> <!-- TODO: Add any SQL processing necessary & add form tag details-->
+          <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
             <center>Delete an Equipment Reservation: <br>
              <br> Are you sure you want to delete this equipment reservation? This action can't be undone.
               Deletion will cause cascading through other functionalities.<br><br>
@@ -161,6 +170,7 @@ $db_conn = OCILogon("ora_i4s0b", "a13641155", "dbhost.ugrad.cs.ubc.ca:1522/ug");
       <div>
         <div style="width: 300px;  padding: 30px 20px 10px 20px; background-color: lightGrey; ">
           <form method="POST" action="staffEquipView.php"> <!-- TODO: Add any SQL processing necessary & add form tag details-->
+          <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
             <center>Update Equipment Reservation: <br>
             </center>
             <p align="left">Equipment ID: <br> <input type="number" name="prevEquipID" size="6"> </p>

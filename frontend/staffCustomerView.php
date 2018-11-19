@@ -1,21 +1,63 @@
+
+<?php
+session_start();
+$staff_id = $_POST['staffid'];
+setcookie("staffid", $staff_id);
+$staffidcookie = $_COOKIE["staffid"];
+//Setup
+$success = True; //keep track of errors so it redirects the page only if there are no errors
+$db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug"); // TODO: make this git ignored
+?>
+
+<!-- Page title -->
 <title>Hotel Ski Resort</title>
+<p> Welcome staff id:<?php echo $staffidcookie;?> </p> <!-- TODO: echo the staff id. -->
+
 
 <div style="display: flex;
             width: 100%;
-            justify-content: space-between;">
+            justify-content: space-around;">
 
   <!-- View table entries -->
   <div style="justify-content: flex-start;">
     <h3> Customers </h3> 
     <!-- TODO: this table printing set up needs to be completed and added for the other tables as well -->
     <!-- insert php --> 
+    <?php
+        $result = executePlainSQL("select * from customer");
+        echo "<table>";
+        echo "<tr><th>ID</th><th></th><th>Name</th><th>E-mail</th><th>Creditcard Number</th></tr>";
+        while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+          echo "<tr><td>" . $row["C_ID"] . "</td><td>" . $row["C_NAME"] . "</td><td>" . $row["E_MAIL"] . "</td><td>" . $row["CREDITCARD_NUM"] . "</td></tr>";
+        }
+        echo "</table>";
+      // $result1 = executePlainSQL("select c.c_id, c.c_name, c.e_mail, c.creditcard_num, m.fee, m.points, m.join_date from customer c left join member m on c.c_id = m.c_id");
+      //   echo "<table>";
+      //   echo "<tr><th>ID</th><th></th><th>Name</th><th>E-mail</th><th>Creditcard Number</th><th>Member Fee</th><th>Member Points</th><th>Membership Date</th></tr>";
+      //   while ($row = OCI_Fetch_Array($result1, OCI_BOTH)) {
+      //     echo "<tr><td>" . $row["C_ID"] . "</td><td>" . $row["C_NAME"] . "</td><td>" . $row["E_MAIL"] . "</td><td>" . $row["CREDITCARD_NUM"] . "</td><td>" . $row["FEE"] . "</td><td>" . $row["POINTS"] . "</td><td>" . $row["JOIN_DATE"] . "</td></tr>";
+      //   }
+      //   echo "</table>";
+      ?>
+      </div>
 
+    <div style="justify-content: flex-start;">
     <h3> Members </h3>
     <!-- TODO: this table printing set up needs to be completed and added for the other tables as well -->
-    <!-- insert php --> 
-  </div>
+    <!-- insert php -->
+    <?php
 
-  <!-- Directory -->
+        $result1 = executePlainSQL(" select c.c_id, c.c_name, m.fee, m.points, m.join_date from customer c, member m where c.c_id = m.c_id");
+        echo "<table>";
+        echo "<tr><th>ID</th><th></th><th>Name</th><th>Member Fee</th><th>Member Points</th><th>Membership Date</th></tr>";
+        while ($row = OCI_Fetch_Array($result1, OCI_BOTH)) {
+          echo "<tr><td>" . $row["C_ID"] . "</td><td>" . $row["C_NAME"] . "</td><td>" . $row["FEE"] . "</td><td>" . $row["POINTS"] . "</td><td>" . $row["JOIN_DATE"] . "</td></tr>";
+        }
+        echo "</table>";
+      ?>
+      </div>
+
+ <!-- Directory -->
   <div style="justify-content: flex-end;">
     <!-- Edit Profile-->
     <div style="background-color:lightGrey;
@@ -24,6 +66,7 @@
                   padding-bottom: 1px">
       <center>
         <form method="POST" action="staffDir.php"> <!-- TODO: Add rerouting to other staff pages -->
+        <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
           <input type="submit" value="Back to Main Page" name="staffDir">
         </form>
       </center>
@@ -32,6 +75,8 @@
     <div style="height: 10px;"></div>
 
   </div>
+  </div>
+
 </div>
 
 <div style="height: 30px;"></div>
@@ -46,11 +91,12 @@
       <div style="width: 300px; padding: 20px 20px 10px 20px; background-color: lightGrey; ">
         <center>Add New/Update Customer: </center>
         <form method="POST" action="staffCustomerView.php">
+        <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
           <!-- TODO: Add any SQL processing: check if this room number exists. If so: update, if not insert-->
-          <p align="left">ID: <br> <input type="number" name="newC_id" size="6"> </p>
-        	<p align="left">Name: <br> <input type="text" name="newC_name" size="20"> </p>
-        	<p align="left">E-mail: <br> <input type="text" name="newC_email" size="40"> </p>
-        	<p align="left">Credit Card Number: (max: 16 digits) <br> <input type="number" name="newC_CCnum" size="16"> </p>
+          <p align="left">ID:<br> <input type="number" name="newC_id" size="6"> </p>
+        	<p align="left">Name:<br> <input type="text" name="newC_name" size="20"> </p>
+        	<p align="left">E-mail:<br> <input type="text" name="newC_email" size="40"> </p>
+        	<p align="left">Credit Card Number:(max: 16 digits) <br> <input type="number" name="newC_CCnum" size="16"> </p>
             <!-- Note: remember to update the roomRate table if needed -BEFORE- making any changes to the room table or it will not work!! Once this is done, refresh the page (redirect to itself)-->
           <center>
             <input type="submit" value="Add/Update" name="addUpdateCust">
@@ -70,6 +116,7 @@
             </center>
 
             <form method="POST" action="staffCustomerView.php"> 
+            <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
             <p align="left"> ID: <br> <input type="number" name="deleteC_id" size="6"> </p>
             <input type="submit" value="Delete customer" name="deleteCust">
             </form>
@@ -86,7 +133,8 @@
       <div>
         <div style="width: 300px;  padding: 30px 20px 10px 20px; background-color: lightGrey; ">
           <form method="POST" action="staffCustomerView.php"> <!-- TODO: Add any SQL processing necessary & add form tag details-->
-            <center>Add Memebership: <br>
+          <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
+            <center>Add Membership: <br>
             </center>
             <p align="left">ID: <br> <input type="number" name="addIDMember" size="6"> </p>
             <center><input type="submit" value="add member" name="addMember"></center>
@@ -100,9 +148,6 @@
 
 <!--  Setup connection and connect to DB -->
 <?php
-//Setup
-$success = True; //keep track of errors so it redirects the page only if there are no errors
-$db_conn = OCILogon("ora_c5b1b", "a34248161", "dbhost.ugrad.cs.ubc.ca:1522/ug"); 
 
 function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
   //echo "<br>running ".$cmdstr."<br>";
@@ -189,7 +234,7 @@ if ($db_conn) {
         ":bind1" => $_POST['newC_id'],
         ":bind2" => $_POST['newC_name'],
         ":bind3" => $_POST['newC_email'],
-        ":bind4" => $_POST['newC_CCnum'],
+        ":bind4" => $_POST['newC_CCnum']
       );
       $alltuples = array (
         $tuple
@@ -209,39 +254,37 @@ if ($db_conn) {
       if ($_POST && $success) {
         header("location: staffCustomerView.php");
       }
+      echo "<meta http-equiv='refresh' content='0'>";
 
     } else if (array_key_exists('deleteCust', $_POST)) {
-          $tuple = array (
-           //get c_id 
-            ":bind1" => $_POST['deleteC_id'],
-          );
-          $alltuples = array (
-            $tuple
-          );
+        $tuple = array (
+         //get c_id 
+          ":bind1" => $_POST['deleteC_id'],
+        );
+        $alltuples = array (
+          $tuple
+        );
 
-          //if customer id exists, then delete it
-          $result = executeBoundSQL("select * from customer where c_id=:bind1", $alltuples);
-          if($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-            $result = executeBoundSQL("delete from customer where c_id=:bind1", $alltuples);
-          }
+        //if customer id exists, then delete it
+        $result = executeBoundSQL("select * from customer where c_id=:bind1", $alltuples);
+        if($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+          $result = executeBoundSQL("delete from customer where c_id=:bind1", $alltuples);
+        }
 
-          OCICommit($db_conn);
+        OCICommit($db_conn);
 
-          if ($_POST && $success && $row) {
-            header("location: staffCustomerView.php");
-          }
+        if ($_POST && $success && $row) {
+          header("location: staffCustomerView.php");
+        }
+        echo "<meta http-equiv='refresh' content='0'>";
 
       } else if (array_key_exists('addMember', $_POST)){
-
-
          $tuple = array (
            //get c_id 
             ":bind1" => $_POST['addIDMember'],
             ":bind2" => 12.50,
             ":bind3" => 0,
             ":bind4" => date("Ymd"),  //LOCALTIMESTAMP TODO
-
-
           );
           $alltuples = array (
             $tuple
@@ -270,6 +313,7 @@ if ($db_conn) {
           if ($_POST && $success) {
             header("location: staffCustomerView.php");
           }
+          echo "<meta http-equiv='refresh' content='0'>";
 
       }
 
@@ -282,4 +326,3 @@ if ($db_conn) {
 }
 
 ?>
-

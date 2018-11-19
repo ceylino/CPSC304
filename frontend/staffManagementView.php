@@ -35,7 +35,7 @@ $staffidcookie = $_COOKIE["staffid"];
     <!-- Edit Profile-->
     <div style="background-color:lightGrey; width: 200px; padding-top: 20px; padding-bottom: 1px">
       <center>
-        <form method="POST" action=""> <!-- TODO: Add rerouting to other staff pages -->
+        <form method="POST" action="staffDir.php"> <!-- TODO: Add rerouting to other staff pages -->
         <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
           <input type="submit" value="Back to Main Page" name="staffDir">
         </form>
