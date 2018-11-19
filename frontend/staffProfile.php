@@ -2,6 +2,9 @@
 
 <?php
 session_start();
+$success = True; //keep track of errors so it redirects the page only if there are no errors
+$db_conn = OCILogon("ora_u3i0b", "a14691142", "dbhost.ugrad.cs.ubc.ca:1522/ug");
+
 $staff_id = $_POST['staffid'];
 setcookie("staffid", $staff_id);
 $staffidcookie = $_COOKIE["staffid"];
@@ -27,9 +30,17 @@ $staffidcookie = $_COOKIE["staffid"];
 <center>
   <!-- Personal  Info-->
   <p> Welcome staff id: <?php echo $staffidcookie; ?> </p> <!-- TODO: echo the staff id. -->
-  <div style="background-color:lightGrey; width: 50%; padding-top: 10px; padding-bottom: 10px">
+  <div style="background-color:lightGrey; width: 30%; padding-top: 10px; padding-bottom: 10px">
     <h4> Personal Information </h4>
-    <!-- TODO: this table printing set up needs to be completed -->
+    <?php
+      echo "<table>";
+      echo "<tr><th>Name:</th><th>Phone:</th></tr>";
+      $result = executePlainSQL("select s_name, phone from hotelStaff where staff_id=$staffidcookie union select s_name, phone from skiStaff where staff_id=$staffidcookie");
+        while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+          echo "<tr><td>" . $row["S_NAME"] . "</td><td>" . $row["PHONE"] . "</td></tr>";
+        }
+        echo "</table>";
+    ?>
 
   </div>
 
@@ -57,10 +68,8 @@ $staffidcookie = $_COOKIE["staffid"];
 
 <!--  Setup connection and connect to DB -->
 <?php
-$success = True; //keep track of errors so it redirects the page only if there are no errors
-$db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
-
-function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
+function executePlainSQL($cmdstr) {
+  //takes a plain (no bound variables) SQL command and executes it
   //echo "<br>running ".$cmdstr."<br>";
   global $db_conn, $success;
   $statement = OCIParse($db_conn, $cmdstr); //There is a set of comments at the end of the file that describe some of the OCI specific functions and how they work
@@ -85,7 +94,6 @@ function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL com
   return $statement;
 
 }
-
 function executeBoundSQL($cmdstr, $list) {
   /* Sometimes the same statement will be executed for several times ... only
    the value of variables need to be changed.
