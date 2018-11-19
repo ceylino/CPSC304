@@ -8,36 +8,32 @@ if (isset($_POST["staffid"])) {
 }
 
 $success = True; //keep track of errors so it redirects the page only if there are no errors
-
 $db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 ?>
 
 <!-- Page title -->
 <title>Hotel Ski Resort</title>
-<p> Welcome staff id:<?php echo $staffidcookie; ?> </p> <!-- TODO: echo the staff id. -->
-
-<div style="display: flex; width: 100%; justify-content: space-around;">
+<p> Welcome staff id:<?php echo $staffidcookie; ?> </p> 
+<div style="display: flex; width: 100%; justify-content: space-between;">
 
   <!-- View table entries -->
   <div style="justify-content: flex-start;">
     <h3> Room Reservations: </h3>
       <?php
-        $result = executePlainSQL("select r.room_num, r.start_date, r.end_date, c.c_id, c.c_name, c.e_mail from roomReservation r, customer c where r.c_id = c.c_id");
+        $result = executePlainSQL("select r.room_num, r.start_date, r.end_date, c.c_id, c.c_name, c.e_mail from roomReservation r, customer c where r.c_id = c.c_id order by r.room_num");
         echo "<table>";
         echo "<tr><th>Room Number</th><th>Start Date</th><th>End Date</th><th>CID</th><th>Customer Name</th><th>Customer E-mail</th></tr>";
         while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
           echo "<tr><td>" . $row["ROOM_NUM"] . "</td><td>" . $row["START_DATE"] . "</td><td>" . $row["END_DATE"] . "</td><td>" . $row["C_ID"] . "</td><td>" . $row["C_NAME"] . "</td><td>" . $row["E_MAIL"] . "</td></tr>";
         }
         echo "</table>";
-
       ?>
   </div>
 
   <div style="justify-content: flex-start;">
     <h3> Rooms: </h3>
     <?php
-
-      $result1 = executePlainSQL("select * from room");
+      $result1 = executePlainSQL("select * from room order by room_num");
       echo "<table>";
       echo "<tr><th>Number</th><th>Type</th><th>Rate</th></tr>";
       while ($row = OCI_Fetch_Array($result1, OCI_BOTH)) {
@@ -50,7 +46,6 @@ $db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
   <div style="justify-content: flex-start;">
     <h3> Room Rates: </h3>
     <?php
-
       $result1 = executePlainSQL("select * from roomRate");
       echo "<table>";
       echo "<tr><th>Type</th><th>Rate</th></tr>";
@@ -59,15 +54,22 @@ $db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
       }
       echo "</table>";
     ?>
-  </div>
 
+    <h3> Customers </h3> 
+    <?php
+        $result = executePlainSQL("select c_id, c_name from customer");
+        echo "<table>";
+        echo "<tr><th>ID</th><th></th><th>Name</th></tr>";
+        while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+          echo "<tr><td>" . $row["C_ID"] . "</td></td><td><td>" . $row["C_NAME"] . "</td></tr>";
+        }
+        echo "</table>";
+  ?>
+  </div>
       <!-- Directory -->
       <div style="justify-content: flex-end;">
         <!-- Edit Profile-->
-        <div style="background-color:lightGrey;
-                      width: 200px;
-                      padding-top: 20px;
-                      padding-bottom: 1px">
+        <div style="background-color:lightGrey; width: 200px; padding-top: 20px;padding-bottom: 1px">
           <center>
             <form method ="POST" action="staffDir.php">
             <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
@@ -82,12 +84,9 @@ $db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 
 <div style="height: 30px;"></div>
 
-
 <!-- Forms to add & update data-->
 <center>
-  <div style="display: flex;
-              width: 100%;
-              justify-content: space-around;">
+  <div style="display: flex; width: 100%; justify-content: space-around;">
     <div> <!-- Rooms -->
        <div style="width: 300px; padding: 20px 20px 10px 20px; background-color: lightGrey; ">
         <center>Add new room: </center>
@@ -172,7 +171,7 @@ $db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
       <!-- Delete a room reservation -->
       <div>
         <div style="width: 300px;  padding: 30px 20px 10px 20px; background-color: lightGrey; ">
-          <form method="POST" action="staffRoomView.php"> <!-- TODO: Add any SQL processing necessary & add form tag details-->
+          <form method="POST" action="staffRoomView.php">
             <center>Delete a Room Reservation: <br>
               Are you sure you want to delete this room reservation? This action can't be undone.
               Deletion will cause cascading through other functionalities.<br>
@@ -191,7 +190,6 @@ $db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 <!--  Setup connection and connect to DB -->
 <?php
 function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
-  //echo "<br>running ".$cmdstr."<br>";
   global $db_conn, $success;
   $statement = OCIParse($db_conn, $cmdstr); //There is a set of comments at the end of the file that describe some of the OCI specific functions and how they work
 
@@ -217,13 +215,6 @@ function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL com
 }
 
 function executeBoundSQL($cmdstr, $list) {
-  /* Sometimes the same statement will be executed for several times ... only
-   the value of variables need to be changed.
-   In this case, you don't need to create the statement several times;
-   using bind variables can make the statement be shared and just parsed once.
-   This is also very useful in protecting against SQL injection.
-      See the sample code below for how this functions is used */
-
   global $db_conn, $success;
   $statement = OCIParse($db_conn, $cmdstr);
 
@@ -236,8 +227,6 @@ function executeBoundSQL($cmdstr, $list) {
 
   foreach ($list as $tuple) {
     foreach ($tuple as $bind => $val) {
-      //echo $val;
-      //echo "<br>".$bind."<br>";
       OCIBindByName($statement, $bind, $val);
       unset ($val); //make sure you do not remove this. Otherwise $val will remain in an array object wrapper which will not be recognized by Oracle as a proper datatype
 
@@ -252,7 +241,6 @@ function executeBoundSQL($cmdstr, $list) {
     }
   }
   return $statement;
-
 }
 
 function printResult($result) { //prints results from a select statement
@@ -323,7 +311,6 @@ if ($db_conn) {
     );
     $result2 = executeBoundSQL("select * from room where room_num=:bind1", $alltuples);
     if($row2 = OCI_Fetch_Array($result2, OCI_BOTH)){
-      //delete booking
       executeBoundSQL("delete from room where room_num=:bind1", $alltuples);
       OCICommit($db_conn);
     }
@@ -372,7 +359,6 @@ if ($db_conn) {
     $alltuples = array (
       $tuple
     );
-    //add reservation
     $result5 = executeBoundSQL("insert into roomReservation values (:bind1, :bind2, :bind3, :bind4)", $alltuples);
     OCICommit($db_conn);
 
@@ -394,7 +380,6 @@ if ($db_conn) {
     );
     $result6 = executeBoundSQL("select * from roomReservation where room_num=:bind1 and start_date=:bind2 and end_date=:bind3", $alltuples);
     if($row3 = OCI_Fetch_Array($result6, OCI_BOTH)){
-      //delete booking
       $resultTemp = executeBoundSQL("delete from roomReservation where room_num=:bind1 and start_date=:bind2 and end_date=:bind3", $alltuples);
       OCICommit($db_conn);
     }
