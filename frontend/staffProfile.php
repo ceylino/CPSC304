@@ -32,6 +32,15 @@ if (isset($_POST["staffid"])) {
   <div style="background-color:lightGrey; width: 50%; padding-top: 10px; padding-bottom: 10px">
     <h4> Personal Information </h4>
     <!-- TODO: this table printing set up needs to be completed -->
+    <?php
+      echo "<table>";
+      echo "<tr><th>Name:</th><th>Phone:</th></tr>";
+      $result = executePlainSQL("select s_name, phone from hotelStaff where staff_id=$staffidcookie union select s_name, phone from skiStaff where staff_id=$staffidcookie");
+        while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+          echo "<tr><td>" . $row["S_NAME"] . "</td><td>" . $row["PHONE"] . "</td></tr>";
+        }
+        echo "</table>";
+    ?>
 
   </div>
 
