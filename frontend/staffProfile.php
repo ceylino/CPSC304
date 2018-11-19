@@ -2,9 +2,11 @@
 
 <?php
 session_start();
-$staff_id = $_POST['staffid'];
-setcookie("staffid", $staff_id);
-$staffidcookie = $_COOKIE["staffid"];
+if (isset($_POST["staffid"])) {
+  $staffidcookie = $_POST['staffid'];   
+}else{  
+  $staffidcookie = $_COOKIE["staffid"];
+}
 ?>
 <!-- Page title -->
 <title>Hotel Ski Resort</title>
@@ -45,7 +47,7 @@ $staffidcookie = $_COOKIE["staffid"];
     <div style="width: 200px; padding: 20px 20px 10px 20px; background-color: lightGrey; ">
       <center>Update Personal Information:
         <form method="POST" action="staffProfile.php"> <!-- TODO: Add any SQL processing necessary-->
-          <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
+         <!-- <input type="hidden" name="staffid" value="<php echo $staffidcookie; ?>"> -->
           <p align="left">Name: <br> <input type="text" name="editName" size="20"> </p>
           <p align="left">Phone Number: <br> <input type="number" name="editPhone" size="10"> </p>
           <input type="submit" value="Update" name="updateStaff">
@@ -157,8 +159,11 @@ if ($db_conn) {
 
   OCICommit($db_conn);
   if ($_POST && $success){
-    header("location: staffProfile.php");
-  }
+    setcookie("staffid", $staffidcookie);
+    echo "<meta http-equiv='refresh' content='0'>";
+    
+
+  } 
   }
 
   OCILogoff($db_conn);
