@@ -8,7 +8,7 @@ if (isset($_POST["staffid"])) {
 }
 //Setup
 $success = True; //keep track of errors so it redirects the page only if there are no errors
-$db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug"); // TODO: make this git ignored
+$db_conn = OCILogon("ora_c5b1b", "a34248161", "dbhost.ugrad.cs.ubc.ca:1522/ug"); // TODO: make this git ignored
 ?>
 
 <!-- Page title -->
@@ -30,16 +30,9 @@ $db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
         echo "<table>";
         echo "<tr><th>ID</th><th></th><th>Name</th><th>E-mail</th><th>Creditcard Number</th></tr>";
         while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-          echo "<tr><td>" . $row["C_ID"] . "</td><td>" . $row["C_NAME"] . "</td><td>" . $row["E_MAIL"] . "</td><td>" . $row["CREDITCARD_NUM"] . "</td></tr>";
+          echo "<tr><td>" . $row["C_ID"] . "</td><td></td><td>" . $row["C_NAME"] . "</td><td>" . $row["E_MAIL"] . "</td><td>" . $row["CREDITCARD_NUM"] . "</td></tr>";
         }
         echo "</table>";
-      // $result1 = executePlainSQL("select c.c_id, c.c_name, c.e_mail, c.creditcard_num, m.fee, m.points, m.join_date from customer c left join member m on c.c_id = m.c_id");
-      //   echo "<table>";
-      //   echo "<tr><th>ID</th><th></th><th>Name</th><th>E-mail</th><th>Creditcard Number</th><th>Member Fee</th><th>Member Points</th><th>Membership Date</th></tr>";
-      //   while ($row = OCI_Fetch_Array($result1, OCI_BOTH)) {
-      //     echo "<tr><td>" . $row["C_ID"] . "</td><td>" . $row["C_NAME"] . "</td><td>" . $row["E_MAIL"] . "</td><td>" . $row["CREDITCARD_NUM"] . "</td><td>" . $row["FEE"] . "</td><td>" . $row["POINTS"] . "</td><td>" . $row["JOIN_DATE"] . "</td></tr>";
-      //   }
-      //   echo "</table>";
       ?>
       </div>
 
@@ -51,9 +44,22 @@ $db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 
         $result1 = executePlainSQL(" select c.c_id, c.c_name, m.fee, m.points, m.join_date from customer c, member m where c.c_id = m.c_id");
         echo "<table>";
-        echo "<tr><th>ID</th><th></th><th>Name</th><th>Member Fee</th><th>Member Points</th><th>Membership Date</th></tr>";
+        echo "<tr><th>ID</th></td><td><th></th><th>Name</th><th>Member Fee</th></td><td><th>Member Points</th></td><td><th>Membership Date</th></tr>";
         while ($row = OCI_Fetch_Array($result1, OCI_BOTH)) {
-          echo "<tr><td>" . $row["C_ID"] . "</td><td>" . $row["C_NAME"] . "</td><td>" . $row["FEE"] . "</td><td>" . $row["POINTS"] . "</td><td>" . $row["JOIN_DATE"] . "</td></tr>";
+          echo "<tr><td>" . $row["C_ID"] . "</td><td></td><td></td><td>" . $row["C_NAME"] . "</td><td>" . $row["FEE"] . "</td><td></td><td>" . $row["POINTS"] . "</td><td></td><td>" . $row["JOIN_DATE"] . "</td></tr>";
+        }
+        echo "</table>";
+      ?>
+
+      <h3> Leading Reservations </h3>
+    
+      <?php
+        $result1 = executePlainSQL("select c.c_id, c.c_name, count(r.c_id) as count from reservations r, customer c where r.c_id=c.c_id group by c.c_id, c.c_name order by count(r.c_id) desc");
+
+        echo "<table>";
+        echo "<tr><th>ID</th></td><td><th>Customer Name</th></td><td><th>Reservation Count</th></tr>";
+        while ($row = OCI_Fetch_Array($result1, OCI_BOTH)) {
+          echo "<tr><td>" . $row["C_ID"] . "</td><td></td><td>" . $row["C_NAME"] . "</td><td></td><td>" . $row["COUNT"] . "</td></tr>";
         }
         echo "</table>";
       ?>
