@@ -146,3 +146,12 @@ create table bookedLessons
 grant select on bookedLessons to public;
 
 commit;
+
+create view staff as
+select staff_id, s_name
+from hotelStaff
+union
+select staff_id, s_name
+from skiStaff;
+
+commit;

@@ -7,23 +7,21 @@ if (isset($_POST["staffid"])) {
   $staffidcookie = $_COOKIE["staffid"];
 }
 $success = True; //keep track of errors so it redirects the page only if there are no errors
-$db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug"); // TODO: make this git ignored
+$db_conn = OCILogon("ora_c5b1b", "a34248161", "dbhost.ugrad.cs.ubc.ca:1522/ug"); // TODO: make this git ignored
 ?>
 
 <!-- Page title -->
 <title>Hotel Ski Resort</title>
-<p> Welcome staff id: <?php echo $staffidcookie; ?></p> <!-- TODO: echo the staff id. -->
+<p> Welcome staff id: <?php echo $staffidcookie; ?></p> 
 
 <div style="display: flex; width: 100%; justify-content: space-between;">
 
   <!-- View table entries -->
   <div style="justify-content: flex-start;">
-    <h3> Booked Lessons: </h3> <!-- TODO: this table printing set up needs to be completed and added for the other tables as well -->
+    <h3> Booked Lessons: </h3> 
       <?php
 
         $result = executePlainSQL("select bl.c_id, bl.lesson_id, bl.lesson_type, bl.lesson_datetime, c.c_name from bookedLessons bl, customer c where c.c_id = bl.c_id"); 
-
-
         echo "<table>";
         echo "<tr><th>Customer Id</th><th>Customer Name</th><th>Lesson Id</th><th>Lesson Type Name</th><th>Lesson Date&Time</th></tr>";
         while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
@@ -35,7 +33,6 @@ $db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 
     <h3>Lessons: </h3> 
     <?php
-      //TODO currently displays all the lessons
         $result = executePlainSQL("select s.s_name, l.lesson_type, l.lesson_datetime, l.lesson_id from lesson l, skiStaff s where l.staff_id = s.staff_id"); 
         echo "<table>";
         echo "<tr><th>ID</th><th>Instructor Name</th><th>Lesson Type</th><th>Date and Time</th></tr>";
@@ -75,12 +72,12 @@ $db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
     <h3> Ski Staff: </h3>
     <?php
           //sql statement 
-          $result = executePlainSQL("select staff_id, s_name, phone from skiStaff"); 
+          $result = executePlainSQL("select staff_id, s_name from skiStaff"); 
           echo "<table>";
-          echo "<tr><th>Staff Id</th><th>Name</th><th>Phone</th></tr>"; //column names
+          echo "<tr><th>Staff Id</th><th>Name</th></tr>"; //column names
           while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
             //column names, caps for var names
-            echo "<tr><td>" . $row["STAFF_ID"] . "</td><td>" . $row["S_NAME"] . "</td><td>" . $row["PHONE"] . "</td></tr>";
+            echo "<tr><td>" . $row["STAFF_ID"] . "</td><td>" . $row["S_NAME"] . "</td></tr>";
           }
           //
           echo "</table>";
