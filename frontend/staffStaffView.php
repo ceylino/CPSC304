@@ -6,13 +6,13 @@ if (isset($_POST["staffid"])) {
   $staffidcookie = $_COOKIE["staffid"];
 }
 $success = True; //keep track of errors so it redirects the page only if there are no errors
-$db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug"); // TODO: make this git ignored
+$db_conn = OCILogon("ora_c5b1b", "a34248161", "dbhost.ugrad.cs.ubc.ca:1522/ug"); // TODO: make this git ignored
 ?>
 
 <!-- Page title -->
 <title>Hotel Ski Resort</title>
 
-<p> Welcome staff id: </p> <!-- TODO: echo the staff id. -->
+<p> Welcome staff id: <?php echo $staffidcookie;?></p> 
 
 <div style="display: flex;
             width: 100%;
@@ -23,11 +23,11 @@ $db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
     <h3> Hotel Staff: </h3> 
     <?php
 
-        $result1 = executePlainSQL("select * from hotelStaff");
+        $result1 = executePlainSQL("select * from staff intersect select h.staff_id, h.s_name from hotelStaff h");
         echo "<table>";
-        echo "<tr><th>ID</th><th>Name</th><th>Phone</th></tr>";
+        echo "<tr><th>ID</th><th>Name</th></tr>";
         while ($row = OCI_Fetch_Array($result1, OCI_BOTH)) {
-          echo "<tr><td>" . $row["STAFF_ID"] . "</td><td>" . $row["S_NAME"] . "</td><td>" . $row["PHONE"] . "</td></tr>";
+          echo "<tr><td>" . $row["STAFF_ID"] . "</td><td>" . $row["S_NAME"] . "</td></tr>";
         }
         echo "</table>";
       ?>
@@ -37,11 +37,11 @@ $db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
     <h3> Ski Staff: </h3>
     <?php
 
-        $result1 = executePlainSQL("select * from skiStaff");
+        $result1 = executePlainSQL("select * from staff intersect select h.staff_id, h.s_name from skiStaff h");
         echo "<table>";
-        echo "<tr><th>ID</th><th>Name</th><th>Phone</th></tr>";
+        echo "<tr><th>ID</th><th>Name</th></tr>";
         while ($row = OCI_Fetch_Array($result1, OCI_BOTH)) {
-          echo "<tr><td>" . $row["STAFF_ID"] . "</td><td>" . $row["S_NAME"] . "</td><td>" . $row["PHONE"] . "</td></tr>";
+          echo "<tr><td>" . $row["STAFF_ID"] . "</td><td>" . $row["S_NAME"] .  "</td></tr>";
         }
         echo "</table>";
       ?>
