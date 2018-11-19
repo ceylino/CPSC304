@@ -1,6 +1,7 @@
 <!-- Staff profile: This is the page where staff may view their profiles and edit their data -->
 
 <?php
+//Setup
 session_start();
 $success = True; //keep track of errors so it redirects the page only if there are no errors
 $db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
@@ -12,13 +13,10 @@ if (isset($_POST["staffid"])) {
 ?>
 <!-- Page title -->
 <title>Hotel Ski Resort</title>
-
+<p> Welcome staff id: <?php echo $staffidcookie; ?> </p> 
 <!-- Directory -->
   <div style="float: right;">
-    <div style="background-color:lightGrey;
-                  width: 200px;
-                  padding-top: 20px;
-                  padding-bottom: 1px">
+    <div style="background-color:lightGrey; width: 200px; padding-top: 20px; padding-bottom: 1px">
       <center>
         <form method="POST" action="staffDir.php">
         <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
@@ -30,8 +28,7 @@ if (isset($_POST["staffid"])) {
 
 <center>
   <!-- Personal  Info-->
-  <p> Welcome staff id: <?php echo $staffidcookie; ?> </p> 
-  <div style="background-color:lightGrey; width: 50%; padding-top: 10px; padding-bottom: 10px">
+  <div style="background-color:lightGrey; width: 20%; padding-top: 10px; padding-bottom: 10px">
     <h4> Personal Information </h4>
     <?php
       echo "<table>";
@@ -42,22 +39,17 @@ if (isset($_POST["staffid"])) {
         }
         echo "</table>";
     ?>
-
-  </div>
-
+    </div>
   <div style="height: 10px;"></div>
 </center>
-
   <div style="height: 30px;"></div>
-
 <!-- Form: -->
 <center>
 <!-- Update personal info -->
   <div>
     <div style="width: 200px; padding: 20px 20px 10px 20px; background-color: lightGrey; ">
       <center>Update Personal Information:
-        <form method="POST" action="staffProfile.php"> <!-- TODO: Add any SQL processing necessary-->
-         <!-- <input type="hidden" name="staffid" value="<php echo $staffidcookie; ?>"> -->
+        <form method="POST" action="staffProfile.php">
           <p align="left">Name: <br> <input type="text" name="editName" size="20"> </p>
           <p align="left">Phone Number: <br> <input type="number" name="editPhone" size="10"> </p>
           <input type="submit" value="Update" name="updateStaff">
@@ -97,12 +89,6 @@ function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL com
 }
 
 function executeBoundSQL($cmdstr, $list) {
-  /* Sometimes the same statement will be executed for several times ... only
-   the value of variables need to be changed.
-   In this case, you don't need to create the statement several times;
-   using bind variables can make the statement be shared and just parsed once.
-   This is also very useful in protecting against SQL injection.
-      See the sample code below for how this functions is used */
 
   global $db_conn, $success;
   $statement = OCIParse($db_conn, $cmdstr);
@@ -116,8 +102,6 @@ function executeBoundSQL($cmdstr, $list) {
 
   foreach ($list as $tuple) {
     foreach ($tuple as $bind => $val) {
-      //echo $val;
-      //echo "<br>".$bind."<br>";
       OCIBindByName($statement, $bind, $val);
       unset ($val); //make sure you do not remove this. Otherwise $val will remain in an array object wrapper which will not be recognized by Oracle as a proper datatype
 
@@ -150,7 +134,7 @@ function printResult($result) { //prints results from a select statement
 if ($db_conn) {
   if (array_key_exists('updateStaff', $_POST)) {
     $tuple = array (
-      ":bind1" => $staffidcookie, //TODO
+      ":bind1" => $staffidcookie, 
       ":bind2" => $_POST['editName'],
       ":bind3" => $_POST['editPhone'],
       );
@@ -168,10 +152,8 @@ if ($db_conn) {
   OCICommit($db_conn);
   if ($_POST && $success){
     setcookie("staffid", $staffidcookie);
-    echo "<meta http-equiv='refresh' content='0'>";
-    
-
-  } 
+    echo "<meta http-equiv='refresh' content='0'>";  
+    } 
   }
 
   OCILogoff($db_conn);

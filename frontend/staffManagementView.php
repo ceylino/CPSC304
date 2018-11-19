@@ -1,5 +1,3 @@
-<!-- Customer page: This is the main customer page. This is where logged in customers and members can view their current reservations etc. and be redirected to create new ones, edit or delete existing ones.
--->
 <?php
 //Setup
 if (isset($_POST["staffid"])) {
@@ -14,7 +12,7 @@ $db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 
 <!-- Page title -->
 <title>Hotel Ski Resort</title>
-<p> Welcome staff id: <?php echo $staffidcookie; ?> </p> <!-- TODO: echo the staff id. -->
+<p> Welcome staff id: <?php echo $staffidcookie; ?> </p> 
 
 <div style="display: flex; width: 100%; justify-content: space-between;">
 
@@ -106,7 +104,7 @@ $db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
     <!-- Edit Profile-->
     <div style="background-color:lightGrey; width: 200px; padding-top: 20px; padding-bottom: 1px">
       <center>
-        <form method="POST" action="staffDir.php"> <!-- TODO: Add rerouting to other staff pages -->
+        <form method="POST" action="staffDir.php"> 
         <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
           <input type="submit" value="Back to Main Page" name="staffDir">
         </form>
@@ -118,7 +116,6 @@ $db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 <div style="height: 30px;"></div>
 
 <!-- Forms to add & update data -->
-<!-- IMPORTANT: before adding any SQL check to see what needs to be done by looking at the createTables file and checking for functional dependencies! Or else THINGS WILL BREAK!!-->
 <center>
   <div style="display: flex; width: 100%; justify-content: space-around;">
 
@@ -156,7 +153,6 @@ $db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
             <p align="left">Room number: <br> <input type="number" name="deleteRoomNum" size="6"></p>
             <p align="left">Staff Id: <br> <input type="number" name="deleteSid" size="6"> </p>
             <center><input type="submit" value="Delete Management" name="deleteRoomManage"></center>
-            <!-- check if exists, if so, delete. refresh page.-->
           </form>
         </div>
       </div>
