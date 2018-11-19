@@ -1,32 +1,102 @@
-<!-- Customer page: This is the main customer page. This is where logged in customers and members can view their current reservations etc. and be redirected to create new ones, edit or delete existing ones.
--->
+<?php
+//Setup
+$success = True; //keep track of errors so it redirects the page only if there are no errors
+$db_conn = OCILogon("ora_c5b1b", "a34248161", "dbhost.ugrad.cs.ubc.ca:1522/ug"); // TODO: make this git ignored
+?>
 
 <!-- Page title -->
 <title>Hotel Ski Resort</title>
 <p> Welcome staff id:</p> <!-- TODO: echo the staff id. -->
 
-<div style="display: flex;
-            width: 100%;
-            justify-content: space-between;">
+<div style="display: flex; width: 100%; justify-content: space-between;">
 
   <!-- View table entries -->
   <div style="justify-content: flex-start;">
     <h3> Booked Lessons: </h3> <!-- TODO: this table printing set up needs to be completed and added for the other tables as well -->
       <?php
-      //TODO : this part needs to be changed
-        $result = executePlainSQL("select * roomReservation where c_id=3"); //TODO: set up the cid & use views
+
+        $result = executePlainSQL("select bl.c_id, bl.lesson_id, bl.lesson_type, bl.lesson_datetime, c.c_name from bookedLessons bl, customer c where c.c_id = bl.c_id"); 
+
+
         echo "<table>";
-        echo "<tr><th>COLUMN1</th><th>COLUMN2</th></tr>";
+        echo "<tr><th>Customer Id</th><th>Customer Name</th><th>Lesson Id</th><th>Lesson Type Name</th><th>Lesson Date&Time</th></tr>";
         while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-          echo "<tr><td>" . $row["COL1"] . "</td><td>" . $row["COL2"] . "</td></tr>";
+          echo "<tr><td>" . $row["C_ID"] . "</td><td>" . $row["C_NAME"] . "</td><td>" . $row["LESSON_ID"] . "</td><td>" . $row["LESSON_TYPE"] . "</td><td>" . $row["LESSON_DATETIME"] . "</td></tr>";
+        }
+        echo "</table>";
+      ?>
+     
+
+    <h3>Lessons: </h3> 
+    <?php
+      //TODO currently displays all the lessons
+        $result = executePlainSQL("select s.s_name, l.lesson_type, l.lesson_datetime, l.lesson_id from lesson l, skiStaff s where l.staff_id = s.staff_id"); 
+        echo "<table>";
+        echo "<tr><th>ID</th><th>Instructor Name</th><th>Lesson Type</th><th>Date and Time</th></tr>";
+        while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+          echo "<tr><td>" . $row["LESSON_ID"] .  "</td><td>" . $row["S_NAME"] .  "</td><td>" . $row["LESSON_TYPE"] . "</td><td>" . $row["LESSON_DATETIME"] . "</td></tr>";
         }
         echo "</table>";
       ?>
 
-    <h3> Available Lessons: </h3> <!-- TODO: Join lesson and staff. Display staff name and all lesson details-->
-
-    <h3> Lessons Classlist: </h3> <!-- TODO: Join lesson, staff and customer tables and group by lesson type. Display customer name, staff name and all lesson details-->
+          
+      <h3> Customers: </h3>
+      <?php
+          $result = executePlainSQL("select * from customer");
+          echo "<table>";
+          echo "<tr><th>Customer Id</th><th>Customer Name</th><th>E-mail</th></tr>";
+          while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+            echo "<tr><td>" . $row["C_ID"] . "</td><td>" . $row["C_NAME"] . "</td><td>" . $row["E_MAIL"] . "</td></tr>";
+          }
+          echo "</table>";
+      ?>
   </div>
+
+
+
+  <div style="justify-content: flex-start;">
+    <h3> Lessons Classlist: </h3>
+    <?php
+        $result = executePlainSQL("select s.s_name, l.lesson_type, l.lesson_datetime from lesson l, skistaff s where l.staff_id = s.staff_id"); 
+        echo "<table>";
+        echo "<tr><th>Instructor Name</th><th>Lesson Type</th><th>Lesson Datetime</th></tr>";
+        while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+          echo "<tr><td>" . $row["S_NAME"] . "</td><td>" . $row["LESSON_TYPE"] . "</td><td>" . $row["LESSON_DATETIME"] . "</td></tr>";
+        }
+        echo "</table>";
+      ?>
+
+    <h3> Ski Staff: </h3>
+    <?php
+          //sql statement 
+          $result = executePlainSQL("select staff_id, s_name, phone from skiStaff"); 
+          echo "<table>";
+          echo "<tr><th>Staff Id</th><th>Name</th><th>Phone</th></tr>"; //column names
+          while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+            //column names, caps for var names
+            echo "<tr><td>" . $row["STAFF_ID"] . "</td><td>" . $row["S_NAME"] . "</td><td>" . $row["PHONE"] . "</td></tr>";
+          }
+          //
+          echo "</table>";
+    ?>
+
+    <h3> Lessons Times: </h3>
+    <?php
+          //sql statement 
+          $result = executePlainSQL("select * from lessonTime"); 
+          echo "<table>";
+          echo "<tr><th>Lesson Type</th><th>Lesson Datetime</th></tr>"; //column names
+          while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+            //column names, caps for var names
+            echo "<tr><td>" . $row["LESSON_TYPE"] . "</td><td>" . $row["LESSON_DATETIME"] . "</td></tr>";
+          }
+          echo "</table>";
+    ?>
+      
+  </div>
+
+
+
 
   <!-- Directory -->
   <div style="justify-content: flex-end;">
@@ -46,6 +116,10 @@
 
 <div style="height: 30px;"></div>
 
+
+
+
+
 <!-- Forms to add & update data -->
 <!-- IMPORTANT: before adding any SQL check to see what needs to be done by looking at the createTables file and checking for functional dependencies! Or else THINGS WILL BREAK!!-->
 <center>
@@ -57,6 +131,7 @@
         <center>Add new lesson: </center>
         <form method="POST" action="staffLessonView.php">
           <p align="left">Staff Id: <br> <input type="number" name="addLSid" size="6"> </p>
+          <p align="left">New Lesson Id: <br> <input type="number" name="addLLid" size="6"> </p>
           <p align="left">Lesson Datetime: <br>(numbers only - yyyymmddhhmm) <br> <input type="number" name="addLDate" size="12"> </p>
           <p align="left">Lesson Type: <br> <input type="text" name="addLType" size="30"> </p>
           <center><input type="submit" value="Add" name="addLesson"></center>
@@ -69,9 +144,7 @@
       <div style="width: 300px; padding: 20px 20px 10px 20px; background-color: lightGrey; ">
         <center>Update Lesson: </center>
         <form method="POST" action="staffLessonView.php">
-            <p align="left">Old Staff ID: <br> <input type="number" name="oldLSid" size="6"> </p>
-            <p align="left">Old Lesson Datetime: <br>(numbers only - yyyymmddhhmm) <br> <input type="number" name="oldLDate" size="12"> </p>
-            <p align="left">Old Lesson Type: <br> <input type="text" name="oldLType" size="30"> </p>
+            <p align="left">Lesson ID: <br> <input type="number" name="oldLLid" size="6"> </p>
             <br>
             <p align="left">New Staff ID: <br> <input type="number" name="newLSid" size="6"> </p>
             <p align="left">New Lesson Datetime: <br>(numbers only - yyyymmddhhmm) <br> <input type="number" name="newLDate" size="12"> </p>
@@ -91,8 +164,7 @@
             <center>Delete a lesson: <br>
               Are you sure you want to delete this lesson? This action cannot be undone.<br>
             </center>
-            <p align="left">Staff Id: <br> <input type="number" name="deleteLSid" size="6"> </p>
-            <p align="left">Lesson Type: <br> <input type="text" name="deleteLType" size="30"> </p>
+            <p align="left">Lesson Id: <br> <input type="number" name="deleteLLid" size="6"> </p>
             <center><input type="submit" value="Delete Lesson" name="deleteLesson"></center>
           </form>
         </div>
@@ -105,6 +177,7 @@
         <center>Book a new lesson: </center>
         <form method="POST" action="staffLessonView.php">
             <p align="left">Customer Id: <br> <input type="number" name="addBCid" size="6"> </p>
+            <p align="left">Lesson Id: <br> <input type="number" name="addBLid" size="6"> </p>
             <p align="left">Lesson Datetime: <br>(numbers only - yyyymmddhhmm) <br> <input type="number" name="addBDate" size="12"> </p>
             <p align="left">Lesson Type: <br> <input type="text" name="addBType" size="20"> </p>
           <center><input type="submit" value="Book Lesson" name="addBooking"></center>
@@ -120,8 +193,8 @@
             <center>Delete a lesson booking: <br>
               Are you sure you want to delete this booking? This action cannot be undone.<br>
             </center>
-            <p align="left">Customer Id: <br> <input type="number" name="deleteBCid" size="6"></p>
-            <p align="left">Lesson Type: <br> <input type="text" name="deleteBType" size="20"></p>
+            <p align="left">Lesson Id: <br> <input type="number" name="deleteBLid" size="6"></p>
+            <p align="left">Customer Id: <br> <input type="text" name="deleteBCid" size="20"></p>
             <center><input type="submit" value="Delete Booking" name="deleteBooking"></center>
           </form>
         </div>
@@ -131,11 +204,10 @@
   </div>
 </center>
 
+ 
+
 <!--  Setup connection and connect to DB -->
 <?php
-//Setup
-$success = True; //keep track of errors so it redirects the page only if there are no errors
-$db_conn = OCILogon("ora_u3i0b", "a14691142", "dbhost.ugrad.cs.ubc.ca:1522/ug"); // TODO: make this git ignored
 
 function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
 	//echo "<br>running ".$cmdstr."<br>";
@@ -202,18 +274,6 @@ function executeBoundSQL($cmdstr, $list) {
 
 }
 
-function printResult($result) { //prints results from a select statement
-	echo "result from SQL:";
-  echo "<table>";
-	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-  echo "<tr>\n";
-    foreach ($row as $item) {
-        echo "    <td>" . ($item !== null ? htmlentities($item, ENT_QUOTES) : "&nbsp;") . "</td>\n";
-    }
-    echo "</tr>\n";
-  }
-  echo "</table>\n";
-}
 
 // Connect to Oracle DB
 if ($db_conn) {
@@ -221,35 +281,37 @@ if ($db_conn) {
 	if (array_key_exists('addLesson', $_POST)) {
    $tuple = array (
       ":bind1" => $_POST['addLSid'],
-      ":bind2" => $_POST['addLDate'],
-      ":bind3" => $_POST['addLType']
+      ":bind2" => $_POST['addLLid'],
+      ":bind3" => $_POST['addLDate'],
+      ":bind4" => $_POST['addLType']
 		);
 		$alltuples = array (
 			$tuple
 		);
     //add lesson
 
-    $result = executeBoundSQL("select * from skiStaff where staff_id=:bind1", $alltuples);
-    if($row = OCI_Fetch_Array($result, OCI_BOTH)){
+    //$result = executeBoundSQL("select * from skiStaff where staff_id=:bind1", $alltuples);
+    //if($row = OCI_Fetch_Array($result, OCI_BOTH)){
       //check if staff id exists
-      executeBoundSQL("insert into lessonTime values (:bind3, :bind2)", $alltuples);
+      executeBoundSQL("insert into lessonTime values (:bind4, :bind3)", $alltuples);
       OCICommit($db_conn);
-      executeBoundSQL("insert into lesson values (:bind1, :bind2, :bind3)", $alltuples);
+
+      executeBoundSQL("insert into lesson values (:bind2, :bind1, :bind3, :bind4)", $alltuples);
       OCICommit($db_conn);
-    }
-    else{
-      echo "This staff member doesn't exist!";
-    }
+    //}
+    //else{
+      //$message = "Staff member does not exists. Enter a valid staff member ID.";
+      //echo "<script type='text/javascript'>alert('$message');</script>";
+    //}
     if ($_POST && $success) {
       header("location: staffLessonView.php");
     }
+    echo "<meta http-equiv='refresh' content='0'>";
 
 	} else
   if (array_key_exists('updateLesson', $_POST)){
 		$tuple = array (
-      ":bind1" => $_POST['oldLSid'],
-      ":bind0" => $_POST['oldLDate'],
-      ":bind2" => $_POST['oldLType'],
+      ":bind1" => $_POST['oldLLid'],
       ":bind3" => $_POST['newLSid'],
       ":bind4" => $_POST['newLDate'],
       ":bind5" => $_POST['newLType']
@@ -257,82 +319,87 @@ if ($db_conn) {
 		$alltuples = array (
 			$tuple
 		);
-    $result = executeBoundSQL("select * from lesson where staff_id=:bind1 and lesson_type=:bind2 and lesson_datetime=:bind0", $alltuples);
+    $result = executeBoundSQL("select * from lesson where lesson_id=:bind1", $alltuples);
     if($row = OCI_Fetch_Array($result, OCI_BOTH)){//Now check if the updated type and date exist in lessonTime
       $result = executeBoundSQL("select * from lessonTime where lesson_type=:bind5 and lesson_datetime=:bind4", $alltuples);
 
       if($row = OCI_Fetch_Array($result, OCI_BOTH)){ // If this entry already exists in Lesson time = update lesson
-      executeBoundSQL("update lesson set staff_id=:bind3, lesson_datetime=:bind4, lesson_type=:bind5 where lesson_datetime=:bind0 and staff_id=:bind1 and lesson_type=:bind2", $alltuples);
+      executeBoundSQL("update lesson set staff_id=:bind3, lesson_datetime=:bind4, lesson_type=:bind5 where lesson_id=:bind1", $alltuples);
       OCICommit($db_conn);
       }
       else{
         //add entry to lessonTime first
         executeBoundSQL("insert into lessonTime values (:bind5, :bind4)", $alltuples);
         OCICommit($db_conn);
-        executeBoundSQL("update lesson set staff_id=:bind3, lesson_datetime=:bind4, lesson_type=:bind5 where lesson_datetime=:bind0 and staff_id=:bind1 and lesson_type=:bind2", $alltuples);
+        executeBoundSQL("update lesson set staff_id=:bind3, lesson_datetime=:bind4, lesson_type=:bind5 where lesson_id=:bind1", $alltuples);
         OCICommit($db_conn);
       }
+      
     }
     if ($_POST && $success) {
       header("location: staffLessonView.php");
     }
+    echo "<meta http-equiv='refresh' content='0'>";
 
 	} else
   if (array_key_exists('deleteLesson', $_POST)) {
   	$tuple = array (
-      ":bind1" => $_POST['deleteLSid'],
-      ":bind2" => $_POST['deleteLType']
+      ":bind1" => $_POST['deleteLLid']
   	);
   	$alltuples = array (
   		$tuple
   	);
     //delete lesson
-    $result = executeBoundSQL("select * from lesson where staff_id=:bind1 and lesson_type=:bind2", $alltuples);
+    $result = executeBoundSQL("select * from lesson where lesson_id=:bind1", $alltuples);
     if($row = OCI_Fetch_Array($result, OCI_BOTH)){
-      executeBoundSQL("delete from lesson where staff_id=:bind1 and lesson_type=:bind2", $alltuples);
+      executeBoundSQL("delete from lesson where lesson_id=:bind1", $alltuples);
       OCICommit($db_conn);
     }
 
     if ($_POST && $success) {
       header("location: staffLessonView.php");
     }
+    echo "<meta http-equiv='refresh' content='0'>";
 
 	} else
   if (array_key_exists('addBooking', $_POST)) {
   	$tuple = array (
-      ":bind1" => 1, //TODO: add token -cid
+      ":bind1" => $_POST['addBCid'],
       ":bind2" => $_POST['addBDate'],
-      ":bind3" => $_POST['addBType']
+      ":bind3" => $_POST['addBType'],
+      ":bind4" => $_POST['addBLid']
   	);
   	$alltuples = array (
   		$tuple
   	);
-    //add reservation
-    $result2 = executeBoundSQL("insert into bookedLessons values (:bind1, :bind2, :bind3)", $alltuples);
+
+    $result = executeBoundSQL("insert into bookedLessons values (:bind1, :bind2, :bind4, :bind3)", $alltuples);
     OCICommit($db_conn);
 
     if ($_POST && $success) {
       header("location: staffLessonView.php");
     }
+    echo "<meta http-equiv='refresh' content='0'>";
 
 	} else
   if(array_key_exists('deleteBooking', $_POST)){
     $tuple = array (
-      ":bind1" => $_POST['deleteBType'],
+      ":bind1" => $_POST['deleteBLid'],
       ":bind2" => $_POST['deleteBCid']
   	);
     $alltuples = array (
       $tuple
     );
-    $result = executeBoundSQL("select * from bookedLessons where c_id=:bind2 and lesson_type=:bind1", $alltuples);
+    $result = executeBoundSQL("select * from bookedLessons where c_id=:bind2 and lesson_id=:bind1", $alltuples);
     if($row = OCI_Fetch_Array($result, OCI_BOTH)){
       //delete booking
-      executeBoundSQL("delete from bookedLessons where c_id=:bind2 and lesson_type=:bind1", $alltuples);
+      executeBoundSQL("delete from bookedLessons where c_id=:bind2 and lesson_id=:bind1", $alltuples);
       OCICommit($db_conn);
     }
     if ($_POST && $success) {
     	header("location: staffLessonView.php");
     }
+    echo "<meta http-equiv='refresh' content='0'>";
   }else
 
 	//Commit to save changes...
