@@ -14,7 +14,7 @@ $db_conn = OCILogon("ora_u3i0b", "a14691142", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 
 <p> Welcome staff id: <?php echo $staffidcookie;?></p>
 
-<div style="display: flex;width: 100%;justify-content: space-around;">
+<div style="display: flex;width: 100%;justify-content: space-between;">
 
   <!-- View table entries -->
   <div style="justify-content: flex-start;">
@@ -78,7 +78,7 @@ $db_conn = OCILogon("ora_u3i0b", "a14691142", "dbhost.ugrad.cs.ubc.ca:1522/ug");
             <p align="left">Staff name: <br> <input type="text" name="newHSname" size="20"> </p>
             <p align="left">Phone: <br> <input type="text" name="newHSnum" size="20"> </p>
           <center>
-            <input type="submit" value="Add/Update" name="newHS">
+            <input type="submit" value="Add" name="newHS">
           </center>
         </form>
       </div>
@@ -95,7 +95,7 @@ $db_conn = OCILogon("ora_u3i0b", "a14691142", "dbhost.ugrad.cs.ubc.ca:1522/ug");
             <p align="left">Staff name: <br> <input type="text" name="newSSname" size="20"> </p>
             <p align="left">Phone: <br> <input type="text" name="newSSnum" size="20"> </p>
           <center>
-            <input type="submit" value="Add/Update" name="newSS">
+            <input type="submit" value="Add" name="newSS">
           </center>
         </form>
       </div>

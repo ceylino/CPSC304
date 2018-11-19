@@ -284,6 +284,7 @@ if ($db_conn) {
       setcookie("staffid", $staffidcookie);
       echo "<meta http-equiv='refresh' content='0'>";
     }
+    echo "<meta http-equiv='refresh' content='0'>";
 
 	} else
   if (array_key_exists('updateLesson', $_POST)){
@@ -317,6 +318,7 @@ if ($db_conn) {
       setcookie("staffid", $staffidcookie);
       echo "<meta http-equiv='refresh' content='0'>";
     }
+    echo "<meta http-equiv='refresh' content='0'>";
 
 	} else
   if (array_key_exists('deleteLesson', $_POST)) {
@@ -356,6 +358,7 @@ if ($db_conn) {
       setcookie("staffid", $staffidcookie);
       echo "<meta http-equiv='refresh' content='0'>";
     }
+    echo "<meta http-equiv='refresh' content='0'>";
 
 	} else
   if(array_key_exists('deleteBooking', $_POST)){
@@ -376,6 +379,7 @@ if ($db_conn) {
     	setcookie("staffid", $staffidcookie);
       echo "<meta http-equiv='refresh' content='0'>";
     }
+    echo "<meta http-equiv='refresh' content='0'>";
   }else
 
 	//Commit to save changes...

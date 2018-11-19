@@ -1,8 +1,8 @@
 <?php
 //Setup
 if (isset($_POST["staffid"])) {
-  $staffidcookie = $_POST['staffid'];   
-}else{  
+  $staffidcookie = $_POST['staffid'];
+}else{
   $staffidcookie = $_COOKIE["staffid"];
 }
 
@@ -12,15 +12,15 @@ $db_conn = OCILogon("ora_u3i0b", "a14691142", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 
 <!-- Page title -->
 <title>Hotel Ski Resort</title>
-<p> Welcome staff id: <?php echo $staffidcookie; ?> </p> 
+<p> Welcome staff id: <?php echo $staffidcookie; ?> </p>
 
 <div style="display: flex; width: 100%; justify-content: space-between;">
 
   <!-- View table entries -->
   <div style="justify-content: flex-start;">
-    <h3> Hotel Management: </h3> 
+    <h3> Hotel Management: </h3>
       <?php
-        $result = executePlainSQL("select r.room_num, r.room_type, m.staff_id, h.s_name from room r, roomManagement m, hotelStaff h where r.room_num = m.room_num and m.staff_id = h.staff_id"); 
+        $result = executePlainSQL("select r.room_num, r.room_type, m.staff_id, h.s_name from room r, roomManagement m, hotelStaff h where r.room_num = m.room_num and m.staff_id = h.staff_id");
         echo "<table>";
         echo "<tr><th>Room Number</th><th>Room Type</th><th>Staff Id</th><th>Staff Name</th></tr>";
         while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
@@ -31,9 +31,9 @@ $db_conn = OCILogon("ora_u3i0b", "a14691142", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 
       <div style="display: flex; width: 100%; justify-content: space-between;">
         <div style="justify-content: flex-start;">
-        <h3> Hotel Staff: </h3> 
+        <h3> Hotel Staff: </h3>
         <?php
-          $result = executePlainSQL("select * from hotelStaff"); 
+          $result = executePlainSQL("select * from hotelStaff");
           echo "<table>";
           echo "<tr><th>Id</th><th>Staff Name</th></tr>";
           while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
@@ -44,9 +44,9 @@ $db_conn = OCILogon("ora_u3i0b", "a14691142", "dbhost.ugrad.cs.ubc.ca:1522/ug");
         </div>
 
         <div style="justify-content: flex-start;">
-          <h3> Rooms: </h3> 
+          <h3> Rooms: </h3>
           <?php
-            $result = executePlainSQL("select * from room"); 
+            $result = executePlainSQL("select * from room");
             echo "<table>";
             echo "<tr><th>Room Number</th><th>Room Type</th></tr>";
             while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
@@ -57,11 +57,11 @@ $db_conn = OCILogon("ora_u3i0b", "a14691142", "dbhost.ugrad.cs.ubc.ca:1522/ug");
         </div>
       </div>
     </div>
-    
+
     <div style="justify-content: flex-start;">
     <h3> Equipment Management: </h3>
     <?php
-        $result = executePlainSQL("select r.equip_id, r.equip_type, m.staff_id, s.s_name from rentalEquip r, equipManagement m, skiStaff s where r.equip_id = m.equip_id and m.staff_id = s.staff_id"); 
+        $result = executePlainSQL("select r.equip_id, r.equip_type, m.staff_id, s.s_name from rentalEquip r, equipManagement m, skiStaff s where r.equip_id = m.equip_id and m.staff_id = s.staff_id");
         echo "<table>";
         echo "<tr><th>Equipment Id</th><th>Equipment Type</th><th>Staff Id</th><th>Staff Name</th></tr>";
         while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
@@ -72,9 +72,9 @@ $db_conn = OCILogon("ora_u3i0b", "a14691142", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 
       <div style="display: flex; width: 100%; justify-content: space-between;">
         <div style="justify-content: flex-start;">
-        <h3> Ski Staff: </h3> 
+        <h3> Ski Staff: </h3>
         <?php
-          $result = executePlainSQL("select * from skiStaff"); 
+          $result = executePlainSQL("select * from skiStaff");
           echo "<table>";
           echo "<tr><th>Id</th><th>Staff Name</th></tr>";
           while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
@@ -85,9 +85,9 @@ $db_conn = OCILogon("ora_u3i0b", "a14691142", "dbhost.ugrad.cs.ubc.ca:1522/ug");
         </div>
 
         <div style="justify-content: flex-start;">
-          <h3> Equipments: </h3> 
+          <h3> Equipments: </h3>
           <?php
-            $result = executePlainSQL("select * from rentalEquip"); 
+            $result = executePlainSQL("select * from rentalEquip");
             echo "<table>";
             echo "<tr><th>Equipment Id</th><th>Equipment Type</th></tr>";
             while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
@@ -104,7 +104,7 @@ $db_conn = OCILogon("ora_u3i0b", "a14691142", "dbhost.ugrad.cs.ubc.ca:1522/ug");
     <!-- Edit Profile-->
     <div style="background-color:lightGrey; width: 200px; padding-top: 20px; padding-bottom: 1px">
       <center>
-        <form method="POST" action="staffDir.php"> 
+        <form method="POST" action="staffDir.php">
         <input type="hidden" name="staffid" value="<?php echo $staffidcookie; ?>">
           <input type="submit" value="Back to Main Page" name="staffDir">
         </form>
@@ -123,7 +123,7 @@ $db_conn = OCILogon("ora_u3i0b", "a14691142", "dbhost.ugrad.cs.ubc.ca:1522/ug");
       <div style="width: 300px; padding: 20px 20px 10px 20px; background-color: lightGrey; ">
         <center>Add new room management: </center>
         <form method="POST" action="staffManagementView.php">
-        
+
           <p align="left">Room number: <br> <input type="number" name="editRoomNum" size="6"></p>
           <p align="left">Staff Id: <br> <input type="number" name="editSid" size="6"> </p>
           <center><input type="submit" value="Add" name="addRoomManage"></center>
@@ -137,7 +137,7 @@ $db_conn = OCILogon("ora_u3i0b", "a14691142", "dbhost.ugrad.cs.ubc.ca:1522/ug");
         <center>Update existing room management: </center>
         <form method="POST" action="staffManagementView.php">
           <p align="left">Old Room number: <br> <input type="number" name="oldRoomNum" size="6"></p>
-          <p align="left">Staff Id: <br> <input type="number" name="oldSid" size="6"> </p>
+          <p align="left">Old Staff Id: <br> <input type="number" name="oldSid" size="6"> </p>
           <p align="left">New Room number: <br> <input type="number" name="newRoomNum" size="6"></p>
           <center><input type="submit" value="Update" name="updateRoomManage"></center>
         </form>
@@ -176,7 +176,7 @@ $db_conn = OCILogon("ora_u3i0b", "a14691142", "dbhost.ugrad.cs.ubc.ca:1522/ug");
         <center>Update existing equipment management: </center>
         <form method="POST" action="staffManagementView.php">
           <p align="left">Old Equip Id: <br> <input type="number" name="oldEquipId" size="6"></p>
-          <p align="left">Staff Id: <br> <input type="number" name="oldESid" size="6"> </p>
+          <p align="left">Old Staff Id: <br> <input type="number" name="oldESid" size="6"> </p>
           <p align="left">New Equip Id: <br> <input type="number" name="newEquipId" size="6"></p>
           <center><input type="submit" value="Update" name="updateEquipManage"></center>
         </form>
@@ -286,7 +286,7 @@ if ($db_conn) {
       setcookie("staffid", $staffidcookie);
       echo "<meta http-equiv='refresh' content='0'>";
     }
-   
+
 
 	} else
   if (array_key_exists('updateRoomManage', $_POST)){
@@ -310,7 +310,7 @@ if ($db_conn) {
       setcookie("staffid", $staffidcookie);
       echo "<meta http-equiv='refresh' content='0'>";
     }
-    
+
 
 	} else
   if(array_key_exists('deleteRoomManage', $_POST)){
@@ -331,7 +331,7 @@ if ($db_conn) {
     	setcookie("staffid", $staffidcookie);
       echo "<meta http-equiv='refresh' content='0'>";
     }
-    
+
   }
   if (array_key_exists('addEquipManage', $_POST)) {
    $tuple = array (
@@ -349,7 +349,7 @@ if ($db_conn) {
       setcookie("staffid", $staffidcookie);
       echo "<meta http-equiv='refresh' content='0'>";
     }
-    
+
 
   } else
   if (array_key_exists('updateEquipManage', $_POST)){
@@ -373,7 +373,7 @@ if ($db_conn) {
       setcookie("staffid", $staffidcookie);
       echo "<meta http-equiv='refresh' content='0'>";
     }
-    
+
 
   } else
   if(array_key_exists('deleteEquipManage', $_POST)){
@@ -394,7 +394,7 @@ if ($db_conn) {
       setcookie("staffid", $staffidcookie);
       echo "<meta http-equiv='refresh' content='0'>";
     }
-    
+
   }
 
 	//Commit to save changes...

@@ -14,5 +14,7 @@ drop table room;
 drop table roomRate;
 drop table member;
 drop table customer;
+drop view staff;
+drop view reservations;
 
 commit;

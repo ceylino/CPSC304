@@ -47,6 +47,8 @@ $db_conn = OCILogon("ora_u3i0b", "a14691142", "dbhost.ugrad.cs.ubc.ca:1522/ug");
         ?>
 
       <h3> Leading Reservations </h3>
+      <p>List of customers in order of who has the most</p>
+      <p>reservations in total (room and equipment).</p>
         <?php
           $result1 = executePlainSQL("select c.c_id, c.c_name, count(r.c_id) as count from reservations r, customer c where r.c_id=c.c_id group by c.c_id, c.c_name order by count(r.c_id) desc");
 
