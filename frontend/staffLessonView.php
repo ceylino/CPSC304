@@ -69,10 +69,30 @@ $db_conn = OCILogon("ora_c5b1b", "a34248161", "dbhost.ugrad.cs.ubc.ca:1522/ug");
         echo "</table>";
       ?>
 
-    <h3> Ski Staff: </h3>
-    <?php
+    <div style="display: flex; width: 100%; justify-content: space-between;">
+      <div style="justify-content: flex-start;">
+      <h3> Ski Staff: </h3>
+      <?php
+            //sql statement 
+            $result = executePlainSQL("select staff_id, s_name from skiStaff"); 
+            echo "<table>";
+            echo "<tr><th>Staff Id</th><th>Name</th></tr>"; //column names
+            while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+              //column names, caps for var names
+              echo "<tr><td>" . $row["STAFF_ID"] . "</td><td>" . $row["S_NAME"] . "</td></tr>";
+            }
+            //
+            echo "</table>";
+      ?>
+      </div>
+
+    <div style="justify-content: flex-start;">
+      <h3> Head Instructor: </h3>
+      <p>This ski staff member</p>
+      <p>teaches all the lessons.</p>
+      <?php
           //sql statement 
-          $result = executePlainSQL("select staff_id, s_name from skiStaff"); 
+          $result = executePlainSQL("select p.staff_id, p.s_name from skiStaff p where not exists ((select lesson_type, lesson_datetime from lessonTime) minus (select t.lesson_type, t.lesson_datetime from lesson l, lessonTime t, skiStaff s where l.staff_id = s.staff_id and l.lesson_type = t.lesson_type and p.staff_id = s.staff_id))"); 
           echo "<table>";
           echo "<tr><th>Staff Id</th><th>Name</th></tr>"; //column names
           while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
@@ -81,7 +101,9 @@ $db_conn = OCILogon("ora_c5b1b", "a34248161", "dbhost.ugrad.cs.ubc.ca:1522/ug");
           }
           //
           echo "</table>";
-    ?>
+      ?>
+      </div>
+    </div>
 
     <h3> Lessons Times: </h3>
     <?php
