@@ -5,11 +5,13 @@
 session_start();
 
 $success = True; //keep track of errors so it redirects the page only if there are no errors
-$db_conn = OCILogon("ora_u3i0b", "a14691142", "dbhost.ugrad.cs.ubc.ca:1522/ug");
+$db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 
-$custid = $_POST['customerid'];
-setcookie("custid", $custid);
-$custidcookie = $_COOKIE["custid"];
+if (isset($_POST["custid"])) {
+  $custid = $_POST['custid'];   
+}else{  
+  $custid = $_COOKIE["custid"];
+}
 ?>
 
 <title>Hotel Ski Resort</title>
@@ -19,6 +21,7 @@ $custidcookie = $_COOKIE["custid"];
     <div style="background-color:lightGrey;width: 200px;padding-top: 20px;padding-bottom: 1px">
       <center>
         <form action="custHome.php">
+        <input type="hidden" name="custid" value="<?php echo $custid; ?>">
           <input type="submit" value="Back to Main Page" name="staffDir">
         </form>
       </center>
@@ -27,12 +30,12 @@ $custidcookie = $_COOKIE["custid"];
 
 <center>
   <!-- Personal  Info-->
-  <p> Welcome customer id: <?php echo $custidcookie;?> </p>
+  <p> Welcome customer id: <?php echo $custid;?> </p>
 
   <div style="background-color:lightGrey; width: 40%; padding-top: 10px; padding-bottom: 10px">
     <h4> Personal Information </h4>
       <?php
-        $result = executePlainSQL("select * from customer where c_id=$custidcookie");
+        $result = executePlainSQL("select * from customer where c_id=$custid");
         echo "<table>";
 
         echo "<tr><th>Name:</th><th>E-mail:</th><th>Credit Card Number:</th></tr>";
@@ -50,7 +53,7 @@ $custidcookie = $_COOKIE["custid"];
   <div style="background-color:lightGrey; width: 40%; padding-top: 10px; padding-bottom: 10px">
     <h4> Membership Information </h4>
       <?php
-        $result = executePlainSQL("select * from member where c_id=$custidcookie");
+        $result = executePlainSQL("select * from member where c_id=$custid");
         echo "<table>";
         echo "<tr><th>Fee</th><th>Points</th><th>Join date</th></tr>";
         while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
@@ -70,15 +73,14 @@ $custidcookie = $_COOKIE["custid"];
     <div style="width: 300px; padding: 20px 20px 10px 20px; background-color: lightGrey; ">
       <center>Update Personal Information: </center>
       <form method="POST" action="custProfile.php">
-          <input type="hidden" name="customerid" value="<?php echo $custidcookie; ?>">
+      <input type="hidden" name="custid" value="<?php echo $custid; ?>">
           <p align="left">Name: <br> <input type="text" name="editName" size="20"> </p>
           <p align="left">E-mail: <br> <input type="text" name="editEmail" size="40"> </p>
           <p align="left">Credit Card Number: <br> <input type="number" name="editCCnum" size="16"> </p>
 
         <center>
           <input type="submit" value="Update" name="updateCust">
-          <input type="hidden" name="customerid" value="<?php echo $custid; ?>">
-        </center>
+             </center>
       </form>
     </div>
   </div>
@@ -89,11 +91,11 @@ $custidcookie = $_COOKIE["custid"];
   <div>
     <div style="width: 300px;  padding: 30px 20px 10px 20px; background-color: lightGrey; ">
       <form method="POST" action="custProfile.php">
-          <input type="hidden" name="customerid" value="<?php echo $custidcookie; ?>">
+      <input type="hidden" name="custid" value="<?php echo $custid; ?>">
         <center>
           <?php
           $disabled = false;
-          $result = executePlainSQL("select * from member where c_id=$custidcookie");
+          $result = executePlainSQL("select * from member where c_id=$custid");
           if($row = OCI_Fetch_Array($result, OCI_BOTH)){
             $disabled = true;
           }
@@ -190,7 +192,7 @@ if ($db_conn) {
 
     if (array_key_exists('updateCust', $_POST)) {
       $tuple = array (
-        ":bind1" => $_POST['customerid'],
+        ":bind1" => $_POST['custid'],
         ":bind2" => $_POST['editName'],
         ":bind3" => $_POST['editEmail'],
         ":bind4" => $_POST['editCCnum'],
@@ -208,13 +210,14 @@ if ($db_conn) {
       OCICommit($db_conn);
 
       if ($_POST && $success) {
-        header("location: custProfile.php");
+        setcookie("custid", $custid);
+        echo "<meta http-equiv='refresh' content='0'>";
       }
 
     } else
     if (array_key_exists('newMember', $_POST)) {
       $tuple = array (
-       ":bind1" => $custidcookie,
+       ":bind1" => $_POST['custid'],
        ":bind2" => 12.50,
        ":bind3" => 0,
        ":bind4" => date("Ymd")
@@ -230,7 +233,8 @@ if ($db_conn) {
       OCICommit($db_conn);
 
       if ($_POST && $success) {
-        header("location: custProfile.php");
+        setcookie("custid", $custid);
+        echo "<meta http-equiv='refresh' content='0'>";
       }
     }
 

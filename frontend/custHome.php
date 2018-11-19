@@ -4,10 +4,11 @@
 <?php
 session_start();
 
-$success = True; //keep track of errors so it redirects the page only if there are no errors
-$db_conn = OCILogon("ora_u3i0b", "a14691142", "dbhost.ugrad.cs.ubc.ca:1522/ug");
-
 $custid = $_COOKIE["custid"];
+$success = True; //keep track of errors so it redirects the page only if there are no errors
+$db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
+
+
 ?>
 
 <!-- Page title -->
@@ -90,7 +91,7 @@ $custid = $_COOKIE["custid"];
     <center>
       <form method="POST" action="custProfile.php">
         <input type="submit" value="Edit Profile" name="custProfile">
-        <input type="hidden" name="customerid" value="<?php echo $custid; ?>">
+        <input type="hidden" name="custid" value="<?php echo $custid; ?>">
       </form>
     </center>
   </div>
@@ -307,7 +308,9 @@ if ($db_conn) {
     OCICommit($db_conn);
 
     if ($_POST && $success) {
-      header("location: custHome.php");
+      setcookie("custid", $custid);
+      echo "<meta http-equiv='refresh' content='0'>";
+    
     }
     echo "<meta http-equiv='refresh' content='0'>";
 
@@ -333,7 +336,8 @@ if ($db_conn) {
       OCICommit($db_conn);
     }
     if ($_POST && $success) {
-      header("location: custHome.php");
+      setcookie("custid", $custid);
+      echo "<meta http-equiv='refresh' content='0'>";
     }
     echo "<meta http-equiv='refresh' content='0'>";
 
@@ -353,7 +357,8 @@ if ($db_conn) {
     OCICommit($db_conn);
 
     if ($_POST && $success) {
-      header("location: custHome.php");
+      setcookie("custid", $custid);
+      echo "<meta http-equiv='refresh' content='0'>";
     }
     echo "<meta http-equiv='refresh' content='0'>";
 
@@ -383,7 +388,8 @@ if ($db_conn) {
     }
 
     if ($_POST && $success) {
-    	header("location: custHome.php");
+    	setcookie("custid", $custid);
+      echo "<meta http-equiv='refresh' content='0'>";
     }
     echo "<meta http-equiv='refresh' content='0'>";
 
@@ -402,7 +408,8 @@ if ($db_conn) {
     OCICommit($db_conn);
 
     if ($_POST && $success) {
-      header("location: custHome.php");
+      setcookie("custid", $custid);
+      echo "<meta http-equiv='refresh' content='0'>";
     }
     echo "<meta http-equiv='refresh' content='0'>";
 
@@ -422,7 +429,8 @@ if ($db_conn) {
       OCICommit($db_conn);
     }
     if ($_POST && $success) {
-    	header("location: custHome.php");
+    	setcookie("custid", $custid);
+      echo "<meta http-equiv='refresh' content='0'>";
     }
     echo "<meta http-equiv='refresh' content='0'>";
 
@@ -441,7 +449,8 @@ if ($db_conn) {
     executeBoundSQL("insert into purchasedLiftPass values (:bind0, :bind1, :bind2, :bind3)", $alltuples);
     OCICommit($db_conn);
     if ($_POST && $success) {
-    	header("location: custHome.php");
+    	setcookie("custid", $custid);
+      echo "<meta http-equiv='refresh' content='0'>";
     }
     echo "<meta http-equiv='refresh' content='0'>";
   }
