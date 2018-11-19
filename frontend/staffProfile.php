@@ -2,6 +2,8 @@
 
 <?php
 session_start();
+$success = True; //keep track of errors so it redirects the page only if there are no errors
+$db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 if (isset($_POST["staffid"])) {
   $staffidcookie = $_POST['staffid'];   
 }else{  
@@ -28,10 +30,9 @@ if (isset($_POST["staffid"])) {
 
 <center>
   <!-- Personal  Info-->
-  <p> Welcome staff id: <?php echo $staffidcookie; ?> </p> <!-- TODO: echo the staff id. -->
+  <p> Welcome staff id: <?php echo $staffidcookie; ?> </p> 
   <div style="background-color:lightGrey; width: 50%; padding-top: 10px; padding-bottom: 10px">
     <h4> Personal Information </h4>
-    <!-- TODO: this table printing set up needs to be completed -->
     <?php
       echo "<table>";
       echo "<tr><th>Name:</th><th>Phone:</th></tr>";
@@ -68,8 +69,6 @@ if (isset($_POST["staffid"])) {
 
 <!--  Setup connection and connect to DB -->
 <?php
-$success = True; //keep track of errors so it redirects the page only if there are no errors
-$db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 
 function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
   //echo "<br>running ".$cmdstr."<br>";

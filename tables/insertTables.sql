@@ -33,8 +33,6 @@ commit;
 
 /*---------------------------------------------------------------------------------*/
 /*MEMBER TABLE - 5 entries */
-/* Changes: Datetime instead is string for Join Datetime. */
-
 INSERT INTO member (c_id, fee, points, join_date)
 VALUES (6, 12.50, 120, '20121103');
 
@@ -438,16 +436,28 @@ INSERT INTO lesson (lesson_id, staff_id, lesson_datetime, lesson_type)
 VALUES (3, 8, '201812051300', 'advancedSki');
 
 INSERT INTO lesson (lesson_id, staff_id, lesson_datetime, lesson_type)
-VALUES (4, 9, '201510030900', 'crosscountrySki');
+VALUES (4, 8, '201809031415', 'beginnersSnowboard');
 
 INSERT INTO lesson (lesson_id, staff_id, lesson_datetime, lesson_type)
-VALUES (5, 6, '201809031415', 'beginnersSnowboard');
+VALUES (5, 8, '201809041515', 'intermediateSnowboard');
 
 INSERT INTO lesson (lesson_id, staff_id, lesson_datetime, lesson_type)
-VALUES (6, 0, '201809041515', 'intermediateSnowboard');
+VALUES (6, 8, '201710191245', 'advancedSnowboard');
 
 INSERT INTO lesson (lesson_id, staff_id, lesson_datetime, lesson_type)
-VALUES (7, 6, '201710191245', 'advancedSnowboard');
+VALUES (7, 8, '201510030900', 'crosscountrySki');
+
+INSERT INTO lesson (lesson_id, staff_id, lesson_datetime, lesson_type)
+VALUES (8, 9, '201510030900', 'crosscountrySki');
+
+INSERT INTO lesson (lesson_id, staff_id, lesson_datetime, lesson_type)
+VALUES (9, 6, '201809031415', 'beginnersSnowboard');
+
+INSERT INTO lesson (lesson_id, staff_id, lesson_datetime, lesson_type)
+VALUES (10, 0, '201809041515', 'intermediateSnowboard');
+
+INSERT INTO lesson (lesson_id, staff_id, lesson_datetime, lesson_type)
+VALUES (11, 6, '201710191245', 'advancedSnowboard');
 
 commit;
 
