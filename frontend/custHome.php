@@ -46,11 +46,11 @@ $custid = $_COOKIE["custid"];
       <div style="justify-content: flex-start;">
         <h3> Available Lessons: </h3>
           <?php
-            $result = executePlainSQL("select l.lesson_type, l.lesson_datetime, s.s_name from lesson l, skiStaff s where l.staff_id=s.staff_id");
+            $result = executePlainSQL("select l.lesson_id, l.lesson_type, l.lesson_datetime, s.s_name from lesson l, skiStaff s where l.staff_id=s.staff_id");
             echo "<table>";
-            echo "<tr><th>Lesson Type</th><th>Lesson Datetime</th><th>Instructor</th></tr>";
+            echo "<tr><th>Lesson Id</th><th>Lesson Type</th><th>Lesson Datetime</th><th>Instructor</th></tr>";
             while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-              echo "<tr><td>" . $row["LESSON_TYPE"] . "</td><td>" . $row["LESSON_DATETIME"] . "</td><td>" . $row["S_NAME"] . "</td></tr>";
+              echo "<tr><td>" . $row["LESSON_ID"] . "</td><td>" . $row["LESSON_TYPE"] . "</td><td>" . $row["LESSON_DATETIME"] . "</td><td>" . $row["S_NAME"] . "</td></tr>";
             }
             echo "</table>";
           ?>
@@ -59,11 +59,11 @@ $custid = $_COOKIE["custid"];
       <div style="justify-content: flex-start;">
         <h3> Booked Lessons: </h3>
           <?php
-            $result = executePlainSQL("select b.lesson_type, b.lesson_datetime, s.s_name from bookedLessons b, lesson l, skiStaff s where b.lesson_type=l.lesson_type and l.staff_id=s.staff_id and b.c_id=$custid");
+            $result = executePlainSQL("select b.lesson_id, b.lesson_type, b.lesson_datetime, s.s_name from bookedLessons b, lesson l, skiStaff s where b.lesson_id=l.lesson_id and l.staff_id=s.staff_id and b.c_id=$custid");
             echo "<table>";
-            echo "<tr><th>Lesson Type</th><th>Lesson Datetime</th><th>Instructor</th></tr>";
+            echo "<tr><th>Lesson Id</th><th>Lesson Type</th><th>Lesson Datetime</th><th>Instructor</th></tr>";
             while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-              echo "<tr><td>" . $row["LESSON_TYPE"] . "</td><td>" . $row["LESSON_DATETIME"] . "</td><td>" . $row["S_NAME"] . "</td></tr>";
+              echo "<tr><td>" . $row["LESSON_ID"] . "</td><td>" . $row["LESSON_TYPE"] . "</td><td>" . $row["LESSON_DATETIME"] . "</td><td>" . $row["S_NAME"] . "</td></tr>";
             }
             echo "</table>";
           ?>
@@ -170,6 +170,7 @@ $custid = $_COOKIE["custid"];
       <div style="width: 300px; padding: 20px 20px 10px 20px; background-color: lightGrey; ">
         <center>Book a new lesson: </center>
         <form method="POST" action="custHome.php">
+            <p align="left">Lesson Id: <br> <input type="text" name="addLId" size="20"> </p>
             <p align="left">Lesson Type: <br> <input type="text" name="addType" size="20"> </p>
             <p align="left">Lesson Datetime: <br>(numbers only - yyyymmddhhmm) <br> <input type="number" name="addLDate" size="12"> </p>
           <center>
@@ -187,7 +188,7 @@ $custid = $_COOKIE["custid"];
             <center>Delete a lesson booking: <br>
               Are you sure you want to delete this booking? This action cannot be undone.<br>
             </center>
-            <p align="left">Lesson Type: <br> <input type="text" name="deleteLType" size="20"> </p>
+            <p align="left">Lesson Id: <br> <input type="text" name="deleteLId" size="20"> </p>
             <center><input type="submit" value="Delete Booking" name="deleteLBooking"></center>
           </form>
         </div>
@@ -199,7 +200,6 @@ $custid = $_COOKIE["custid"];
         <center>Buy a new pass: </center>
         <form method="POST" action="custHome.php">
           <p align="left">Pass Id: <br> <input type="number" name="passPid" size="6"> </p>
-          <p align="left">Purchase Date: (numbers only - yyyymmdd) <br> <input type="text" name="passDate" size="8"> </p>
           <center><input type="submit" value="Buy Pass" name="addPass"></center>
         </form>
       </div>
@@ -309,31 +309,33 @@ if ($db_conn) {
     if ($_POST && $success) {
       header("location: custHome.php");
     }
+    echo "<meta http-equiv='refresh' content='0'>";
 
 	} else
   if (array_key_exists('updateRoomReservation', $_POST)){
 		$tuple = array (
       ":bind1" => $custid,
       ":bind2" => $_POST['oldRoomNum'],
-      ":bind4" => $_POST['oldRoomSDate'],
-      ":bind5" => $_POST['oldRoomEDate'],
+      ":bind3" => $_POST['oldRoomSDate'],
+      ":bind4" => $_POST['oldRoomEDate'],
 
-      ":bind7" => $_POST['newRoomNum'],
-      ":bind9" => $_POST['newRoomSDate'],
-      ":bind0" => $_POST['newRoomEDate']
+      ":bind5" => $_POST['newRoomNum'],
+      ":bind6" => $_POST['newRoomSDate'],
+      ":bind7" => $_POST['newRoomEDate']
 		);
 		$alltuples = array (
 			$tuple
 		);
-    $result = executeBoundSQL("select * from roomReservation where room_num=:bind2 and start_date=:bind4 and end_date=:bind5", $alltuples);
+    $result = executeBoundSQL("select * from roomReservation where c_id=:bind1 and room_num=:bind2 and start_date=:bind3 and end_date=:bind4", $alltuples);
     if($row = OCI_Fetch_Array($result, OCI_BOTH)){
       //update room reservation
-      executeBoundSQL("update roomReservation set room_num=:bind7, c_id=:bind1, start_date=:bind9, end_date=:bind0 where room_num=:bind2 and start_date=:bind4 and end_date=:bind5", $alltuples);
+      executeBoundSQL("update roomReservation set room_num=:bind5, c_id=:bind1, start_date=:bind6, end_date=:bind7 where c_id=:bind1 and room_num=:bind2 and start_date=:bind3 and end_date=:bind4", $alltuples);
       OCICommit($db_conn);
     }
     if ($_POST && $success) {
       header("location: custHome.php");
     }
+    echo "<meta http-equiv='refresh' content='0'>";
 
 	} else
   if (array_key_exists('addEquipReservation', $_POST)) {
@@ -353,6 +355,7 @@ if ($db_conn) {
     if ($_POST && $success) {
       header("location: custHome.php");
     }
+    echo "<meta http-equiv='refresh' content='0'>";
 
 	} else
   if (array_key_exists('updateEquipReservation', $_POST)) {
@@ -382,48 +385,53 @@ if ($db_conn) {
     if ($_POST && $success) {
     	header("location: custHome.php");
     }
+    echo "<meta http-equiv='refresh' content='0'>";
 
   } else
   if (array_key_exists('addBooking', $_POST)) {
   	$tuple = array (
-      ":bind0" => $_POST['addType'],
       ":bind1" => $custid,
-      ":bind2" => $_POST['addLDate']
+      ":bind2" => $_POST['addLDate'],
+      ":bind3" => $_POST['addLId'],
+      ":bind4" => $_POST['addType']
   	);
   	$alltuples = array (
   		$tuple
   	);
-    $result2 = executeBoundSQL("insert into bookedLessons values (:bind1, :bind2, :bind0)", $alltuples);
+    $result2 = executeBoundSQL("insert into bookedLessons values (:bind1, :bind2, :bind3, :bind4)", $alltuples);
     OCICommit($db_conn);
 
     if ($_POST && $success) {
       header("location: custHome.php");
     }
+    echo "<meta http-equiv='refresh' content='0'>";
 
 	} else
   if(array_key_exists('deleteLBooking', $_POST)){
     $tuple = array (
-      ":bind1" => $_POST['deleteLType'],
+      ":bind1" => $_POST['deleteLId'],
       ":bind2" => $custid,
   	);
     $alltuples = array (
       $tuple
     );
-    $result3 = executeBoundSQL("select * from bookedLessons where c_id=:bind2 and lesson_type=:bind1", $alltuples);
+    $result3 = executeBoundSQL("select * from bookedLessons where c_id=:bind2 and lesson_id=:bind1", $alltuples);
     if($row3 = OCI_Fetch_Array($result3, OCI_BOTH)){
       //delete booking
-      $resultTemp = executeBoundSQL("delete from bookedLessons where c_id=:bind2 and lesson_type=:bind1", $alltuples);
+      $resultTemp = executeBoundSQL("delete from bookedLessons where c_id=:bind2 and lesson_id=:bind1", $alltuples);
       OCICommit($db_conn);
     }
     if ($_POST && $success) {
-    	//header("location: custHome.php");
+    	header("location: custHome.php");
     }
+    echo "<meta http-equiv='refresh' content='0'>";
+
   }else
   if(array_key_exists('addPass', $_POST)){
     $tuple = array (
       ":bind0" => $custid,
       ":bind1" => $_POST['passPid'],
-      ":bind2" => $_POST['passDate'],
+      ":bind2" => date("Ymd"),
       ":bind3" => 50 // pass price is fixed.
   	);
     $alltuples = array (
@@ -435,6 +443,7 @@ if ($db_conn) {
     if ($_POST && $success) {
     	header("location: custHome.php");
     }
+    echo "<meta http-equiv='refresh' content='0'>";
   }
 
 	//Commit to save changes...

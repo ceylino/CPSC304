@@ -77,6 +77,7 @@ $custidcookie = $_COOKIE["custid"];
 
         <center>
           <input type="submit" value="Update" name="updateCust">
+          <input type="hidden" name="customerid" value="<?php echo $custid; ?>">
         </center>
       </form>
     </div>

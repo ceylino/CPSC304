@@ -428,45 +428,45 @@ commit;
 
 /*---------------------------------------------------------------------------------*/
 /*LESSON TABLE - 9 entries*/
-INSERT INTO lesson (staff_id, lesson_datetime, lesson_type)
-VALUES (8, '201808091130', 'beginnersSki');
+INSERT INTO lesson (lesson_id, staff_id, lesson_datetime, lesson_type)
+VALUES (1, 8, '201808091130', 'beginnersSki');
 
-INSERT INTO lesson (staff_id, lesson_datetime, lesson_type)
-VALUES (8, '201808091430', 'intermediateSki');
+INSERT INTO lesson (lesson_id, staff_id, lesson_datetime, lesson_type)
+VALUES (2, 8, '201808091430', 'intermediateSki');
 
-INSERT INTO lesson (staff_id, lesson_datetime, lesson_type)
-VALUES (8, '201812051300', 'advancedSki');
+INSERT INTO lesson (lesson_id, staff_id, lesson_datetime, lesson_type)
+VALUES (3, 8, '201812051300', 'advancedSki');
 
-INSERT INTO lesson (staff_id, lesson_datetime, lesson_type)
-VALUES (9, '201510030900', 'crosscountrySki');
+INSERT INTO lesson (lesson_id, staff_id, lesson_datetime, lesson_type)
+VALUES (4, 9, '201510030900', 'crosscountrySki');
 
-INSERT INTO lesson (staff_id, lesson_datetime, lesson_type)
-VALUES (6, '201809031415', 'beginnersSnowboard');
+INSERT INTO lesson (lesson_id, staff_id, lesson_datetime, lesson_type)
+VALUES (5, 6, '201809031415', 'beginnersSnowboard');
 
-INSERT INTO lesson (staff_id, lesson_datetime, lesson_type)
-VALUES (0, '201809041515', 'intermediateSnowboard');
+INSERT INTO lesson (lesson_id, staff_id, lesson_datetime, lesson_type)
+VALUES (6, 0, '201809041515', 'intermediateSnowboard');
 
-INSERT INTO lesson (staff_id, lesson_datetime, lesson_type)
-VALUES (6, '201710191245', 'advancedSnowboard');
+INSERT INTO lesson (lesson_id, staff_id, lesson_datetime, lesson_type)
+VALUES (7, 6, '201710191245', 'advancedSnowboard');
 
 commit;
 
 /*---------------------------------------------------------------------------------*/
 /*BOOKEDLESSONS TABLE - 5 entries*/
-INSERT INTO bookedLessons (c_id, lesson_datetime, lesson_type)
-VALUES (1, '201808091130', 'beginnersSki');
+INSERT INTO bookedLessons (lesson_id, c_id, lesson_datetime, lesson_type)
+VALUES (1, 1, '201808091130', 'beginnersSki');
 
-INSERT INTO bookedLessons (c_id, lesson_datetime, lesson_type)
-VALUES (6, '201809031415', 'beginnersSnowboard');
+INSERT INTO bookedLessons (lesson_id, c_id, lesson_datetime, lesson_type)
+VALUES (5, 6, '201809031415', 'beginnersSnowboard');
 
-INSERT INTO bookedLessons (c_id, lesson_datetime, lesson_type)
-VALUES (4, '201809041515', 'intermediateSnowboard');
+INSERT INTO bookedLessons (lesson_id, c_id, lesson_datetime, lesson_type)
+VALUES (6, 4, '201809041515', 'intermediateSnowboard');
 
-INSERT INTO bookedLessons (c_id, lesson_datetime, lesson_type)
-VALUES (10, '201808091130', 'beginnersSki');
+INSERT INTO bookedLessons (lesson_id, c_id, lesson_datetime, lesson_type)
+VALUES (1, 10, '201808091130', 'beginnersSki');
 
-INSERT INTO bookedLessons (c_id, lesson_datetime, lesson_type)
-VALUES (7, '201510030900', 'crosscountrySki');
+INSERT INTO bookedLessons (lesson_id, c_id, lesson_datetime, lesson_type)
+VALUES (4, 7, '201510030900', 'crosscountrySki');
 
 commit;
 
