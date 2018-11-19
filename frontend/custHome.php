@@ -6,8 +6,7 @@ session_start();
 
 $custid = $_COOKIE["custid"];
 $success = True; //keep track of errors so it redirects the page only if there are no errors
-$db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
-
+$db_conn = OCILogon("ora_u3i0b", "a14691142", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 
 ?>
 
@@ -17,7 +16,7 @@ $db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 <div div div style="display: flex;  width: 100%; justify-content: space-around;">
   <div style="width:90%;">
     <!-- View table entries -->
-    <div div style="display: flex;  width: 100%; justify-content: space-around;">
+    <div div style="display: flex;  width: 100%; justify-content: space-between;">
       <div style="justify-content: flex-start;">
         <h3> Room Reservations: </h3>
           <?php
@@ -58,6 +57,32 @@ $db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
       </div>
 
       <div style="justify-content: flex-start;">
+
+      <h3>All Hotel Rooms: </h3>
+      <?php
+
+      $result1 = executePlainSQL("select * from room");
+      echo "<table>";
+      echo "<tr><th>Number</th><th>Type</th><th>Rate</th></tr>";
+      while ($row = OCI_Fetch_Array($result1, OCI_BOTH)) {
+        echo "<tr><td>" . $row["ROOM_NUM"] . "</td><td>" . $row["ROOM_TYPE"] . "</td><td>" . $row["ROOM_RATE"] . "</td></tr>";
+      }
+      echo "</table>";
+      ?>
+        <h3>All Equipment: </h3>
+              <?php
+        $result = executePlainSQL("select * from rentalEquip");
+        echo "<table>";
+        echo "<tr><th>Equipment Id</th><th>Type</th><th>Rental Rate</th></tr>";
+        while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+          echo "<tr><td>" . $row["EQUIP_ID"] . "</td><td>" . $row["EQUIP_TYPE"] . "</td><td>" . $row["RENTAL_RATE"] . "</td></tr>";
+        }
+        echo "</table>";
+      ?>
+      </div>
+
+      <div style="justify-content: flex-start;">
+
         <h3> Booked Lessons: </h3>
           <?php
             $result = executePlainSQL("select b.lesson_id, b.lesson_type, b.lesson_datetime, s.s_name from bookedLessons b, lesson l, skiStaff s where b.lesson_id=l.lesson_id and l.staff_id=s.staff_id and b.c_id=$custid");
@@ -68,9 +93,6 @@ $db_conn = OCILogon("ora_e6b2b", "a43992254", "dbhost.ugrad.cs.ubc.ca:1522/ug");
             }
             echo "</table>";
           ?>
-      </div>
-
-      <div style="justify-content: flex-start;">
         <h3> Purchased Passes: </h3>
           <?php
             $result = executePlainSQL("select pass_id, purchase_date, pass_price from purchasedLiftPass where c_id=$custid");
